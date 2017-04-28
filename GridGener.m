@@ -23,4 +23,39 @@ bnd_layer = (range-num_node*u)/2;
 % Mesh.discr_bnd = [ceil(bnd(:,1)/u), floor(bnd(:,2)/u)]; % discretize the boundaries
 % discretize the boundaries
 Mesh.discr_bnd = [bnd(:,1)+bnd_layer, bnd(:,2)-bnd_layer, num_node+1]; 
+
+%% pre-calculation
+% % Generate the data needed by mapping
+n =  size(Mesh.discr_bnd,1);
+Mesh.V = cell(n,1);          % vertex in the grid, catagorized by dimension
+for i = 1:n
+    Mesh.V{i}=linspace(Mesh.discr_bnd(i,1),Mesh.discr_bnd(i,2),Mesh.discr_bnd(i,3));
+end
+
+n =  size(Mesh.bnd,1);
+num_V = prod(Mesh.discr_bnd(:,3));
+Mesh.ind2sub=zeros(num_V,n);
+
+for i = 1:num_V
+Mesh.ind2sub(i,:)=ind2sub_vec(Mesh.discr_bnd(:,3),i,n); 
+end
+
+end
+
+
+function sub = ind2sub_vec(size,idx,dim)
+persistent strN strX dim_old
+if(isempty(strN)||dim_old~=dim)
+    strN = num2str(1:dim);
+    strN(strN==' ')='';
+    strX = '';
+    strX (1:(3*dim-1))=' ';
+    strX(1:3:(3*dim-2))='X';
+    strX(2:3:(3*dim-1))=strN;
+    strX(3:3:(3*dim-3))=',';
+    dim_old = dim;
+end
+sub = zeros(dim,1);
+eval(['[',strX,']=ind2sub(size,idx);']);
+eval(['sub=[',strX,']'';']);
 end
