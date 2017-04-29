@@ -1,6 +1,8 @@
 # hoppingrob
 =============
+
 ./ArrayGener
+
 =============
 'test.m' is the test code for testing all the functions.
 'ArrayGener.m' creates the hash table mapping input and IC to output of dynamics system. The function return a cell whose index represents  the input 'u'. Each element in the cell is a nxn matrix, the hash table maping x0 to xt w.r.t u.
