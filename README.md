@@ -7,4 +7,4 @@
 
 'odefun.m' defines the dynamic system.
 
-The code is quite time-consuming due to the ode solver. The code is optimized based on time-priority, which means that more space may be taken for a shorter running time. The situation may reverse as the scale of the abstruction system increases.
+The code is optimized based on high priority of time. More space may be taken up for saving time and CPU. The situation may reverse as the scale of the abstruction system increases. Another branch is going to be created later which sacrifices time for saving space.
