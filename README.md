@@ -7,4 +7,4 @@
 
 'odefun.m' defines the dynamic system.
 
-The code is optimized based on high priority of time. More space may be taken up for saving time and CPU. The situation may reverse as the scale of the abstruction system increases. Another branch is going to be created later which sacrifices time for saving space.
+The code is optimized for a better performance on time, which sacrifices some storage space. However, as the scale of the abstruction system increases, the performance may be restricted by the reading speed of hard drive. Another branch is going to be created later which sacrifices CPU for less space.
