@@ -17,7 +17,7 @@ if(size(bnd,2)~=2)
 end
 
 range = abs(bnd(:,2)-bnd(:,1));  % range of each dimension
-num_node = floor(range/u); % num of discretized points in each dimension
+num_node = ceil(range/u-1); % num of discretized points in each dimension
 bnd_layer = (range-num_node*u)/2;
 
 % Mesh.discr_bnd = [ceil(bnd(:,1)/u), floor(bnd(:,2)/u)]; % discretize the boundaries
