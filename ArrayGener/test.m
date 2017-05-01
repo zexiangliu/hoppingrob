@@ -11,15 +11,15 @@ clc;clear all;close all;
 %======= Test Parameter ========
 tau = 0.5;     % time interval
 r = 1;         % radius of norm ball when mapping xt to discr. state space
-x0 = [0;3];    % Initial Cond (ode solver test)
-u0 = 0;        % Input        (ode solver test)
+idx_x0 = 20;    % idx of initial cond. in grid (ode solver test)
+idx_u0 = 8;    % idx of input in grid       (ode solver test)
 % ==============================
 
 
 % === Discretization Config ===
 % state space grid size
-X.gridsize = 1;   % eta
-U.gridsize = 1;   % miu
+X.gridsize = 0.5;   % eta
+U.gridsize = 0.1;   % miu
 
 % boundaries: i^th row -->  i^th dimension
 X.bnd = [           
@@ -53,6 +53,11 @@ plot(X,Y,'.','markersize',8);
 axis equal;
 
 %% nonlinear equation solver
+sub_x0 = M_X.ind2sub(idx_x0,:);     % subscripts of x0
+x0 = [M_X.V{1}(sub_x0(1));M_X.V{2}(sub_x0(2))];    % initial cond.
+sub_u0 = M_U.ind2sub(idx_u0);
+u0 = M_U.V{1}(sub_u0);                 % input
+
 y0 = [x0;u0];    % States for numerical integration
 
 yt = ode45(@odefun,[0,tau],y0);
@@ -83,8 +88,8 @@ array = ArrayGener(M_X,M_U,tau,r);
 running_time = toc
 
 % Simple Verification
-idx_x0 = mapping(x0,M_X,0.5);
-idx_u = 2;
+idx_x0 = mapping(x0,M_X,0.001);
+idx_u = idx_u0;
 
 idx_ver = find(array{idx_u}(idx_x0,:)==1)';
 if(isempty(find((idx~=idx_ver), 1)))

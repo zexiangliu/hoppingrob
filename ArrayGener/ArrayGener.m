@@ -46,7 +46,7 @@ for i = 1:num_U
     for j = 1:num_X
         % Nonlinear equation solver
         sub_x0 = M_X.ind2sub(j,:)';     % Initial Condition
-        x0 = M_X.discr_bnd(:,1)+(sub_x0-1)*M_U.gridsize;
+        x0 = M_X.discr_bnd(:,1)+(sub_x0-1)*M_X.gridsize;
         y0 = [x0;u0];    % States for numerical integration
         % ode45
         yt = ode45(@odefun,[0,tau],y0);
@@ -56,7 +56,8 @@ for i = 1:num_U
 %         xt = yt(1:2);
 
         % Mapping: xt--->[X]_eta
-        idx = mapping(xt,M_X,r);
+         idx = mapping(xt,M_X,r);
+         
         array{i}(j,idx)=1;
     end
 end

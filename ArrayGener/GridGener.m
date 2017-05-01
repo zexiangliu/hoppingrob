@@ -27,7 +27,7 @@ Mesh.discr_bnd = [bnd(:,1)+bnd_layer, bnd(:,2)-bnd_layer, num_node+1];
 %% pre-calculation
 % % Generate the data needed by mapping
 n =  size(Mesh.discr_bnd,1);
-Mesh.V = cell(n,1);          % vertex in the grid, catagorized by dimension
+Mesh.V = cell(n,1);          % vertex in the grid, catagorized according to dimension
 for i = 1:n
     Mesh.V{i}=linspace(Mesh.discr_bnd(i,1),Mesh.discr_bnd(i,2),Mesh.discr_bnd(i,3));
 end

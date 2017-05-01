@@ -10,10 +10,11 @@ if(size(xt,2)~=1)
     error('xt must be a column vector.');
 end
 
-eta = Qn.gridsize;      % grid size of discretized state space
+% eta = Qn.gridsize;      % grid size of discretized state space
 bnd = Qn.bnd;           
 n = size(bnd,1);        % # dim
 discr_bnd = Qn.discr_bnd;
+V = Qn.V; 
 % check if xt is out of interested state space
 lbnd = (bnd(:,1)<=xt);  % lower bnd
 ubnd = (xt<=bnd(:,2));  % upper bnd
@@ -26,7 +27,7 @@ end
 SUB = cell(n,1);       % subscripts of selected discretized nodes
 strN(1:n)=' ';  % param for eval func
 for i = 1:n
-    pos_node = linspace(discr_bnd(i,1),discr_bnd(i,2),discr_bnd(i,3)); % maybe pre-calculation is better
+    pos_node = V{i};%linspace(discr_bnd(i,1),discr_bnd(i,2),discr_bnd(i,3)); % maybe pre-calculation is better
     sub_idx = (abs(pos_node-xt(i))<=r); % filter the nodes in the ball
     SUB{i} = find(sub_idx==1);             % find idx           
     strN(i)=num2str(i);
