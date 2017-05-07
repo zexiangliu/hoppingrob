@@ -82,18 +82,22 @@ v = [U(:),V(:)];
 patch('Faces',f,'Vertices',v,...
     'EdgeColor','red','FaceColor','none','LineWidth',2);
 
-%% Wrap everthing up
-tic
-array = ArrayGener(M_X,M_U,tau,r);
-running_time = toc
+%% Wrap everthing up (task 1)
+% tic
+% array = ArrayGener(M_X,M_U,tau,r);
+% running_time = toc
+% 
+% % Simple Verification
+% idx_x0 = mapping(x0,M_X,0.001);
+% idx_u = idx_u0;
+% 
+% idx_ver = find(array{idx_u}(idx_x0,:)==1)';
+% if(isempty(find((idx~=idx_ver), 1)))
+%     disp('Verification Pass.');
+% else
+%     disp('Verification Fail.');
+% end
 
-% Simple Verification
-idx_x0 = mapping(x0,M_X,0.001);
-idx_u = idx_u0;
-
-idx_ver = find(array{idx_u}(idx_x0,:)==1)';
-if(isempty(find((idx~=idx_ver), 1)))
-    disp('Verification Pass.');
-else
-    disp('Verification Fail.');
-end
+%% Test ArrayGener_ts (task 2)
+% store the transist system in class 'TransSyst'
+ts = ArrayGener_ts(M_X,M_U,tau,r);
