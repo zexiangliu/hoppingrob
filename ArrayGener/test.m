@@ -7,26 +7,33 @@
 %============================
 %% Initialization
 clc;clear all;close all;
+%====== Define the system ======
+g = 9.8;
+h0 = 10;
+% A =[0 1;g/h0 0];
+A = [0 1; 0 -1];
+B = [1;-1];
+save system A B; % the system dx = Ax + Bu is saved in file system.mat
 
 %======= Test Parameter ========
 tau = 0.5;     % time interval
 r = 1;         % radius of norm ball when mapping xt to discr. state space
 idx_x0 = 20;    % idx of initial cond. in grid (ode solver test)
-idx_u0 = 8;    % idx of input in grid       (ode solver test)
+idx_u0 = 7;    % idx of input in grid       (ode solver test)
 % ==============================
 
 
 % === Discretization Config ===
 % state space grid size
 X.gridsize = 0.5;   % eta
-U.gridsize = 0.1;   % miu
+U.gridsize = 1;   % miu
 
 % boundaries: i^th row -->  i^th dimension
 X.bnd = [           
     -5,5;
     -5,5
     ];
-U.bnd = [-1,1];
+U.bnd = [-10,10];
 % ================================
 
 %% grid generation
@@ -101,3 +108,12 @@ patch('Faces',f,'Vertices',v,...
 %% Test ArrayGener_ts (task 2)
 % store the transist system in class 'TransSyst'
 ts = ArrayGener_ts(M_X,M_U,tau,r);
+
+
+
+
+
+
+
+
+

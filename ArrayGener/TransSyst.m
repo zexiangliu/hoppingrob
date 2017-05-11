@@ -24,7 +24,7 @@ classdef TransSyst<handle
     b_disable_pg = false;
 
     % Debugging flag
-    b_debug = false;
+    b_debug = true;
   end
 
   methods
