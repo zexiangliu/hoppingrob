@@ -1,11 +1,14 @@
 %=========Test code=========
-% Segment 1~3: test each part of ArrayGener(), 
+% Segment 2~4: test each part of ArrayGener(), 
 %      grid generation-------GridGener()
 %      ode solver
 %      mapping the solution xt into discretized state space----mapping()
-% Segment 4: test ArrayGener()
-%============================
-%% Initialization
+% Segment 5: test ArrayGener()
+% Segment 6: test ArrayGener_ts()
+    % transfer the array into struct of TransSyst.m
+    % add progress group for linear case
+%======================
+%% 1 Initialization
 clc;clear all;close all;
 %====== Define the system ======
 g = 9.8;
@@ -36,7 +39,7 @@ X.bnd = [
 U.bnd = [-10,10];
 % ================================
 
-%% grid generation
+%% 2 grid generation
 
 % Generating Grid
 M_X = GridGener(X);
@@ -59,7 +62,7 @@ y = linspace(discr_bnd(2,1),discr_bnd(2,2),discr_bnd(2,3));
 plot(X,Y,'.','markersize',8);
 axis equal;
 
-%% nonlinear equation solver
+%% 3 nonlinear equation solver
 sub_x0 = M_X.ind2sub(idx_x0,:);     % subscripts of x0
 x0 = [M_X.V{1}(sub_x0(1));M_X.V{2}(sub_x0(2))];    % initial cond.
 sub_u0 = M_U.ind2sub(idx_u0);
@@ -70,7 +73,7 @@ y0 = [x0;u0];    % States for numerical integration
 yt = ode45(@odefun,[0,tau],y0);
 xt = yt.y(1:2,end)
 
-%% mapping: A--->[A]_u
+%% 4 mapping: A--->[A]_u
 % xt = [1.5;4.5];
 idx = mapping(xt,M_X,r);
 
@@ -89,7 +92,7 @@ v = [U(:),V(:)];
 patch('Faces',f,'Vertices',v,...
     'EdgeColor','red','FaceColor','none','LineWidth',2);
 
-%% Wrap everthing up (task 1)
+%% 5 Wrap everthing up (task 1)
 % tic
 % array = ArrayGener(M_X,M_U,tau,r);
 % running_time = toc
@@ -105,8 +108,9 @@ patch('Faces',f,'Vertices',v,...
 %     disp('Verification Fail.');
 % end
 
-%% Test ArrayGener_ts (task 2)
+%% 6 Test ArrayGener_ts (task 2)
 % store the transist system in class 'TransSyst'
+% add progress group in ArrayGener_ts.m
 ts = ArrayGener_ts(M_X,M_U,tau,r);
 
 
