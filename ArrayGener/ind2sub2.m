@@ -1,4 +1,4 @@
-function [v1,v2,varargout] = ind2sub2(siz,ndx)
+function [v] = ind2sub2(siz,ndx)
 %IND2SUB Multiple subscripts from linear index.
 %   IND2SUB is used to determine the equivalent subscript values
 %   corresponding to a given single index into an array.
@@ -21,9 +21,11 @@ function [v1,v2,varargout] = ind2sub2(siz,ndx)
  
 %   Copyright 1984-2015 The MathWorks, Inc. 
 
-nout = max(nargout,1);
 siz = double(siz);
 lensiz = length(siz);
+nout = lensiz;
+
+v = zeros(lensiz,1);
 
 if lensiz < nout
     siz = [siz ones(1,nout-lensiz)];
@@ -36,18 +38,19 @@ if nout > 2
     for i = nout:-1:3,
         vi = rem(ndx-1, k(i-1)) + 1;
         vj = (ndx - vi)/k(i-1) + 1;
-        varargout{i-2} = double(vj);
+        v(i) = double(vj);
         ndx = vi;
     end
 end
 
 if nout >= 2
     vi = rem(ndx-1, siz(1)) + 1;
-    v2 = double((ndx - vi)/siz(1) + 1);
-    v1 = double(vi);
+    v(2) = double((ndx - vi)/siz(1) + 1);
+    v(1) = double(vi);
 else 
-    v1 = double(ndx);
+    v(1) = double(ndx);
 end
+
 
 
 
