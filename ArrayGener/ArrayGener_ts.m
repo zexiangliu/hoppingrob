@@ -103,7 +103,7 @@ for i = 1:num_U
                  A_lp(invalid_row,:)=[];
                  b_lp(invalid_row,:)=[];
                  % check if eq in the region of node j using linear programming
-                 [alpha,~,EXITFLAG] = linprog(f_lp,A_lp,b_lp,[],[],[],[],[],options);    
+                 [~,~,EXITFLAG] = linprog(f_lp,A_lp,b_lp,[],[],[],[],[],options);    
                 if(EXITFLAG == 1) % EXITFLAG = 1 means that the region mapped into x0 has eq
                      PG(j) = -1; % remove this eq from progress group
                 end

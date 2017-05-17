@@ -15,8 +15,8 @@ upper_sub = M_X.ind2sub(upper_idx,:)'
 
 % When boundary of B and node boundary of grid coincides, use the smallest
 % set
-[~,l_idx] = min(sum(lower_sub));
-[~,u_idx] = max(sum(upper_sub));
+[~,l_idx] = max(sum(lower_sub));
+[~,u_idx] = min(sum(upper_sub));
 lower_sub = lower_sub(:,l_idx);
 upper_sub = upper_sub(:,u_idx);
 

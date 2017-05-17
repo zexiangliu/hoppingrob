@@ -25,12 +25,14 @@ end
 
 %% find the nodes in Br(xt)
 SUB = cell(n,1);       % subscripts of selected discretized nodes
-strN(1:n)=' ';  % param for eval func
+% strN(1:n)=' ';  % param for eval func
 for i = 1:n
     pos_node = V{i};%linspace(discr_bnd(i,1),discr_bnd(i,2),discr_bnd(i,3)); % maybe pre-calculation is better
-    sub_idx = (abs(pos_node-xt(i))<=r); % filter the nodes in the ball
+    sub_idx = (abs(pos_node-xt(i))<=(r+1e-15)); % filter the nodes in the ball
+                                                % 1e-15 is due to round error in
+                                                % matlab
     SUB{i} = find(sub_idx==1);             % find idx           
-    strN(i)=num2str(i);
+%     strN(i)=num2str(i);
 end
 
 %% map sub to index
