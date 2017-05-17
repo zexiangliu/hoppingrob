@@ -45,7 +45,7 @@ v = [U(:),V(:)];
 
 %% Initialization
 % initial state 
-disp('Please select the initial point from winning set using mouse:')
+disp('Please select the initial point in the ')
 [x,y]=ginput(1);
 % x=-1.4;
 % y=-4.5;
