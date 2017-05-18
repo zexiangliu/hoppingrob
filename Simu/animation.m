@@ -39,6 +39,8 @@ figure(1);
 % axis equal;
 t = 0;
 % hold on;
+
+
 for i = 1:length(Yt_list)
     
     pause(Yt_list(i)-t);
@@ -59,13 +61,13 @@ for i = 1:length(Yt_list)
     l_y = [0;0];
     l_z = [h0;2/20+hopping_height];
     
-    plot3(l_x,l_y,l_z,'linewidth',5)
+    plot3(l_x,l_y,l_z,'linewidth',3)
     
     rad = linspace(0,2*pi*20,500);
     leg_x = 1/25*sin(rad)+ linspace(l_x(1),l_x(2),500);
     leg_y = 1/25*cos(rad)+ linspace(l_y(1),l_y(2),500);
     leg_z = linspace(l_z(1),l_z(2),500);
-    plot3(leg_x,leg_y,leg_z,'linewidth',0.5)
+    plot3(leg_x,leg_y,leg_z,'linewidth',1)
     
     
     % Playground
@@ -79,4 +81,3 @@ for i = 1:length(Yt_list)
     view(az, el);
     drawnow;
 end
-    
