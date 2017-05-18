@@ -5,8 +5,8 @@ close all; clear all; clc;
 load ts
 
 %% Visualization and get initial condition from mouse
-figure(1);
 
+figure(1);
 title('State Space (Black), B\_list (Red), Winning Set (Cyan)')
 % Visualization of state space
 bnd = M_X.bnd;
@@ -45,31 +45,38 @@ v = [U(:),V(:)];
 
 %% Initialization
 % initial state 
-disp('Please select the initial point from winning set using mouse:')
+disp('Please select the initial point on the plot:')
 [x,y]=ginput(1);
 % x=-1.4;
 % y=-4.5;
-x0 = mapping([x;y],M_X,eta/2);
-if(~ismember(x0,W))
-    error('x0 is not in winning set.');
+x0 = [x;y];
+idx_x0 = mapping(x0,M_X,eta/2);
+if(~ismember(idx_x0,W))
+    error('x0 is beyond winning set.');
 end
 % x0 = W(1);
 
-[x1,x2] =get_coord(x0,M_X)
+[x1,x2] =get_coord(idx_x0,M_X)
 plot(x1,x2,'xb','markersize',10)
 
-idx_x = x0;
+idx_x = idx_x0;
 [x1,x2] = get_coord(idx_x,M_X);
-xt = [x1;x2];
+xt = [x0];
 
 idx_u = 0;
-X_list = [idx_x];
+X_list = [];
 U_list = [];
+t_list = [];
+
+Yt_list=[]; % record ode solution for animation
+Yx_list=[]; % record ode solution for animation
 %% hopping
-for i = 1:50
+disp('Simulating...');
+t_span = 60;
+for i = 1:t_span
     % visual (on the grid)
     % get the options of input 
-    disp(idx_x)
+%     disp(idx_x)
     u_option = cont.get_input(idx_x);
     % keep the same input if not necessary
     if(i==1||i>=2&&~ismember(U_list(end),u_option))
@@ -85,6 +92,10 @@ for i = 1:50
     idx_x  = mapping(xt,M_X,eta/2);
     X_list = [X_list;idx_x]; % history of idx_x
     U_list = [U_list;idx_u]; % history of idx_u
+    t_list = [t_list;i*tau];
+    
+    Yt_list = [Yt_list, (i-1)*tau + yt.x]; % time
+    Yx_list = [Yx_list, yt.y]; % state
     % visual (time)
     
 %     figure(1);
@@ -100,9 +111,12 @@ for i = 1:50
     hold on;
     drawnow;
 end
+disp('Done.');
 
 legend('Vel of Mass Center','Pos of Mass Center');
-%%
+xlabel('t');
+%% Trajectory in state space
+disp('Trajectory:')
 figure(1);
 
 [x1,x2] = get_coord(X_list,M_X);
@@ -110,3 +124,27 @@ for i=1:length(x1)-1
     arrow('Start',[x1(i),x2(i)],'Stop',[x1(i+1),x2(i+1)],'Length',10,'TipAngle',5)
     pause(0.1);
 end
+
+%% Animation based on Plot
+disp('Animation 1:')
+animation
+
+%% Animation based on Simulink
+disp('Animation 2:')
+u_list = get_coord(U_list,M_U);
+
+save cont t_list u_list % used as input in simulink
+len_leg1=h0/2;
+len_leg2=sqrt(h0^2+(x1max-x1min+lmax)^2);
+C = [1,0];
+D=[0];
+fre_hopping = pi/2/tau;
+% u_list = zeros(ts.n_s,1);
+% for i = 1:length(W)
+%     tmp=cont.get_input(W(i));
+%     u_list(W(i))=get_coord(tmp(1),M_U);
+% end
+% M_X.V = [];
+
+% save cont u_list M_X
+hopping_robot

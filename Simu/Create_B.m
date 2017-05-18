@@ -10,8 +10,8 @@ end
 lower_idx = mapping(bnd(:,1),M_X,M_X.gridsize/2);
 upper_idx = mapping(bnd(:,2),M_X,M_X.gridsize/2);
 
-lower_sub = M_X.ind2sub(lower_idx,:)'
-upper_sub = M_X.ind2sub(upper_idx,:)'
+lower_sub = M_X.ind2sub(lower_idx,:)';
+upper_sub = M_X.ind2sub(upper_idx,:)';
 
 % When boundary of B and node boundary of grid coincides, use the smallest
 % set

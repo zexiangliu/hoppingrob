@@ -10,6 +10,12 @@ if(size(xt,2)~=1)
     error('xt must be a column vector.');
 end
 
+if(nargin<2)
+    var = load('ts');
+    Qn = var.M_X;
+    r = var.eta/2;
+end
+
 % eta = Qn.gridsize;      % grid size of discretized state space
 bnd = Qn.bnd;           
 n = size(bnd,1);        % # dim

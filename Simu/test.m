@@ -4,9 +4,11 @@
 
 %% Generate abstraction transient system
 clear all;clc;close all;
+addpath(genpath('./'));
 addpath(genpath('../../abstr-refinement/abstr-ref/'));
 addpath('../ArrayGener/');
 
+disp('Start generating transient system...')
 %====== Define the system ======
 g = 10;
 h0 = 1;
@@ -74,7 +76,9 @@ axis equal;
 % TransSyst
 ts = ArrayGener_ts(M_X,M_U,tau,r);
 
+disp('Done.')
 %% Create B_list
+disp('Create target set B_list...')
 bnd_B = [-0.8,0.8
          -1.5,  1.5];
 B_list = Create_B(bnd_B,M_X);
@@ -91,9 +95,13 @@ patch('Faces',f,'Vertices',v,...
     'EdgeColor','red','FaceColor','none','LineWidth',2);
 
 hold on;
+
+
+disp('Done.')
 %% Controller
+disp('Compute winning set and controller...')
 ts.create_fast();
-%%
+
 [W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
 
 % Visualization of winning set
@@ -107,3 +115,8 @@ v = [U(:),V(:)];
 title('State Space (Black), B\_list (Red), Winning (Cyan)')
 
 save ts
+
+
+disp('Done.')
+%%
+open test_control
