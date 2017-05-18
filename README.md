@@ -9,6 +9,7 @@
 
 The code is optimized for a better performance on time, which sacrifices some storage space. However, as the scale of the abstruction system increases, the performance may be restricted by the reading speed of hard drive. Another branch is going to be created later which sacrifices CPU for less space.
 
+---------------------------------------------------------------
 ./Simu
 Create simulation of hopping robot and corresponding animation.
 
