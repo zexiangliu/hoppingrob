@@ -5,7 +5,7 @@
 %% Generate abstraction transient system
 clear all;clc;close all;
 addpath(genpath('./'));
-addpath(genpath('../../abstr-refinement/abstr-ref/'));
+addpath(genpath('../abstr-ref/'));
 addpath('../ArrayGener/');
 
 disp('Start generating transient system...')
@@ -103,7 +103,7 @@ disp('Compute winning set and controller...')
 ts.create_fast();
 
 [W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
-
+%%
 % Visualization of winning set
 [x1,x2] = get_coord(W,M_X);
 plot(x1,x2,'.c','markersize',12);    % nodes included
@@ -119,4 +119,5 @@ save ts
 
 disp('Done.')
 %%
+disp('Now please run ''test_control.m''!')
 open test_control

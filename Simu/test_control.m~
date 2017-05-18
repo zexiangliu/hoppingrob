@@ -56,15 +56,15 @@ if(~ismember(idx_x0,W))
 end
 % x0 = W(1);
 
-[x1,x2] =get_coord(idx_x0,M_X)
-plot(x1,x2,'xb','markersize',10)
+% [x1,x2] =get_coord(idx_x0,M_X)
+plot(x0(1),x0(2),'xb','markersize',10)
 
 idx_x = idx_x0;
-[x1,x2] = get_coord(idx_x,M_X);
+% [x1,x2] = get_coord(idx_x,M_X);
 xt = [x0];
 
 idx_u = 0;
-X_list = [idx_x0];
+X_list = [];
 U_list = [];
 t_list = [];
 

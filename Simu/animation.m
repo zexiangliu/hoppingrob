@@ -34,7 +34,7 @@ Playground.vert = [x1min-lmax,-0.5,0;
                    ];
 
 Playground.fac = [1 2 3 4];
-figure(1);
+figure(3);
 % axis([x1min-lmax, x1max+lmax, -0.5, 0.5, -0.5, 1.5]); 
 % axis equal;
 t = 0;
@@ -71,7 +71,7 @@ for i = 1:length(Yt_list)
     
     
     % Playground
-    patch('Faces',Playground.fac,'Vertices',Playground.vert,'FaceColor','cyan');  % patch function
+     patch('Faces',Playground.fac,'Vertices',Playground.vert,'FaceColor','cyan');  % patch function
 
     % camera configuration
 %     axis([x1min-lmax, x1max+lmax, -0.5, 0.5, -0.5, 1.5]); 
