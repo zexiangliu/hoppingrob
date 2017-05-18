@@ -11,6 +11,7 @@ The code is optimized for a better performance on time, which sacrifices some st
 
 ---------------------------------------------------------------
 ./Simu
+
 Create simulation of hopping robot and corresponding animation.
 
 Run 'test.m' and 'test_control.m' one by one to test the code.
