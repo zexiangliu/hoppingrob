@@ -88,6 +88,8 @@ disp('Done.')
 %% Create B_list
 disp('Create target set B_list...')
 bnd_B = [-0.8,0.8
+    -0.8,0.8
+         -1.5,  1.5
          -1.5,  1.5];
 B_list = Create_B(bnd_B,M_X);
 
@@ -108,9 +110,9 @@ B_list = Create_B(bnd_B,M_X);
 disp('Done.')
 %% Controller
 disp('Compute winning set and controller...')
-ts.create_fast();
+% ts.create_fast();
 
-[W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
+% [W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
 %%
 % Visualization of winning set
 % [x1,x2] = get_coord(W,M_X);
