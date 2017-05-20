@@ -147,4 +147,4 @@ fre_hopping = pi/2/tau;
 % M_X.V = [];
 
 % save cont u_list M_X
-hopping_robot
+hopping_robot_2012b

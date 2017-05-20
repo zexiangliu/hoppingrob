@@ -1,12 +1,13 @@
 %=========Test code=========
 % Test controller strategy generation and do simulation for hopping robot
 %======================
-
-%% Generate abstraction transient system
 clear all;clc;close all;
 addpath(genpath('./'));
 addpath(genpath('../abstr-ref/'));
 addpath('../ArrayGener/');
+
+
+%% Generate abstraction transient system
 
 disp('Start generating transient system...')
 %====== Define the system ======
