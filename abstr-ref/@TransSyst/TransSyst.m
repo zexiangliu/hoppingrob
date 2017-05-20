@@ -73,10 +73,13 @@ classdef TransSyst<handle
         assert(1 <= a && a <= ts.n_a)
       end
 
-      ts.state1(end+1) = s1;
-      ts.state2(end+1) = s2;
-      ts.action(end+1) = a;
-      ts.fast_enabled = false;
+%       ts.state1(end+1) = s1;
+%       ts.state2(end+1) = s2;
+%       ts.action(end+1) = a;
+        ts.state1 = [ts.state1,s1];
+        ts.state2 = [ts.state2,s2];
+        ts.action = [ts.action,a];
+        ts.fast_enabled = false;
     end
 
     function ret = has_superior_pg(ts, U, G)
