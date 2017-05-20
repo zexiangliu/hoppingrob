@@ -29,8 +29,8 @@ tau = 0.08;     % time interval
 eta = 0.2;
 mu = 0.2;
 lmax = 1;
-dlim = 2.5;
-vlim = 5;
+dlim = 1.25;
+vlim = 3;
 
 r1 = norm(expm(A*tau),'inf')*eta/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
 r = r1+eta/2;         % radius of norm ball when mapping xt to discr. state space
@@ -82,7 +82,7 @@ M_U = GridGener(U);
 % axis equal;
 %%
 % TransSyst
-ts = ArrayGener_ts(M_X,M_U,tau,r);
+ts = ArrayGener_parallel(M_X,M_U,tau,r);
 
 disp('Done.')
 %% Create B_list
