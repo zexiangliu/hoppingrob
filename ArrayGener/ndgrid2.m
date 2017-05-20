@@ -61,7 +61,7 @@ if nout == 2 % Optimized Case for 2 dimensions
     X{1} = X{1}(:);
     X{2} = X{2}(:);
 else
-    for i=1:max(nargout,1)
+    for i=1:max(nout,1)
         x = full(SUB{j(i)});
         s = ones(1,nout); 
         s(i) = numel(x);

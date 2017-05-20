@@ -81,12 +81,13 @@ for i = 1:num_U
         y0 = [x0;u0];    % States for numerical integration
         % ode45
         yt = ode45(@odefun,[0,tau],y0);
-        xt = yt.y(1:2,end);
+        xt = yt.y(1:dim_X,end);
 %         % rk4
 %         yt = rk4(tau,y0,10);
 %         xt = yt(1:2);
 
         % Mapping: xt--->[X]_eta
+        
          idx = mapping(xt,M_X,r);
          for k = idx'
              ts.add_transition(j,k,i);

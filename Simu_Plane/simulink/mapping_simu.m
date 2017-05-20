@@ -1,5 +1,5 @@
 % Given the state of CTS sys x(t) in Q, map x(t) to [Q]_n
-function idx = mapping(xt,Qn,r)
+function idx = mapping_simu(xt,Qn,r)
 % Input:
 %   xt: nx1 vector, state to be mapped
 %   Qn: the mesh of discretized state space
@@ -30,21 +30,20 @@ if((sum(lbnd+ubnd))<2*n)
 end
 
 %% find the nodes in Br(xt)
-SUB = cell(1,n);       % subscripts of selected discretized nodes
+SUB = zeros(n,1);       % subscripts of selected discretized nodes
 % strN(1:n)=' ';  % param for eval func
 for i = 1:n
-    pos_node = V{i};%linspace(discr_bnd(i,1),discr_bnd(i,2),discr_bnd(i,3)); % maybe pre-calculation is better
+    pos_node = linspace(discr_bnd(i,1),discr_bnd(i,2),discr_bnd(i,3)); % maybe pre-calculation is better
     sub_idx = (abs(pos_node-xt(i))<=(r+1e-15)); % filter the nodes in the ball
                                                 % 1e-15 is due to round error in
                                                 % matlab
-    SUB{i} = find(sub_idx==1);             % find idx           
+    SUB(i) = find(sub_idx==1,1);             % find idx           
 %     strN(i)=num2str(i);
 end
 
 %% map sub to index
 
-X = ndgrid2(SUB);
-idx = sub2ind2(discr_bnd(:,3),X);
+idx = sub2ind(discr_bnd(:,3),SUB);
 %  % params of eval func
 % str1 (1:(3*n-1))=' ';
 % str2 (1:(7*n-1))=' ';
