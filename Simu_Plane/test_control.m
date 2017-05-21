@@ -131,7 +131,7 @@ figure(1);
 [x1,x2] = get_coord(X1_list,M_X1);
 for i=1:length(x1)-1
     arrow('Start',[x1(i),x2(i)],'Stop',[x1(i+1),x2(i+1)],'Length',10,'TipAngle',5)
-    pause(0.1);
+    pause(0.01);
 end
 
 figure(2);

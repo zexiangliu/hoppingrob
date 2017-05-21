@@ -31,7 +31,7 @@ tau = 0.08;     % time interval
 eta = 0.2;
 mu = 0.2;
 lmax = 1;
-dlim = 1.25;
+dlim = 2.5;
 vlim = 5;
 
 r1 = norm(expm(A*tau),'inf')*eta/2; % the upper bnd of ||x_0(tau)-x_1(tau)||

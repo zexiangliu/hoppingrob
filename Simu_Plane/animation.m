@@ -58,7 +58,7 @@ for i = 1:length(Yt_list)
     % Plot Center of Mass
     surf(CoM.x+Yx_list(1,i),CoM.y+Yx_list(2,i),CoM.z+h0);
     hold on;
-    plot3(Yx_list(1,1:i),Yx_list(2,1:i),h0*ones(1,i));
+    plot3(Yx_list(1,1:i),Yx_list(2,1:i),h0*ones(1,i),'-.','linewidth',1.5);
     % Plot padel
     padel = Padel.vert;
     padel(:,1)=padel(:,1)+Yx_list(5,i);
