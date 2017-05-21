@@ -143,7 +143,7 @@ for i=1:length(x1)-1
 end
 %% Animation based on Plot
 disp('Animation 1:')
-animation
+% animation
 
 %% Animation based on Simulink
 disp('Animation 2:')
