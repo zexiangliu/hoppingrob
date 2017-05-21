@@ -1,15 +1,29 @@
 Model {
   Name			  "hopping_robot_plane_R2012b"
-  Version		  8.0
+  Version		  8.9
+  SavedCharacterEncoding  "UTF-8"
   GraphicalInterface {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.47"
+    ComputedModelVersion    "1.48"
     NumModelReferences	    0
     NumTestPointedSignals   0
+    NumProvidedFunctions    0
+    NumRequiredFunctions    0
+    NumResetEvents	    0
+    HasInitializeEvent	    0
+    HasTerminateEvent	    0
+    IsExportFunctionModel   0
+    NumParameterArguments   0
+    OrderedModelArguments   1
   }
-  SavedCharacterEncoding  "UTF-8"
+  LogicAnalyzerGraphicalSettings ""
+  LogicAnalyzerPlugin	  "on"
+  LogicAnalyzerSignalOrdering ""
+  DiagnosticSuppressor	  "on"
+  SuppressorTable	  "22 serialization::archive 11 0 6 0 0 0 11 0"
+  SLCCPlugin		  "on"
   ScopeRefreshTime	  0.035000
   OverrideScopeRefreshTime on
   DisableAllScopes	  off
@@ -20,6 +34,7 @@ Model {
   FPTRunName		  "Run 1"
   MaxMDLFileLineLength	  120
   UserBdParams		  "PhysicalModelingChecksum;PhysicalModelingParameterChecksum;PhysicalModelingProducts"
+  LastSavedArchitecture	  "glnxa64"
   Object {
     $PropName		    "BdWindowsInfo"
     $ObjectID		    1
@@ -29,7 +44,7 @@ Model {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [800.0, 24.0, 800.0, 813.0]
+      Location		      [810.0, 34.0, 780.0, 793.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -51,16 +66,40 @@ Model {
 	$ObjectID		5
 	$ClassName		"Simulink.EditorInfo"
 	IsActive		[1]
-	ViewObjType		"SimulinkTopLevel"
-	LoadSaveID		"0"
-	Extents			[762.0, 636.0]
+	ViewObjType		"SimulinkSubsys"
+	LoadSaveID		"65"
+	Extents			[742.0, 616.0]
 	ZoomFactor		[0.8]
-	Offset			[-436.41205357142849, -200.2547619047622]
+	Offset			[425.24999999999977, -166.86666666666684]
       }
+      Object {
+	$PropName		"DockComponentsInfo"
+	$ObjectID		6
+	$ClassName		"Simulink.DockComponentInfo"
+	Type			"GLUE2:PropertyInspector"
+	ID			"Property Inspector"
+	Visible			[0]
+	CreateCallback		""
+	UserData		""
+	Floating		[0]
+	DockPosition		"Right"
+	Width			[640]
+	Height			[480]
+      }
+      WindowState	      "AAAA/wAAAAD9AAAAAgAAAAAAAAC9AAAB+PwCAAAAA/sAAAAWAEQAbwBjAGsAVwBpAGQAZwBlAHQAMwEAAAAxAAAB+AAAA"
+      "AAAAAAA+wAAABYARABvAGMAawBXAGkAZABnAGUAdAA0AAAAAAD/////AAAAAAAAAAD7AAAAUgBHAEwAVQBFADIAIAB0AHIAZQBlACAAYwBvAG0Ac"
+      "ABvAG4AZQBuAHQALwBHAEwAVQBFADIAIAB0AHIAZQBlACAAYwBvAG0AcABvAG4AZQBuAHQAAAAAAP////8AAABiAP///wAAAAEAAAAAAAAAAPwCA"
+      "AAAAfsAAABUAEcATABVAEUAMgA6AFAAcgBvAHAAZQByAHQAeQBJAG4AcwBwAGUAYwB0AG8AcgAvAFAAcgBvAHAAZQByAHQAeQAgAEkAbgBzAHAAZ"
+      "QBjAHQAbwByAAAAAAD/////AAAALAD///8AAAMMAAACpgAAAAEAAAACAAAAAQAAAAL8AAAAAQAAAAIAAAAP/////wAAAAAA/////wAAAAAAAAAA/"
+      "////wEAAAAA/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/"
+      "////wEAAACA/////wAAAAAAAAAA/////wEAAADo/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/////wEAAAFo/////wAAAAAAAAAA/"
+      "////wAAAAAA/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/////wEAAAKo/////wAAAAAAAAAA/"
+      "////wEAAALa/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA"
     }
   }
+  HideAutomaticNames	  on
   PhysicalModelingChecksum "3971934525"
-  PhysicalModelingParameterChecksum "2039722134"
+  PhysicalModelingParameterChecksum "1084153809"
   PhysicalModelingProducts "SimMechanics|Simscape"
   Created		  "Wed May 17 16:21:20 2017"
   Creator		  "pec"
@@ -68,9 +107,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "pec"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Sun May 21 10:20:25 2017"
-  RTWModifiedTimeStamp	  417262825
-  ModelVersionFormat	  "1.%<AutoIncrement:47>"
+  LastModifiedDate	  "Sun May 21 11:02:52 2017"
+  RTWModifiedTimeStamp	  417265368
+  ModelVersionFormat	  "1.%<AutoIncrement:48>"
   ConfigurationManager	  "none"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -78,6 +117,11 @@ Model {
   WideLines		  off
   ShowLineDimensions	  off
   ShowPortDataTypes	  off
+  PortDataTypeDisplayFormat "AliasTypeOnly"
+  ShowEditTimeErrors	  on
+  ShowEditTimeWarnings	  on
+  ShowEditTimeAdvisorChecks off
+  ShowPortUnits		  off
   ShowDesignRanges	  off
   ShowLoopsOnError	  on
   IgnoreBidirectionalLines off
@@ -86,16 +130,26 @@ Model {
   ShowSignalResolutionIcons on
   ShowViewerIcons	  on
   SortedOrder		  off
+  VariantCondition	  off
   ExecutionContextIcon	  off
   ShowLinearizationAnnotations on
+  ShowVisualizeInsertedRTB on
+  ShowMarkup		  on
   BlockNameDataTip	  off
   BlockParametersDataTip  off
   BlockDescriptionStringDataTip	off
   ToolBar		  on
   StatusBar		  on
   BrowserShowLibraryLinks off
+  FunctionConnectors	  off
   BrowserLookUnderMasks	  off
   SimulationMode	  "normal"
+  VisualizeLoggedSignalsWhenLoggingToFile off
+  PauseTimes		  "5"
+  NumberOfSteps		  1
+  SnapshotBufferSize	  10
+  SnapshotInterval	  10
+  NumberOfLastSnapshots	  0
   LinearizationMsg	  "none"
   Profile		  off
   ParamWorkspaceSource	  "MATLABWorkspace"
@@ -122,20 +176,6 @@ Model {
       PropName		      "logAsSpecifiedByModelsSSIDs_"
     }
   }
-  RecordCoverage	  off
-  CovPath		  "/"
-  CovSaveName		  "covdata"
-  CovMetricSettings	  "dwe"
-  CovNameIncrementing	  off
-  CovHtmlReporting	  off
-  CovForceBlockReductionOff on
-  covSaveCumulativeToWorkspaceVar off
-  CovSaveSingleToWorkspaceVar off
-  CovCumulativeVarName	  "covCumulativeData"
-  CovCumulativeReport	  off
-  CovReportOnPause	  on
-  CovModelRefEnable	  "Off"
-  CovExternalEMLEnable	  on
   ExtModeBatchMode	  off
   ExtModeEnableFloating	  on
   ExtModeTrigType	  "manual"
@@ -159,18 +199,23 @@ Model {
   ExtModeAutoUpdateStatusClock on
   ShowModelReferenceBlockVersion off
   ShowModelReferenceBlockIO off
+  OrderedModelArguments	  on
   Array {
     Type		    "Handle"
     Dimension		    1
     Simulink.ConfigSet {
       $ObjectID		      8
-      Version		      "1.12.1"
+      Version		      "1.17.0"
+      DisabledProps	      []
+      Description	      ""
       Array {
 	Type			"Handle"
-	Dimension		9
+	Dimension		10
 	Simulink.SolverCC {
 	  $ObjectID		  9
-	  Version		  "1.12.1"
+	  Version		  "1.17.0"
+	  DisabledProps		  []
+	  Description		  ""
 	  StartTime		  "0.0"
 	  StopTime		  "(t_span-1)*tau"
 	  AbsTol		  "auto"
@@ -187,25 +232,30 @@ Model {
 	  MinStep		  "auto"
 	  MaxConsecutiveMinStep	  "1"
 	  RelTol		  "1e-3"
-	  SolverMode		  "SingleTasking"
+	  EnableMultiTasking	  off
 	  EnableConcurrentExecution off
 	  ConcurrentTasks	  off
-	  Solver		  ode3
-	  SolverName		  ode3
+	  Solver		  "ode3"
+	  SolverName		  "ode3"
 	  SolverJacobianMethodControl "auto"
 	  ShapePreserveControl	  "DisableAll"
 	  ZeroCrossControl	  "UseLocalSettings"
 	  ZeroCrossAlgorithm	  "Nonadaptive"
 	  AlgebraicLoopSolver	  "TrustRegion"
+	  SolverInfoToggleStatus  off
+	  IsAutoAppliedInSIP	  off
 	  SolverResetMethod	  "Fast"
 	  PositivePriorityOrder	  off
 	  AutoInsertRateTranBlk	  off
 	  SampleTimeConstraint	  "Unconstrained"
 	  InsertRTBMode		  "Whenever possible"
+	  SampleTimeProperty	  []
 	}
 	Simulink.DataIOCC {
 	  $ObjectID		  10
-	  Version		  "1.12.1"
+	  Version		  "1.17.0"
+	  DisabledProps		  []
+	  Description		  ""
 	  Decimation		  "1"
 	  ExternalInput		  "[t, u]"
 	  FinalStateName	  "xFinal"
@@ -223,6 +273,9 @@ Model {
 	  SignalLogging		  on
 	  DSMLogging		  on
 	  InspectSignalLogs	  off
+	  VisualizeSimOutput	  on
+	  StreamToWorkspace	  off
+	  StreamVariableName	  "streamout"
 	  SaveTime		  on
 	  ReturnWorkspaceOutputs  off
 	  StateSaveName		  "xout"
@@ -234,10 +287,14 @@ Model {
 	  OutputTimes		  "[]"
 	  ReturnWorkspaceOutputsName "out"
 	  Refine		  "1"
+	  LoggingToFile		  off
+	  DatasetSignalFormat	  "timeseries"
+	  LoggingFileName	  "out.mat"
+	  LoggingIntervals	  "[-inf, inf]"
 	}
 	Simulink.OptimizationCC {
 	  $ObjectID		  11
-	  Version		  "1.12.1"
+	  Version		  "1.17.0"
 	  Array {
 	    Type		    "Cell"
 	    Dimension		    8
@@ -251,45 +308,61 @@ Model {
 	    Cell		    "UseSpecifiedMinMax"
 	    PropName		    "DisabledProps"
 	  }
+	  Description		  ""
 	  BlockReduction	  on
 	  BooleanDataType	  on
 	  ConditionallyExecuteInputs on
-	  InlineParams		  off
-	  UseIntDivNetSlope	  off
+	  DefaultParameterBehavior "Tunable"
+	  UseDivisionForNetSlopeComputation "off"
 	  UseFloatMulNetSlope	  off
+	  DefaultUnderspecifiedDataType	"double"
 	  UseSpecifiedMinMax	  off
 	  InlineInvariantSignals  off
 	  OptimizeBlockIOStorage  on
 	  BufferReuse		  on
 	  EnhancedBackFolding	  off
+	  CachingGlobalReferences off
+	  GlobalBufferReuse	  on
 	  StrengthReduction	  off
+	  AdvancedOptControl	  ""
 	  ExpressionFolding	  on
 	  BooleansAsBitfields	  off
 	  BitfieldContainerType	  "uint_T"
 	  EnableMemcpy		  on
 	  MemcpyThreshold	  64
 	  PassReuseOutputArgsAs	  "Structure reference"
+	  PassReuseOutputArgsThreshold 12
 	  ExpressionDepthLimit	  128
 	  LocalBlockOutputs	  on
 	  RollThreshold		  5
 	  StateBitsets		  off
 	  DataBitsets		  off
+	  ActiveStateOutputEnumStorageType "Native Integer"
 	  ZeroExternalMemoryAtStartup on
 	  ZeroInternalMemoryAtStartup on
 	  InitFltsAndDblsToZero	  off
 	  NoFixptDivByZeroProtection off
 	  EfficientFloat2IntCast  off
 	  EfficientMapNaN2IntZero on
-	  OptimizeModelRefInitCode off
 	  LifeSpan		  "inf"
 	  MaxStackSize		  "Inherit from target"
 	  BufferReusableBoundary  on
-	  SimCompilerOptimization "Off"
+	  SimCompilerOptimization "off"
 	  AccelVerboseBuild	  off
+	  OptimizeBlockOrder	  "off"
+	  OptimizeDataStoreBuffers on
+	  BusAssignmentInplaceUpdate on
 	}
 	Simulink.DebuggingCC {
 	  $ObjectID		  12
-	  Version		  "1.12.1"
+	  Version		  "1.17.0"
+	  Array {
+	    Type		    "Cell"
+	    Dimension		    1
+	    Cell		    "UseOnlyExistingSharedCode"
+	    PropName		    "DisabledProps"
+	  }
+	  Description		  ""
 	  RTPrefix		  "error"
 	  ConsistencyChecking	  "none"
 	  ArrayBoundsChecking	  "none"
@@ -337,17 +410,20 @@ Model {
 	  UnnecessaryDatatypeConvMsg "none"
 	  VectorMatrixConversionMsg "none"
 	  InvalidFcnCallConnMsg	  "error"
-	  FcnCallInpInsideContextMsg "EnableAllAsError"
+	  FcnCallInpInsideContextMsg "error"
 	  SignalLabelMismatchMsg  "none"
 	  UnconnectedInputMsg	  "warning"
 	  UnconnectedOutputMsg	  "warning"
 	  UnconnectedLineMsg	  "warning"
+	  UseOnlyExistingSharedCode "error"
 	  SFcnCompatibilityMsg	  "none"
 	  FrameProcessingCompatibilityMsg "error"
 	  UniqueDataStoreMsg	  "none"
 	  BusObjectLabelMismatch  "warning"
 	  RootOutportRequireBusObject "warning"
 	  AssertControl		  "UseLocalSettings"
+	  AllowSymbolicDim	  on
+	  RowMajorDimensionSupport off
 	  ModelReferenceIOMsg	  "none"
 	  ModelReferenceMultiInstanceNormalModeStructChecksumCheck "error"
 	  ModelReferenceVersionMismatchMessage "none"
@@ -363,44 +439,67 @@ Model {
 	  StrictBusMsg		  "ErrorLevel1"
 	  BusNameAdapt		  "WarnAndRepair"
 	  NonBusSignalsTreatedAsBus "none"
+	  SymbolicDimMinMaxWarning "warning"
+	  LossOfSymbolicDimsSimulationWarning "warning"
+	  LossOfSymbolicDimsCodeGenerationWarning "error"
+	  SymbolicDimsDataTypeCodeGenerationDiagnostic "error"
 	  BlockIODiagnostic	  "none"
 	  SFUnusedDataAndEventsDiag "warning"
 	  SFUnexpectedBacktrackingDiag "error"
 	  SFInvalidInputDataAccessInChartInitDiag "warning"
 	  SFNoUnconditionalDefaultTransitionDiag "error"
 	  SFTransitionOutsideNaturalParentDiag "warning"
-	  SFUnconditionalTransitionShadowingDiag "warning"
+	  SFUnreachableExecutionPathDiag "warning"
 	  SFUndirectedBroadcastEventsDiag "warning"
 	  SFTransitionActionBeforeConditionDiag	"warning"
-	  ModelReferenceCSMismatchMessage "none"
+	  SFOutputUsedAsStateInMooreChartDiag "error"
+	  SFTemporalDelaySmallerThanSampleTimeDiag "warning"
+	  SFSelfTransitionDiag	  "warning"
+	  SFExecutionAtInitializationDiag "none"
+	  SFMachineParentedDataDiag "warning"
+	  IntegerSaturationMsg	  "warning"
+	  AllowedUnitSystems	  "all"
+	  UnitsInconsistencyMsg	  "warning"
+	  AllowAutomaticUnitConversions	on
+	  UnitDatabase		  ""
 	}
 	Simulink.HardwareCC {
 	  $ObjectID		  13
-	  Version		  "1.12.1"
+	  Version		  "1.17.0"
+	  DisabledProps		  []
+	  Description		  ""
 	  ProdBitPerChar	  8
 	  ProdBitPerShort	  16
 	  ProdBitPerInt		  32
 	  ProdBitPerLong	  32
+	  ProdBitPerLongLong	  64
 	  ProdBitPerFloat	  32
 	  ProdBitPerDouble	  64
 	  ProdBitPerPointer	  64
+	  ProdBitPerSizeT	  32
+	  ProdBitPerPtrDiffT	  32
 	  ProdLargestAtomicInteger "Char"
 	  ProdLargestAtomicFloat  "Float"
 	  ProdIntDivRoundTo	  "Zero"
 	  ProdEndianess		  "LittleEndian"
 	  ProdWordSize		  32
 	  ProdShiftRightIntArith  on
+	  ProdLongLongMode	  off
 	  ProdHWDeviceType	  "Specified"
 	  TargetBitPerChar	  8
 	  TargetBitPerShort	  16
 	  TargetBitPerInt	  32
 	  TargetBitPerLong	  32
+	  TargetBitPerLongLong	  64
 	  TargetBitPerFloat	  32
 	  TargetBitPerDouble	  64
 	  TargetBitPerPointer	  32
+	  TargetBitPerSizeT	  32
+	  TargetBitPerPtrDiffT	  32
 	  TargetLargestAtomicInteger "Char"
 	  TargetLargestAtomicFloat "None"
 	  TargetShiftRightIntArith on
+	  TargetLongLongMode	  off
 	  TargetIntDivRoundTo	  "Undefined"
 	  TargetEndianess	  "Unspecified"
 	  TargetWordSize	  32
@@ -409,17 +508,23 @@ Model {
 	  TargetHWDeviceType	  "Specified"
 	  TargetUnknown		  off
 	  ProdEqTarget		  on
+	  UseEmbeddedCoderFeatures on
+	  UseSimulinkCoderFeatures on
 	}
 	Simulink.ModelReferenceCC {
 	  $ObjectID		  14
-	  Version		  "1.12.1"
+	  Version		  "1.17.0"
+	  DisabledProps		  []
+	  Description		  ""
 	  UpdateModelReferenceTargets "IfOutOfDateOrStructuralChange"
+	  EnableRefExpFcnMdlSchedulingChecks on
 	  CheckModelReferenceTargetMessage "error"
 	  EnableParallelModelReferenceBuilds off
 	  ParallelModelReferenceErrorOnInvalidPool on
 	  ParallelModelReferenceMATLABWorkerInit "None"
 	  ModelReferenceNumInstancesAllowed "Multi"
 	  PropagateVarSize	  "Infer from blocks in model"
+	  ModelDependencies	  ""
 	  ModelReferencePassRootInputsByReference on
 	  ModelReferenceMinAlgLoopOccurrences off
 	  PropagateSignalLabelsOutOfModel on
@@ -427,18 +532,37 @@ Model {
 	}
 	Simulink.SFSimCC {
 	  $ObjectID		  15
-	  Version		  "1.12.1"
+	  Version		  "1.17.0"
+	  DisabledProps		  []
+	  Description		  ""
+	  SimCustomSourceCode	  ""
+	  SimCustomHeaderCode	  ""
+	  SimCustomInitializer	  ""
+	  SimCustomTerminator	  ""
+	  SimReservedNameArray	  []
+	  SimUserSources	  ""
+	  SimUserIncludeDirs	  ""
+	  SimUserLibraries	  ""
+	  SimUserDefines	  ""
+	  SimCustomCompilerFlags  ""
+	  SimCustomLinkerFlags	  ""
 	  SFSimEcho		  on
 	  SimCtrlC		  on
 	  SimIntegrity		  on
 	  SimUseLocalCustomCode	  off
 	  SimParseCustomCode	  on
 	  SimBuildMode		  "sf_incremental_build"
+	  SimGenImportedTypeDefs  off
+	  ModelFunctionsGlobalVisibility "on"
+	  CompileTimeRecursionLimit 50
+	  EnableRuntimeRecursion  on
+	  MATLABDynamicMemAlloc	  on
+	  MATLABDynamicMemAllocThreshold 65536
 	}
 	Simulink.RTWCC {
 	  $BackupClass		  "Simulink.RTWCC"
 	  $ObjectID		  16
-	  Version		  "1.12.1"
+	  Version		  "1.17.0"
 	  Array {
 	    Type		    "Cell"
 	    Dimension		    13
@@ -458,32 +582,48 @@ Model {
 	    PropName		    "DisabledProps"
 	  }
 	  SystemTargetFile	  "grt.tlc"
+	  HardwareBoard		  "None"
 	  TLCOptions		  ""
 	  GenCodeOnly		  off
 	  MakeCommand		  "make_rtw"
 	  GenerateMakefile	  on
 	  PackageGeneratedCodeAndArtifacts off
+	  PackageName		  ""
 	  TemplateMakefile	  "grt_default_tmf"
 	  PostCodeGenCommand	  ""
+	  Description		  ""
 	  GenerateReport	  off
 	  SaveLog		  off
 	  RTWVerbose		  on
 	  RetainRTWFile		  off
+	  RTWBuildHooks		  []
 	  ProfileTLC		  off
 	  TLCDebug		  off
 	  TLCCoverage		  off
 	  TLCAssert		  off
 	  RTWUseLocalCustomCode	  off
 	  RTWUseSimCustomCode	  off
+	  CustomSourceCode	  ""
+	  CustomHeaderCode	  ""
+	  CustomInclude		  ""
+	  CustomSource		  ""
+	  CustomLibrary		  ""
+	  CustomDefine		  ""
+	  CustomLAPACKCallback	  ""
+	  CustomInitializer	  ""
+	  CustomTerminator	  ""
+	  Toolchain		  "Automatically locate an installed toolchain"
+	  BuildConfiguration	  "Faster Builds"
+	  CustomToolchainOptions  []
 	  IncludeHyperlinkInReport off
 	  LaunchReport		  off
 	  PortableWordSizes	  off
-	  GenerateErtSFunction	  off
 	  CreateSILPILBlock	  "None"
 	  CodeExecutionProfiling  off
 	  CodeExecutionProfileVariable "executionProfile"
 	  CodeProfilingSaveOptions "SummaryOnly"
 	  CodeProfilingInstrumentation off
+	  SILDebugging		  off
 	  TargetLang		  "C"
 	  IncludeBusHierarchyInRTWFileBlockHierarchyMap	off
 	  GenerateTraceInfo	  off
@@ -494,15 +634,18 @@ Model {
 	  GenerateWebview	  off
 	  GenerateCodeMetricsReport off
 	  GenerateCodeReplacementReport	off
-	  RTWCompilerOptimization "Off"
+	  GenerateMissedCodeReplacementReport off
+	  RTWCompilerOptimization "off"
+	  ObjectivePriorities	  []
 	  RTWCustomCompilerOptimizations ""
 	  CheckMdlBeforeBuild	  "Off"
+	  SharedConstantsCachingThreshold 1024
 	  Array {
 	    Type		    "Handle"
 	    Dimension		    2
 	    Simulink.CodeAppCC {
 	      $ObjectID		      17
-	      Version		      "1.12.1"
+	      Version		      "1.17.0"
 	      Array {
 		Type			"Cell"
 		Dimension		27
@@ -535,8 +678,11 @@ Model {
 		Cell			"ReqsInCode"
 		PropName		"DisabledProps"
 	      }
+	      Description	      ""
+	      Comment		      ""
 	      ForceParamTrailComments off
 	      GenerateComments	      on
+	      CommentStyle	      "Auto"
 	      IgnoreCustomStorageClasses on
 	      IgnoreTestpoints	      off
 	      IncHierarchyInIds	      off
@@ -555,30 +701,41 @@ Model {
 	      CustomSymbolStrType     "$N$R$M_T"
 	      CustomSymbolStrField    "$N$M"
 	      CustomSymbolStrFcn      "$R$N$M$F"
+	      CustomSymbolStrModelFcn "$R$N"
 	      CustomSymbolStrFcnArg   "rt$I$N$M"
 	      CustomSymbolStrBlkIO    "rtb_$N$M"
 	      CustomSymbolStrTmpVar   "$N$M"
 	      CustomSymbolStrMacro    "$R$N$M"
+	      CustomSymbolStrUtil     "$N$C"
+	      CustomSymbolStrEmxType  "emxArray_$M$N"
+	      CustomSymbolStrEmxFcn   "emx$M$N"
+	      CustomUserTokenString   ""
+	      CustomCommentsFcn	      ""
 	      DefineNamingRule	      "None"
+	      DefineNamingFcn	      ""
 	      ParamNamingRule	      "None"
+	      ParamNamingFcn	      ""
 	      SignalNamingRule	      "None"
+	      SignalNamingFcn	      ""
 	      InsertBlockDesc	      off
 	      InsertPolySpaceComments off
 	      SimulinkBlockComments   on
 	      MATLABSourceComments    off
 	      EnableCustomComments    off
-	      InternalIdentifier      Classic
+	      InternalIdentifierFile  ""
+	      InternalIdentifier      "Shortened"
 	      InlinedPrmAccess	      "Literals"
 	      ReqsInCode	      off
 	      UseSimReservedNames     off
+	      ReservedNameArray	      []
 	    }
 	    Simulink.GRTTargetCC {
 	      $BackupClass	      "Simulink.TargetCC"
 	      $ObjectID		      18
-	      Version		      "1.12.1"
+	      Version		      "1.17.0"
 	      Array {
 		Type			"Cell"
-		Dimension		16
+		Dimension		15
 		Cell			"IncludeMdlTerminateFcn"
 		Cell			"SuppressErrorStatus"
 		Cell			"ERTCustomFileBanners"
@@ -586,7 +743,7 @@ Model {
 		Cell			"ExistingSharedCode"
 		Cell			"GenerateTestInterfaces"
 		Cell			"ModelStepFunctionPrototypeControlCompliant"
-		Cell			"MultiInstanceERTCode"
+		Cell			"GenerateAllocFcn"
 		Cell			"PurelyIntegerCode"
 		Cell			"SupportComplex"
 		Cell			"SupportAbsoluteTime"
@@ -594,17 +751,21 @@ Model {
 		Cell			"SupportNonInlinedSFcns"
 		Cell			"RemoveDisableFunc"
 		Cell			"RemoveResetFunc"
-		Cell			"CombineOutputUpdateFcns"
 		PropName		"DisabledProps"
 	      }
+	      Description	      ""
 	      TargetFcnLib	      "ansi_tfl_table_tmw.mat"
 	      TargetLibSuffix	      ""
 	      TargetPreCompLibLocation ""
-	      CodeReplacementLibrary  "C99 (ISO)"
+	      GenFloatMathFcnCalls    "NOT IN USE"
+	      TargetLangStandard      "C99 (ISO)"
+	      CodeReplacementLibrary  "None"
 	      UtilityFuncGeneration   "Auto"
-	      ERTMultiwordTypeDef     "System defined"
+	      MultiwordTypeDef	      "System defined"
 	      MultiwordLength	      2048
 	      GenerateFullHeader      on
+	      InferredTypesCompatibility off
+	      ExistingSharedCode      ""
 	      GenerateSampleERTMain   off
 	      GenerateTestInterfaces  off
 	      ModelReferenceCompliant on
@@ -623,17 +784,29 @@ Model {
 	      LogVarNameModifier      "rt_"
 	      MatFileLogging	      on
 	      MultiInstanceERTCode    off
+	      CodeInterfacePackaging  "Nonreusable function"
 	      SupportNonFinite	      on
 	      SupportComplex	      on
 	      PurelyIntegerCode	      off
 	      SupportContinuousTime   on
 	      SupportNonInlinedSFcns  on
+	      RemoveDisableFunc	      off
+	      RemoveResetFunc	      off
 	      SupportVariableSizeSignals off
 	      ParenthesesLevel	      "Nominal"
+	      CastingMode	      "Nominal"
+	      MATLABClassNameForMDSCustomization "Simulink.SoftwareTarget.GRTCustomization"
 	      ModelStepFunctionPrototypeControlCompliant off
-	      CPPClassGenCompliant    off
+	      CPPClassGenCompliant    on
 	      AutosarCompliant	      off
+	      MDXCompliant	      off
 	      GRTInterface	      off
+	      GenerateAllocFcn	      off
+	      UseToolchainInfoCompliant	on
+	      GenerateSharedConstants on
+	      CoderGroups	      []
+	      AccessMethods	      []
+	      LookupTableObjectStructAxisOrder "1,2,3,4,..."
 	      UseMalloc		      off
 	      ExtMode		      off
 	      ExtModeStaticAlloc      off
@@ -641,15 +814,57 @@ Model {
 	      ExtModeStaticAllocSize  1000000
 	      ExtModeTransport	      0
 	      ExtModeMexFile	      "ext_comm"
+	      ExtModeMexArgs	      ""
 	      ExtModeIntrfLevel	      "Level1"
 	      RTWCAPISignals	      off
 	      RTWCAPIParams	      off
 	      RTWCAPIStates	      off
 	      RTWCAPIRootIO	      off
 	      GenerateASAP2	      off
+	      MultiInstanceErrorCode  "Error"
 	    }
 	    PropName		    "Components"
 	  }
+	}
+	SlCovCC.ConfigComp {
+	  $ObjectID		  19
+	  Version		  "1.17.0"
+	  DisabledProps		  []
+	  Description		  "Simulink Coverage Configuration Component"
+	  Name			  "Simulink Coverage"
+	  CovEnable		  off
+	  CovScope		  "EntireSystem"
+	  CovIncludeTopModel	  on
+	  RecordCoverage	  off
+	  CovPath		  "/"
+	  CovSaveName		  "covdata"
+	  CovCompData		  ""
+	  CovMetricSettings	  "dwe"
+	  CovFilter		  ""
+	  CovHTMLOptions	  ""
+	  CovNameIncrementing	  off
+	  CovHtmlReporting	  off
+	  CovForceBlockReductionOff on
+	  CovEnableCumulative	  on
+	  CovSaveCumulativeToWorkspaceVar off
+	  CovSaveSingleToWorkspaceVar off
+	  CovCumulativeVarName	  "covCumulativeData"
+	  CovCumulativeReport	  off
+	  CovSaveOutputData	  on
+	  CovOutputDir		  "slcov_output/$ModelName$"
+	  CovDataFileName	  "$ModelName$_cvdata"
+	  CovShowResultsExplorer  on
+	  CovReportOnPause	  on
+	  CovModelRefEnable	  "off"
+	  CovModelRefExcluded	  ""
+	  CovExternalEMLEnable	  on
+	  CovSFcnEnable		  on
+	  CovBoundaryAbsTol	  1e-05
+	  CovBoundaryRelTol	  0.01
+	  CovUseTimeInterval	  off
+	  CovStartTime		  0
+	  CovStopTime		  0
+	  CovMcdcMode		  "Masking"
 	}
 	SSC.SimscapeCC {
 	  $ObjectID		  20
@@ -660,12 +875,15 @@ Model {
 	    Cell		    "Name"
 	    PropName		    "DisabledProps"
 	  }
+	  Description		  ""
 	  Array {
 	    Type		    "Handle"
 	    Dimension		    2
 	    MECH.SimMechanicsCC {
 	      $ObjectID		      21
-	      Version		      "1.12.1"
+	      Version		      "1.17.0"
+	      DisabledProps	      []
+	      Description	      ""
 	      WarnOnRedundantConstraints on
 	      WarnOnSingularInitialAssembly off
 	      ShowCutJoints	      off
@@ -695,12 +913,13 @@ Model {
 	      DefaultBodyColor	      "[1 0 0]"
 	      MDLBodyVisualizationType "Convex hull from body CS locations"
 	      OVRRIDBodyVisualizationType "NONE"
-	      Name		      SimMechanics
+	      Name		      "SimscapeMultibody1G"
 	      VisConfigFile	      ""
 	    }
 	    simmechanics.ConfigurationSet {
 	      $ObjectID		      22
-	      Version		      "1.12.1"
+	      Version		      "1.17.0"
+	      DisabledProps	      []
 	      Description	      "Simscape Multibody"
 	      Array {
 		Type			"Handle"
@@ -729,20 +948,21 @@ Model {
 		  Name			  "ExplorerConfigSet"
 		  SimMechanicsOpenEditorOnUpdate on
 		  InternalSimMechanicsExplorerSettings "<ExplorerConfiguration><canonicalview>default</canonicalview><AnimationSetti"
-		  "ng><BasePlaybackSpeed>1.0</BasePlaybackSpeed><PlaybackSpeedFactor>1.0</PlaybackSpeedFactor></AnimationSetting><Til"
-		  "ePanel><TileInfo><Tiles Columns=\"1\" Count=\"1\" Rows=\"1\"><Column Left=\"2\" Weight=\"1\"/><Column Left=\"663\""
-		  "/><Row Top=\"2\" Weight=\"1\"/><Row Top=\"623\"/><Tile Height=\"1\" Width=\"1\" X=\"0\" Y=\"0\"/></Tiles></TileInf"
-		  "o><SceneInfo><SceneViewer><BGColor><R>0.60000002384185791</R><G>0.60000002384185791</G><B>0.60000002384185791</B><"
-		  "/BGColor><Camera><DoPerspective>off</DoPerspective><Position><X>0.406083100810581521</X><Y>-5.10999920858180268</Y"
-		  "><Z>0.747965647964465075</Z></Position><Center><X>0.406083100810581521</X><Y>4.44089209850062616e-16</Y><Z>0.74796"
-		  "5647964465075</Z></Center><Up><X>0</X><Y>-0</Y><Z>1</Z></Up><ViewLimDist>1</ViewLimDist><YLim>1.11694629034916737<"
-		  "/YLim><XLim>1.18994931586218478</XLim></Camera></SceneViewer></SceneInfo></TilePanel><MechEditorPanel><Cameras/><G"
-		  "fxPanelCameraMap/><VideoCreator><PlaybackSpeedRatio>1.0</PlaybackSpeedRatio><FrameRate>30</FrameRate><VideoFormat>"
-		  "Motion JPEG AVI</VideoFormat><FrameSize>auto</FrameSize></VideoCreator></MechEditorPanel></ExplorerConfiguration>"
+		  "ng><BasePlaybackSpeed>1.0</BasePlaybackSpeed><PlaybackSpeedFactor>0.25</PlaybackSpeedFactor></AnimationSetting><Ti"
+		  "lePanel><TileInfo><Tiles Columns=\"1\" Count=\"1\" Rows=\"1\"><Column Left=\"2\" Weight=\"1\"/><Column Left=\"1117"
+		  "\"/><Row Top=\"2\" Weight=\"1\"/><Row Top=\"709\"/><Tile Height=\"1\" Width=\"1\" X=\"0\" Y=\"0\"/></Tiles></TileI"
+		  "nfo><SceneInfo><SceneViewer><BGColor><R>0.60000002384185791</R><G>0.60000002384185791</G><B>0.60000002384185791</B"
+		  "></BGColor><Camera><DoPerspective>off</DoPerspective><Position><X>2.95522944339876625</X><Y>-2.35651350578971286</"
+		  "Y><Z>2.51770506867874255</Z></Position><Center><X>-0.679863272513159922</X><Y>0.706860782040318325</Y><Z>0.6431569"
+		  "01491749977</Z></Center><Up><X>-0.264728764655223103</X><Y>0.254957895773114895</Y><Z>0.930008146494999854</Z></Up"
+		  "><ViewLimDist>1</ViewLimDist><YLim>2.61202373867913851</YLim><XLim>4.13882271486980979</XLim></Camera></SceneViewe"
+		  "r></SceneInfo></TilePanel><MechEditorPanel><Cameras/><GfxPanelCameraMap/><VideoCreator><PlaybackSpeedRatio>0.25</P"
+		  "laybackSpeedRatio><FrameRate>30</FrameRate><VideoFormat>Motion JPEG AVI</VideoFormat><FrameSize>auto</FrameSize></"
+		  "VideoCreator></MechEditorPanel></ExplorerConfiguration>"
 		}
 		PropName		"Components"
 	      }
-	      Name		      SimMechanics2G
+	      Name		      "SimscapeMultibody"
 	    }
 	    PropName		    "Components"
 	  }
@@ -762,6 +982,7 @@ Model {
 	PropName		"Components"
       }
       Name		      "Configuration"
+      ExtraOptions	      ""
       CurrentDlgPage	      "Solver"
       ConfigPrmDlgPosition    [ 145, 160, 1135, 830 ]
     }
@@ -792,6 +1013,7 @@ Model {
     FontWeight		    "normal"
     FontAngle		    "normal"
     ShowName		    on
+    HideAutomaticName	    on
     BlockRotation	    0
     BlockMirror		    off
   }
@@ -816,8 +1038,8 @@ Model {
   MaskDefaults {
     SelfModifiable	    "off"
     IconFrame		    "on"
-    IconOpaque		    "on"
-    RunInitForIconRedraw    "off"
+    IconOpaque		    "opaque"
+    RunInitForIconRedraw    "analyze"
     IconRotate		    "none"
     PortRotate		    "default"
     IconUnits		    "autoscale"
@@ -864,6 +1086,7 @@ Model {
       OutDataTypeStr	      "Inherit: auto"
       LockScale		      off
       BusOutputAsStruct	      off
+      Unit		      "inherit"
       PortDimensions	      "-1"
       VarSizeSig	      "Inherit"
       SampleTime	      "-1"
@@ -889,14 +1112,17 @@ Model {
       OutDataTypeStr	      "Inherit: auto"
       LockScale		      off
       BusOutputAsStruct	      off
+      Unit		      "inherit"
       PortDimensions	      "-1"
       VarSizeSig	      "Inherit"
       SampleTime	      "-1"
       SignalType	      "auto"
       SamplingMode	      "auto"
+      EnsureOutportIsVirtual  off
       SourceOfInitialOutputValue "Dialog"
       OutputWhenDisabled      "held"
       InitialOutput	      "[]"
+      MustResolveToSignalObject	off
     }
     Block {
       BlockType		      S-Function
@@ -934,9 +1160,14 @@ Model {
       Permissions	      "ReadWrite"
       PermitHierarchicalResolution "All"
       TreatAsAtomicUnit	      off
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
       SystemSampleTime	      "-1"
+      RTWSystemCode	      "Auto"
       RTWFcnNameOpts	      "Auto"
       RTWFileNameOpts	      "Auto"
+      FunctionInterfaceSpec   "void_void"
+      FunctionWithSeparateData off
       RTWMemSecFuncInitTerm   "Inherit from model"
       RTWMemSecFuncExecute    "Inherit from model"
       RTWMemSecDataConstants  "Inherit from model"
@@ -946,10 +1177,14 @@ Model {
       DataTypeOverride	      "UseLocalSettings"
       DataTypeOverrideAppliesTo	"AllNumericTypes"
       MinMaxOverflowLogging   "UseLocalSettings"
+      Opaque		      off
+      MaskHideContents	      off
       SFBlockType	      "NONE"
       GeneratePreprocessorConditionals off
       PropagateVariantConditions off
       TreatAsGroupedWhenPropagatingVariantConditions on
+      ContentPreviewEnabled   off
+      IsWebBlock	      off
     }
     Block {
       BlockType		      Terminator
@@ -957,8 +1192,9 @@ Model {
   }
   System {
     Name		    "hopping_robot_plane_R2012b"
-    Location		    [800, 24, 1600, 837]
+    Location		    [810, 34, 1590, 827]
     Open		    off
+    PortBlocksUseCompactNotation off
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
     ScreenColor		    "white"
@@ -995,27 +1231,16 @@ Model {
       Position		      [-325, 44, -255, 91]
       ZOrder		      124
       ErrorFcn		      "Stateflow.Translate.translate"
-      PermitHierarchicalResolution "ParametersOnly"
+      PermitHierarchicalResolution "ExplicitOnly"
       TreatAsAtomicUnit	      on
       RequestExecContextInheritance off
       SFBlockType	      "MATLAB Function"
       Variant		      off
-      Object {
-	$PropName		"MaskObject"
-	$ObjectID		26
-	$ClassName		"Simulink.Mask"
-	Type			"Stateflow"
-	Description		"Embedded MATLAB block"
-	SelfModifiable		"on"
-	Display			"bgColor = Simulink.Root.ColorString2Rgb(get_param(gcbh, 'BackgroundColor')); image(imread('private/eml_mem"
-	"brane_16.png','png','BackgroundColor',bgColor(1:3)),'center'); disp([10 10 'fcn']);"
-	IconOpaque		"off"
-	IconUnits		"normalized"
-      }
       System {
 	Name			"Controller"
 	Location		[223, 338, 826, 833]
 	Open			off
+	PortBlocksUseCompactNotation off
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
 	ScreenColor		"white"
@@ -1027,7 +1252,7 @@ Model {
 	TiledPageScale		1
 	ShowPageBoundaries	off
 	ZoomFactor		"100"
-	SIDHighWatermark	"86"
+	SIDHighWatermark	"89"
 	Block {
 	  BlockType		  Inport
 	  Name			  "t"
@@ -1039,24 +1264,25 @@ Model {
 	Block {
 	  BlockType		  Demux
 	  Name			  " Demux "
-	  SID			  "38::20"
+	  SID			  "38::88"
 	  Ports			  [1, 1]
 	  Position		  [270, 230, 320, 270]
-	  ZOrder		  11
+	  ZOrder		  15
 	  Outputs		  "1"
 	}
 	Block {
 	  BlockType		  S-Function
 	  Name			  " SFunction "
-	  SID			  "38::19"
+	  SID			  "38::87"
 	  Tag			  "Stateflow S-Function hopping_robot_plane_R2012b 2"
 	  Ports			  [1, 3]
 	  Position		  [180, 100, 230, 180]
-	  ZOrder		  10
+	  ZOrder		  14
 	  FunctionName		  "sf_sfun"
 	  PortCounts		  "[1 3]"
 	  SFunctionDeploymentMode off
 	  EnableBusSupport	  on
+	  SFcnIsStateOwnerBlock	  off
 	  Port {
 	    PortNumber		    2
 	    Name		    "u1"
@@ -1069,9 +1295,9 @@ Model {
 	Block {
 	  BlockType		  Terminator
 	  Name			  " Terminator "
-	  SID			  "38::21"
+	  SID			  "38::89"
 	  Position		  [460, 241, 480, 259]
-	  ZOrder		  12
+	  ZOrder		  16
 	}
 	Block {
 	  BlockType		  Outport
@@ -1091,6 +1317,7 @@ Model {
 	  IconDisplay		  "Port number"
 	}
 	Line {
+	  ZOrder		  6
 	  SrcBlock		  "t"
 	  SrcPort		  1
 	  DstBlock		  " SFunction "
@@ -1098,6 +1325,7 @@ Model {
 	}
 	Line {
 	  Name			  "u1"
+	  ZOrder		  7
 	  Labels		  [0, 0]
 	  SrcBlock		  " SFunction "
 	  SrcPort		  2
@@ -1106,6 +1334,7 @@ Model {
 	}
 	Line {
 	  Name			  "u2"
+	  ZOrder		  8
 	  Labels		  [0, 0]
 	  SrcBlock		  " SFunction "
 	  SrcPort		  3
@@ -1113,24 +1342,20 @@ Model {
 	  DstPort		  1
 	}
 	Line {
+	  ZOrder		  9
 	  SrcBlock		  " Demux "
 	  SrcPort		  1
 	  DstBlock		  " Terminator "
 	  DstPort		  1
 	}
 	Line {
+	  ZOrder		  10
 	  SrcBlock		  " SFunction "
 	  SrcPort		  1
 	  DstBlock		  " Demux "
 	  DstPort		  1
 	}
       }
-      RTWSystemCode	      "Auto"
-      MinAlgLoopOccurrences   off
-      PropExecContextOutsideSubsystem off
-      FunctionWithSeparateData off
-      Opaque		      off
-      MaskHideContents	      off
     }
     Block {
       BlockType		      Demux
@@ -1154,8 +1379,9 @@ Model {
       Variant		      off
       System {
 	Name			"Hopping Robot"
-	Location		[800, 24, 1600, 837]
-	Open			off
+	Location		[810, 34, 1590, 827]
+	Open			on
+	PortBlocksUseCompactNotation off
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
 	ScreenColor		"white"
@@ -1223,8 +1449,10 @@ Model {
 	  BlockMirror		  on
 	  NamePlacement		  "alternate"
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Constraints/Angle \nConstraint"
+	  SourceBlock		  "sm_lib/Constraints/Angle\nConstraint"
 	  SourceType		  "Angle\nConstraint"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  ConstraintType	  "Parallel"
 	  Angle			  "45"
@@ -1249,6 +1477,8 @@ Model {
 	  LibraryVersion	  "5.01"
 	  SourceBlock		  "sm_lib/Body Elements/Solid"
 	  SourceType		  "Solid"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  InertiaType		  "CalculateFromGeometry"
 	  Mass			  "1"
@@ -1333,6 +1563,8 @@ Model {
 	  LibraryVersion	  "5.01"
 	  SourceBlock		  "sm_lib/Body Elements/Solid"
 	  SourceType		  "Solid"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  InertiaType		  "CalculateFromGeometry"
 	  Mass			  "1"
@@ -1417,6 +1649,8 @@ Model {
 	  LibraryVersion	  "5.01"
 	  SourceBlock		  "sm_lib/Body Elements/Solid"
 	  SourceType		  "Solid"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  InertiaType		  "CalculateFromGeometry"
 	  Mass			  "1"
@@ -1501,6 +1735,8 @@ Model {
 	  LibraryVersion	  "5.01"
 	  SourceBlock		  "sm_lib/Body Elements/Solid"
 	  SourceType		  "Solid"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  InertiaType		  "CalculateFromGeometry"
 	  Mass			  "1"
@@ -1582,9 +1818,12 @@ Model {
 	  ZOrder		  70
 	  BlockRotation		  270
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Utilities/Mechanism \nConfiguration"
+	  SourceBlock		  "sm_lib/Utilities/Mechanism\nConfiguration"
 	  SourceType		  "Mechanism\nConfiguration"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
+	  UniformGravity	  "Constant"
 	  GravityVector		  "[0 0 -9.80665]"
 	  GravityUnits		  "m/s^2"
 	  GravityVector_conf	  "compiletime"
@@ -1602,6 +1841,8 @@ Model {
 	  LibraryVersion	  "5.01"
 	  SourceBlock		  "sm_lib/Body Elements/Solid"
 	  SourceType		  "Solid"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  InertiaType		  "CalculateFromGeometry"
 	  Mass			  "1"
@@ -1682,8 +1923,10 @@ Model {
 	  Position		  [550, 90, 590, 130]
 	  ZOrder		  74
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Joints/Prismatic \nJoint"
+	  SourceBlock		  "sm_lib/Joints/Prismatic\nJoint"
 	  SourceType		  "Prismatic\nJoint"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  SenseConstraintForce	  "off"
 	  SenseConstraintForceX	  "off"
@@ -1737,8 +1980,10 @@ Model {
 	  Position		  [615, 390, 655, 430]
 	  ZOrder		  96
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Joints/Prismatic \nJoint"
+	  SourceBlock		  "sm_lib/Joints/Prismatic\nJoint"
 	  SourceType		  "Prismatic\nJoint"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  SenseConstraintForce	  "off"
 	  SenseConstraintForceX	  "off"
@@ -1792,8 +2037,10 @@ Model {
 	  Position		  [1070, 400, 1110, 440]
 	  ZOrder		  125
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Joints/Prismatic \nJoint"
+	  SourceBlock		  "sm_lib/Joints/Prismatic\nJoint"
 	  SourceType		  "Prismatic\nJoint"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  SenseConstraintForce	  "off"
 	  SenseConstraintForceX	  "off"
@@ -1847,8 +2094,10 @@ Model {
 	  Position		  [775, 400, 815, 440]
 	  ZOrder		  117
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Joints/Prismatic \nJoint"
+	  SourceBlock		  "sm_lib/Joints/Prismatic\nJoint"
 	  SourceType		  "Prismatic\nJoint"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  SenseConstraintForce	  "off"
 	  SenseConstraintForceX	  "off"
@@ -1902,8 +2151,10 @@ Model {
 	  Position		  [775, 100, 815, 140]
 	  ZOrder		  129
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Joints/Prismatic \nJoint"
+	  SourceBlock		  "sm_lib/Joints/Prismatic\nJoint"
 	  SourceType		  "Prismatic\nJoint"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  SenseConstraintForce	  "off"
 	  SenseConstraintForceX	  "off"
@@ -1958,8 +2209,10 @@ Model {
 	  ZOrder		  133
 	  BlockRotation		  270
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Joints/Prismatic \nJoint"
+	  SourceBlock		  "sm_lib/Joints/Prismatic\nJoint"
 	  SourceType		  "Prismatic\nJoint"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  SenseConstraintForce	  "off"
 	  SenseConstraintForceX	  "off"
@@ -2014,8 +2267,10 @@ Model {
 	  ZOrder		  72
 	  BlockRotation		  270
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Frames and\n Transforms/Rigid \nTransform"
+	  SourceBlock		  "sm_lib/Frames and\nTransforms/Rigid\nTransform"
 	  SourceType		  "Rigid\nTransform"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  TranslationMethod	  "StandardAxis"
 	  TranslationStandardOffset "h0"
@@ -2060,8 +2315,10 @@ Model {
 	  Position		  [455, 90, 495, 130]
 	  ZOrder		  75
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Frames and\n Transforms/Rigid \nTransform"
+	  SourceBlock		  "sm_lib/Frames and\nTransforms/Rigid\nTransform"
 	  SourceType		  "Rigid\nTransform"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  TranslationMethod	  "None"
 	  TranslationStandardOffset "h0"
@@ -2106,8 +2363,10 @@ Model {
 	  Position		  [540, 295, 580, 335]
 	  ZOrder		  78
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Frames and\n Transforms/Rigid \nTransform"
+	  SourceBlock		  "sm_lib/Frames and\nTransforms/Rigid\nTransform"
 	  SourceType		  "Rigid\nTransform"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  TranslationMethod	  "None"
 	  TranslationStandardOffset "h0"
@@ -2152,8 +2411,10 @@ Model {
 	  Position		  [940, 100, 980, 140]
 	  ZOrder		  83
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Frames and\n Transforms/Rigid \nTransform"
+	  SourceBlock		  "sm_lib/Frames and\nTransforms/Rigid\nTransform"
 	  SourceType		  "Rigid\nTransform"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  TranslationMethod	  "None"
 	  TranslationStandardOffset "h0/20"
@@ -2198,8 +2459,10 @@ Model {
 	  Position		  [1240, 400, 1280, 440]
 	  ZOrder		  106
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Frames and\n Transforms/Rigid \nTransform"
+	  SourceBlock		  "sm_lib/Frames and\nTransforms/Rigid\nTransform"
 	  SourceType		  "Rigid\nTransform"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  TranslationMethod	  "StandardAxis"
 	  TranslationStandardOffset "len_leg2/2"
@@ -2244,8 +2507,10 @@ Model {
 	  Position		  [690, 390, 730, 430]
 	  ZOrder		  116
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Frames and\n Transforms/Rigid \nTransform"
+	  SourceBlock		  "sm_lib/Frames and\nTransforms/Rigid\nTransform"
 	  SourceType		  "Rigid\nTransform"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  TranslationMethod	  "None"
 	  TranslationStandardOffset "len_leg2/2"
@@ -2291,8 +2556,10 @@ Model {
 	  ZOrder		  105
 	  BlockRotation		  270
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Frames and\n Transforms/Rigid \nTransform"
+	  SourceBlock		  "sm_lib/Frames and\nTransforms/Rigid\nTransform"
 	  SourceType		  "Rigid\nTransform"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  TranslationMethod	  "None"
 	  TranslationStandardOffset "len_leg2/2"
@@ -2337,8 +2604,10 @@ Model {
 	  Position		  [690, 90, 730, 130]
 	  ZOrder		  107
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Frames and\n Transforms/Rigid \nTransform"
+	  SourceBlock		  "sm_lib/Frames and\nTransforms/Rigid\nTransform"
 	  SourceType		  "Rigid\nTransform"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  TranslationMethod	  "None"
 	  TranslationStandardOffset "len_leg2/2"
@@ -2383,8 +2652,10 @@ Model {
 	  Position		  [855, 400, 895, 440]
 	  ZOrder		  118
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Frames and\n Transforms/Rigid \nTransform"
+	  SourceBlock		  "sm_lib/Frames and\nTransforms/Rigid\nTransform"
 	  SourceType		  "Rigid\nTransform"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  TranslationMethod	  "None"
 	  TranslationStandardOffset "len_leg2/2"
@@ -2429,8 +2700,10 @@ Model {
 	  Position		  [455, 655, 495, 695]
 	  ZOrder		  136
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Frames and\n Transforms/Rigid \nTransform"
+	  SourceBlock		  "sm_lib/Frames and\nTransforms/Rigid\nTransform"
 	  SourceType		  "Rigid\nTransform"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  TranslationMethod	  "StandardAxis"
 	  TranslationStandardOffset "h0"
@@ -2477,6 +2750,9 @@ Model {
 	  LibraryVersion	  "2.0"
 	  SourceBlock		  "nesl_utility/Simulink-PS\nConverter"
 	  SourceType		  "Simulink-PS\nConverter"
+	  SourceProductName	  "Simscape"
+	  SourceProductBaseCode	  "SS"
+	  ContentPreviewEnabled	  off
 	  PhysicalDomain	  "network_engine_domain"
 	  SubClassName		  "ps_input"
 	  LeftPortType		  "input"
@@ -2485,6 +2761,7 @@ Model {
 	  Frequencies		  "[]"
 	  NoiseDistribution	  "none"
 	  NoiseParameters	  "[]"
+	  Unit			  "1"
 	  AffineConversion	  off
 	  FilteringAndDerivatives "filter"
 	  SimscapeFilterOrder	  "2"
@@ -2501,6 +2778,9 @@ Model {
 	  LibraryVersion	  "2.0"
 	  SourceBlock		  "nesl_utility/Simulink-PS\nConverter"
 	  SourceType		  "Simulink-PS\nConverter"
+	  SourceProductName	  "Simscape"
+	  SourceProductBaseCode	  "SS"
+	  ContentPreviewEnabled	  off
 	  PhysicalDomain	  "network_engine_domain"
 	  SubClassName		  "ps_input"
 	  LeftPortType		  "input"
@@ -2509,6 +2789,7 @@ Model {
 	  Frequencies		  "[]"
 	  NoiseDistribution	  "none"
 	  NoiseParameters	  "[]"
+	  Unit			  "1"
 	  AffineConversion	  off
 	  FilteringAndDerivatives "filter"
 	  SimscapeFilterOrder	  "2"
@@ -2525,6 +2806,9 @@ Model {
 	  LibraryVersion	  "2.0"
 	  SourceBlock		  "nesl_utility/Simulink-PS\nConverter"
 	  SourceType		  "Simulink-PS\nConverter"
+	  SourceProductName	  "Simscape"
+	  SourceProductBaseCode	  "SS"
+	  ContentPreviewEnabled	  off
 	  PhysicalDomain	  "network_engine_domain"
 	  SubClassName		  "ps_input"
 	  LeftPortType		  "input"
@@ -2533,6 +2817,7 @@ Model {
 	  Frequencies		  "[]"
 	  NoiseDistribution	  "none"
 	  NoiseParameters	  "[]"
+	  Unit			  "1"
 	  AffineConversion	  off
 	  FilteringAndDerivatives "filter"
 	  SimscapeFilterOrder	  "2"
@@ -2549,6 +2834,9 @@ Model {
 	  LibraryVersion	  "2.0"
 	  SourceBlock		  "nesl_utility/Simulink-PS\nConverter"
 	  SourceType		  "Simulink-PS\nConverter"
+	  SourceProductName	  "Simscape"
+	  SourceProductBaseCode	  "SS"
+	  ContentPreviewEnabled	  off
 	  PhysicalDomain	  "network_engine_domain"
 	  SubClassName		  "ps_input"
 	  LeftPortType		  "input"
@@ -2557,6 +2845,7 @@ Model {
 	  Frequencies		  "[]"
 	  NoiseDistribution	  "none"
 	  NoiseParameters	  "[]"
+	  Unit			  "1"
 	  AffineConversion	  off
 	  FilteringAndDerivatives "filter"
 	  SimscapeFilterOrder	  "2"
@@ -2573,6 +2862,9 @@ Model {
 	  LibraryVersion	  "2.0"
 	  SourceBlock		  "nesl_utility/Simulink-PS\nConverter"
 	  SourceType		  "Simulink-PS\nConverter"
+	  SourceProductName	  "Simscape"
+	  SourceProductBaseCode	  "SS"
+	  ContentPreviewEnabled	  off
 	  PhysicalDomain	  "network_engine_domain"
 	  SubClassName		  "ps_input"
 	  LeftPortType		  "input"
@@ -2581,6 +2873,7 @@ Model {
 	  Frequencies		  "[]"
 	  NoiseDistribution	  "none"
 	  NoiseParameters	  "[]"
+	  Unit			  "1"
 	  AffineConversion	  off
 	  FilteringAndDerivatives "filter"
 	  SimscapeFilterOrder	  "2"
@@ -2597,6 +2890,9 @@ Model {
 	  LibraryVersion	  "2.0"
 	  SourceBlock		  "nesl_utility/Solver\nConfiguration"
 	  SourceType		  "Solver\nConfiguration"
+	  SourceProductName	  "Simscape"
+	  SourceProductBaseCode	  "SS"
+	  ContentPreviewEnabled	  off
 	  PhysicalDomain	  "network_engine_domain"
 	  SubClassName		  "solver"
 	  LeftPortType		  "input"
@@ -2640,8 +2936,10 @@ Model {
 	  Position		  [1155, 400, 1195, 440]
 	  ZOrder		  131
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Joints/Spherical \nJoint"
+	  SourceBlock		  "sm_lib/Joints/Spherical\nJoint"
 	  SourceType		  "Spherical\nJoint"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  SenseConstraintForce	  "off"
 	  SenseConstraintForceX	  "off"
@@ -2759,8 +3057,10 @@ Model {
 	  Position		  [875, 100, 915, 140]
 	  ZOrder		  132
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Joints/Spherical \nJoint"
+	  SourceBlock		  "sm_lib/Joints/Spherical\nJoint"
 	  SourceType		  "Spherical\nJoint"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  SenseConstraintForce	  "off"
 	  SenseConstraintForceX	  "off"
@@ -2882,6 +3182,8 @@ Model {
 	  LibraryVersion	  "5.01"
 	  SourceBlock		  "sm_lib/Body Elements/Solid"
 	  SourceType		  "Solid"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	  InertiaType		  "CalculateFromGeometry"
 	  Mass			  "1"
@@ -2963,18 +3265,22 @@ Model {
 	  ZOrder		  69
 	  BlockRotation		  270
 	  LibraryVersion	  "5.01"
-	  SourceBlock		  "sm_lib/Frames and\n Transforms/World Frame"
+	  SourceBlock		  "sm_lib/Frames and\nTransforms/World Frame"
 	  SourceType		  "World Frame"
+	  SourceProductName	  "Simscape Multibody"
+	  SourceProductBaseCode	  "MS"
 	  LogSimulationData	  off
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  1
 	  SrcBlock		  "Rigid\nTransform5"
 	  SrcPort		  LConn1
 	  DstBlock		  "Prismatic\nJoint1"
 	  DstPort		  RConn1
 	}
 	Line {
+	  ZOrder		  2
 	  SrcBlock		  "hopping"
 	  SrcPort		  1
 	  Points		  [19, 0; 0, 55]
@@ -2983,12 +3289,14 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  3
 	  SrcBlock		  "Prismatic\nJoint3"
 	  SrcPort		  LConn1
 	  DstBlock		  "Rigid\nTransform5"
 	  DstPort		  RConn1
 	}
 	Line {
+	  ZOrder		  4
 	  SrcBlock		  "X_ankle1"
 	  SrcPort		  1
 	  Points		  [72, 0; 0, 85]
@@ -2997,6 +3305,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  5
 	  SrcBlock		  "Prismatic\nJoint3"
 	  SrcPort		  RConn1
 	  DstBlock		  "Rigid\nTransform8"
@@ -3004,6 +3313,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  6
 	  SrcBlock		  "Simulink-PS\nConverter2"
 	  SrcPort		  RConn1
 	  DstBlock		  "Prismatic\nJoint3"
@@ -3011,6 +3321,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  7
 	  SrcBlock		  "Simulink-PS\nConverter1"
 	  SrcPort		  RConn1
 	  Points		  [45, 0; 0, 85]
@@ -3019,6 +3330,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  8
 	  SrcBlock		  "Prismatic\nJoint1"
 	  SrcPort		  LConn1
 	  Points		  [-1, 0; 0, -85]
@@ -3027,6 +3339,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  9
 	  SrcBlock		  "Rigid\nTransform1"
 	  SrcPort		  LConn1
 	  DstBlock		  "Rigid\nTransform"
@@ -3034,6 +3347,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  10
 	  SrcBlock		  "Prismatic\nJoint4"
 	  SrcPort		  LConn1
 	  DstBlock		  "Rigid\nTransform7"
@@ -3041,6 +3355,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  11
 	  SrcBlock		  "Simulink-PS\nConverter"
 	  SrcPort		  RConn1
 	  Points		  [28, 0; 0, -35]
@@ -3049,6 +3364,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  12
 	  SrcBlock		  "Solver\nConfiguration"
 	  SrcPort		  RConn1
 	  Points		  [115, 0]
@@ -3106,6 +3422,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  23
 	  SrcBlock		  "Rigid\nTransform1"
 	  SrcPort		  RConn1
 	  Points		  [25, 0]
@@ -3113,6 +3430,7 @@ Model {
 	  DstPort		  LConn1
 	}
 	Line {
+	  ZOrder		  24
 	  SrcBlock		  "X_CoM1"
 	  SrcPort		  1
 	  Points		  [60, 0; 0, -245]
@@ -3121,6 +3439,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  25
 	  SrcBlock		  "Rigid\nTransform6"
 	  SrcPort		  LConn1
 	  Points		  [-86, 0; 0, -115]
@@ -3129,6 +3448,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  26
 	  SrcBlock		  "Spherical\nJoint"
 	  SrcPort		  LConn1
 	  Points		  [-10, 0]
@@ -3146,6 +3466,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  29
 	  Points		  [1055, 301; 0, 9; 30, 0; 0, -30; 25, 0]
 	  Branch {
 	    ConnectType		    "SRC_DEST"
@@ -3173,6 +3494,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  34
 	  SrcBlock		  "Rigid\nTransform7"
 	  SrcPort		  LConn1
 	  DstBlock		  "Prismatic\nJoint"
@@ -3180,6 +3502,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  35
 	  Points		  [1000, 120; -5, 0]
 	  DstBlock		  "Rigid\nTransform3"
 	  DstPort		  RConn1
@@ -3208,6 +3531,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  40
 	  SrcBlock		  "Spherical\nJoint"
 	  SrcPort		  RConn1
 	  DstBlock		  "Rigid\nTransform4"
@@ -3215,6 +3539,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  41
 	  SrcBlock		  "Rigid\nTransform6"
 	  SrcPort		  RConn1
 	  Points		  [0, -55]
@@ -3223,6 +3548,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  42
 	  SrcBlock		  "Prismatic\nJoint2"
 	  SrcPort		  LConn2
 	  Points		  [-124, 0; 0, 125]
@@ -3230,6 +3556,7 @@ Model {
 	  DstPort		  RConn1
 	}
 	Line {
+	  ZOrder		  43
 	  SrcBlock		  "X_ankle2"
 	  SrcPort		  1
 	  Points		  [174, 0; 0, 159; 504, 0; 0, -14]
@@ -3238,6 +3565,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  44
 	  SrcBlock		  "Spherical\nJoint1"
 	  SrcPort		  RConn1
 	  DstBlock		  "Rigid\nTransform3"
@@ -3245,6 +3573,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  45
 	  SrcBlock		  "Simulink-PS\nConverter4"
 	  SrcPort		  RConn1
 	  Points		  [14, 0; 0, -50]
@@ -3252,6 +3581,7 @@ Model {
 	  DstPort		  LConn2
 	}
 	Line {
+	  ZOrder		  46
 	  SrcBlock		  "X_CoM2"
 	  SrcPort		  1
 	  Points		  [242, 0; 0, -22; 145, 0; 0, -113]
@@ -3260,6 +3590,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  47
 	  SrcBlock		  "Prismatic\nJoint4"
 	  SrcPort		  RConn1
 	  Points		  [5, 0]
@@ -3277,18 +3608,13 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
+	  ZOrder		  50
 	  SrcBlock		  "Rigid\nTransform9"
 	  SrcPort		  RConn1
 	  DstBlock		  "Target Set"
 	  DstPort		  RConn1
 	}
       }
-      RTWSystemCode	      "Auto"
-      MinAlgLoopOccurrences   off
-      PropExecContextOutsideSubsystem off
-      FunctionWithSeparateData off
-      Opaque		      off
-      MaskHideContents	      off
     }
     Block {
       BlockType		      Mux
@@ -3326,6 +3652,7 @@ Model {
       X0		      "x0"
     }
     Line {
+      ZOrder		      1
       SrcBlock		      "Clock"
       SrcPort		      1
       Points		      [25, 0]
@@ -3333,32 +3660,38 @@ Model {
       DstPort		      1
     }
     Line {
+      ZOrder		      2
       SrcBlock		      "Controller"
       SrcPort		      1
       Points		      [13, 0; 0, 5]
       Branch {
+	ZOrder			3
 	Points			[0, 35; 279, 0; 0, -15]
 	DstBlock		"Hopping Robot"
 	DstPort			3
       }
       Branch {
+	ZOrder			4
 	DstBlock		"Mux"
 	DstPort			1
       }
     }
     Line {
+      ZOrder		      5
       SrcBlock		      "State-Space"
       SrcPort		      1
       DstBlock		      "Demux"
       DstPort		      1
     }
     Line {
+      ZOrder		      6
       SrcBlock		      "Sine Wave"
       SrcPort		      1
       DstBlock		      "Abs"
       DstPort		      1
     }
     Line {
+      ZOrder		      7
       SrcBlock		      "Abs"
       SrcPort		      1
       Points		      [27, 0; 0, -19; 103, 0]
@@ -3366,26 +3699,31 @@ Model {
       DstPort		      5
     }
     Line {
+      ZOrder		      8
       SrcBlock		      "Controller"
       SrcPort		      2
       Points		      [25, 0]
       Branch {
+	ZOrder			9
 	Points			[0, 36; 276, 0; 0, -21]
 	DstBlock		"Hopping Robot"
 	DstPort			4
       }
       Branch {
+	ZOrder			10
 	DstBlock		"Mux"
 	DstPort			2
       }
     }
     Line {
+      ZOrder		      11
       SrcBlock		      "Mux"
       SrcPort		      1
       DstBlock		      "State-Space"
       DstPort		      1
     }
     Line {
+      ZOrder		      12
       SrcBlock		      "Demux"
       SrcPort		      1
       Points		      [8, 0; 0, -10]
@@ -3393,6 +3731,7 @@ Model {
       DstPort		      1
     }
     Line {
+      ZOrder		      13
       SrcBlock		      "Demux"
       SrcPort		      2
       Points		      [59, 0; 0, -15]
@@ -3412,7 +3751,7 @@ Stateflow {
     name		    "hopping_robot_plane_R2012b"
     created		    "17-May-2017 18:40:07"
     isLibrary		    0
-    sfVersion		    76014001.0011
+    sfVersion		    80000011
     firstTarget		    10
   }
   chart {
@@ -3473,6 +3812,9 @@ Stateflow {
 	primitive		SF_DOUBLE_TYPE
       }
       complexity	      SF_COMPLEX_INHERITED
+      unit {
+	name			"inherit"
+      }
     }
     dataType		    "Inherit: Same as Simulink"
     linkNode		    [2 0 5]
@@ -3493,6 +3835,9 @@ Stateflow {
       }
       complexity	      SF_COMPLEX_INHERITED
       frame		      SF_FRAME_NO
+      unit {
+	name			"inherit"
+      }
     }
     dataType		    "Inherit: Same as Simulink"
     linkNode		    [2 4 6]
@@ -3515,6 +3860,9 @@ Stateflow {
       }
       complexity	      SF_COMPLEX_INHERITED
       frame		      SF_FRAME_NO
+      unit {
+	name			"inherit"
+      }
     }
     dataType		    "Inherit: Same as Simulink"
     linkNode		    [2 5 0]
@@ -3531,7 +3879,7 @@ Stateflow {
   transition {
     id			    8
     labelString		    "{eML_blk_kernel();}"
-    labelPosition	    [28.125 13.875 102.544 14.964]
+    labelPosition	    [24.125 7.875 102.544 14.964]
     fontSize		    12
     src {
       intersection	      [0 0 1 0 23.5747 14.625 0 0]

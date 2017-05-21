@@ -1,11 +1,11 @@
 Model {
-  Name			  "hopping_robot_2012b"
+  Name			  "hopping_robot_R2012b"
   Version		  8.0
   GraphicalInterface {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.44"
+    ComputedModelVersion    "1.45"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -51,16 +51,16 @@ Model {
 	$ObjectID		5
 	$ClassName		"Simulink.EditorInfo"
 	IsActive		[1]
-	ViewObjType		"SimulinkSubsys"
-	LoadSaveID		"65"
+	ViewObjType		"SimulinkTopLevel"
+	LoadSaveID		"0"
 	Extents			[762.0, 636.0]
-	ZoomFactor		[1.0]
-	Offset			[743.30238095238224, -40.738095238095354]
+	ZoomFactor		[1.75]
+	Offset			[-262.80930059523814, -126.85238095238101]
       }
     }
   }
-  PhysicalModelingChecksum "1744043920"
-  PhysicalModelingParameterChecksum "4150055362"
+  PhysicalModelingChecksum "3617264270"
+  PhysicalModelingParameterChecksum "795898169"
   PhysicalModelingProducts "SimMechanics|Simscape"
   Created		  "Wed May 17 16:21:20 2017"
   Creator		  "pec"
@@ -68,9 +68,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "pec"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Fri May 19 23:26:09 2017"
-  RTWModifiedTimeStamp	  417137169
-  ModelVersionFormat	  "1.%<AutoIncrement:44>"
+  LastModifiedDate	  "Sun May 21 10:46:03 2017"
+  RTWModifiedTimeStamp	  417264363
+  ModelVersionFormat	  "1.%<AutoIncrement:45>"
   ConfigurationManager	  "none"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -107,12 +107,12 @@ Model {
     $PropName		    "DataLoggingOverride"
     $ObjectID		    7
     $ClassName		    "Simulink.SimulationData.ModelLoggingInfo"
-    model_		    "hopping_robot_2012b"
+    model_		    "hopping_robot_R2012b"
     overrideMode_	    [0.0]
     Array {
       Type		      "Cell"
       Dimension		      1
-      Cell		      "hopping_robot_2012b"
+      Cell		      "hopping_robot_R2012b"
       PropName		      "logAsSpecifiedByModels_"
     }
     Array {
@@ -938,7 +938,7 @@ Model {
     }
   }
   System {
-    Name		    "hopping_robot_2012b"
+    Name		    "hopping_robot_R2012b"
     Location		    [800, 24, 1600, 837]
     Open		    off
     ModelBrowserVisibility  off
@@ -951,9 +951,9 @@ Model {
     TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
     TiledPageScale	    1
     ShowPageBoundaries	    off
-    ZoomFactor		    "100"
+    ZoomFactor		    "175"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    "72"
+    SIDHighWatermark	    "74"
     Block {
       BlockType		      Abs
       Name		      "Abs"
@@ -1009,7 +1009,7 @@ Model {
 	TiledPageScale		1
 	ShowPageBoundaries	off
 	ZoomFactor		"100"
-	SIDHighWatermark	"72"
+	SIDHighWatermark	"74"
 	Block {
 	  BlockType		  Inport
 	  Name			  "t"
@@ -1031,7 +1031,7 @@ Model {
 	  BlockType		  S-Function
 	  Name			  " SFunction "
 	  SID			  "38::19"
-	  Tag			  "Stateflow S-Function hopping_robot_2012b 2"
+	  Tag			  "Stateflow S-Function hopping_robot_R2012b 2"
 	  Ports			  [1, 2]
 	  Position		  [180, 100, 230, 160]
 	  ZOrder		  10
@@ -1116,7 +1116,7 @@ Model {
 	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
 	TiledPageScale		1
 	ShowPageBoundaries	off
-	ZoomFactor		"100"
+	ZoomFactor		"150"
 	Block {
 	  BlockType		  Inport
 	  Name			  "X_CoM"
@@ -1151,11 +1151,9 @@ Model {
 	  Name			  "Angle\nConstraint"
 	  SID			  "52"
 	  Ports			  [0, 0, 0, 0, 0, 1, 1]
-	  Position		  [980, 215, 1020, 255]
+	  Position		  [1095, 175, 1135, 215]
 	  ZOrder		  109
 	  BlockRotation		  270
-	  BlockMirror		  on
-	  NamePlacement		  "alternate"
 	  LibraryVersion	  "5.01"
 	  SourceBlock		  "sm_lib/Constraints/Angle \nConstraint"
 	  SourceType		  "Angle\nConstraint"
@@ -1344,7 +1342,7 @@ Model {
 	  Name			  "Leg2"
 	  SID			  "17"
 	  Ports			  [0, 0, 0, 0, 0, 0, 1]
-	  Position		  [1290, 260, 1330, 300]
+	  Position		  [1310, 235, 1350, 275]
 	  ZOrder		  84
 	  BlockMirror		  on
 	  NamePlacement		  "alternate"
@@ -1639,7 +1637,7 @@ Model {
 	  Name			  "Prismatic\nJoint2"
 	  SID			  "47"
 	  Ports			  [0, 0, 0, 0, 0, 1, 1]
-	  Position		  [1065, 225, 1105, 265]
+	  Position		  [1030, 175, 1070, 215]
 	  ZOrder		  108
 	  BlockRotation		  270
 	  LibraryVersion	  "5.01"
@@ -1750,7 +1748,7 @@ Model {
 	  Name			  "Revolute Joint"
 	  SID			  "40"
 	  Ports			  [0, 0, 0, 0, 0, 1, 1]
-	  Position		  [785, 90, 825, 130]
+	  Position		  [865, 90, 905, 130]
 	  ZOrder		  103
 	  LibraryVersion	  "5.01"
 	  SourceBlock		  "sm_lib/Joints/Revolute Joint"
@@ -1805,7 +1803,7 @@ Model {
 	  Name			  "Revolute Joint1"
 	  SID			  "41"
 	  Ports			  [0, 0, 0, 0, 0, 1, 1]
-	  Position		  [1030, 315, 1070, 355]
+	  Position		  [1125, 315, 1165, 355]
 	  ZOrder		  104
 	  LibraryVersion	  "5.01"
 	  SourceBlock		  "sm_lib/Joints/Revolute Joint"
@@ -2045,7 +2043,7 @@ Model {
 	  Name			  "Rigid\nTransform3"
 	  SID			  "16"
 	  Ports			  [0, 0, 0, 0, 0, 1, 1]
-	  Position		  [860, 90, 900, 130]
+	  Position		  [935, 90, 975, 130]
 	  ZOrder		  83
 	  LibraryVersion	  "5.01"
 	  SourceBlock		  "sm_lib/Frames and\n Transforms/Rigid \nTransform"
@@ -2091,7 +2089,7 @@ Model {
 	  Name			  "Rigid\nTransform4"
 	  SID			  "44"
 	  Ports			  [0, 0, 0, 0, 0, 1, 1]
-	  Position		  [1130, 315, 1170, 355]
+	  Position		  [1190, 315, 1230, 355]
 	  ZOrder		  106
 	  LibraryVersion	  "5.01"
 	  SourceBlock		  "sm_lib/Frames and\n Transforms/Rigid \nTransform"
@@ -2101,7 +2099,7 @@ Model {
 	  TranslationStandardOffset "len_leg2/2"
 	  TranslationLengthUnit	  "m"
 	  TranslationStandardOffset_conf "compiletime"
-	  TranslationStandardAxis "-Y"
+	  TranslationStandardAxis "+Y"
 	  TranslationCartesianOffset "[0 0 0]"
 	  TranslationCartesianOffset_conf "compiletime"
 	  TranslationROffset	  "0"
@@ -2115,7 +2113,7 @@ Model {
 	  TranslationThetaOffset_conf "compiletime"
 	  RotationMethod	  "StandardAxis"
 	  RotationAngleUnits	  "deg"
-	  RotationStandardAxis	  "+X"
+	  RotationStandardAxis	  "-X"
 	  RotationAngle		  "90"
 	  RotationAngle_conf	  "compiletime"
 	  RotationArbitraryAxis	  "[0 0 1]"
@@ -2208,7 +2206,7 @@ Model {
 	  TranslationThetaOffset_conf "compiletime"
 	  RotationMethod	  "StandardAxis"
 	  RotationAngleUnits	  "deg"
-	  RotationStandardAxis	  "+X"
+	  RotationStandardAxis	  "-X"
 	  RotationAngle		  "90"
 	  RotationAngle_conf	  "compiletime"
 	  RotationArbitraryAxis	  "[0 0 1]"
@@ -2255,6 +2253,98 @@ Model {
 	  RotationMethod	  "StandardAxis"
 	  RotationAngleUnits	  "deg"
 	  RotationStandardAxis	  "-Y"
+	  RotationAngle		  "90"
+	  RotationAngle_conf	  "compiletime"
+	  RotationArbitraryAxis	  "[0 0 1]"
+	  RotationArbitraryAxis_conf "compiletime"
+	  FollAlignAxisA	  "+X"
+	  BaseAlignAxisA	  "+Y"
+	  FollAlignAxisB	  "+Y"
+	  BaseAlignAxisB	  "+Z"
+	  RotationSequenceAxes	  "FollowerAxes"
+	  RotationSequence	  "XYX"
+	  RotationSequenceAngles  "[0 0 0]"
+	  RotationSequenceAnglesUnits "deg"
+	  RotationSequenceAngles_conf "compiletime"
+	  RotationMatrix	  "[1 0 0; 0 1 0; 0 0 1]"
+	  RotationMatrix_conf	  "compiletime"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Rigid\nTransform8"
+	  SID			  "73"
+	  Ports			  [0, 0, 0, 0, 0, 1, 1]
+	  Position		  [1040, 315, 1080, 355]
+	  ZOrder		  125
+	  LibraryVersion	  "5.01"
+	  SourceBlock		  "sm_lib/Frames and\n Transforms/Rigid \nTransform"
+	  SourceType		  "Rigid\nTransform"
+	  LogSimulationData	  off
+	  TranslationMethod	  "None"
+	  TranslationStandardOffset "len_leg2/2"
+	  TranslationLengthUnit	  "m"
+	  TranslationStandardOffset_conf "compiletime"
+	  TranslationStandardAxis "+Y"
+	  TranslationCartesianOffset "[0 0 0]"
+	  TranslationCartesianOffset_conf "compiletime"
+	  TranslationROffset	  "0"
+	  TranslationROffsetUnits "m"
+	  TranslationROffset_conf "compiletime"
+	  TranslationZOffset	  "0"
+	  TranslationZOffsetUnits "m"
+	  TranslationZOffset_conf "compiletime"
+	  TranslationThetaOffset  "0"
+	  TranslationThetaOffsetUnits "deg"
+	  TranslationThetaOffset_conf "compiletime"
+	  RotationMethod	  "StandardAxis"
+	  RotationAngleUnits	  "deg"
+	  RotationStandardAxis	  "-Z"
+	  RotationAngle		  "90"
+	  RotationAngle_conf	  "compiletime"
+	  RotationArbitraryAxis	  "[0 0 1]"
+	  RotationArbitraryAxis_conf "compiletime"
+	  FollAlignAxisA	  "+X"
+	  BaseAlignAxisA	  "+Y"
+	  FollAlignAxisB	  "+Y"
+	  BaseAlignAxisB	  "+Z"
+	  RotationSequenceAxes	  "FollowerAxes"
+	  RotationSequence	  "XYX"
+	  RotationSequenceAngles  "[0 0 0]"
+	  RotationSequenceAnglesUnits "deg"
+	  RotationSequenceAngles_conf "compiletime"
+	  RotationMatrix	  "[1 0 0; 0 1 0; 0 0 1]"
+	  RotationMatrix_conf	  "compiletime"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Rigid\nTransform9"
+	  SID			  "74"
+	  Ports			  [0, 0, 0, 0, 0, 1, 1]
+	  Position		  [775, 90, 815, 130]
+	  ZOrder		  126
+	  LibraryVersion	  "5.01"
+	  SourceBlock		  "sm_lib/Frames and\n Transforms/Rigid \nTransform"
+	  SourceType		  "Rigid\nTransform"
+	  LogSimulationData	  off
+	  TranslationMethod	  "None"
+	  TranslationStandardOffset "len_leg2/2"
+	  TranslationLengthUnit	  "m"
+	  TranslationStandardOffset_conf "compiletime"
+	  TranslationStandardAxis "+Y"
+	  TranslationCartesianOffset "[0 0 0]"
+	  TranslationCartesianOffset_conf "compiletime"
+	  TranslationROffset	  "0"
+	  TranslationROffsetUnits "m"
+	  TranslationROffset_conf "compiletime"
+	  TranslationZOffset	  "0"
+	  TranslationZOffsetUnits "m"
+	  TranslationZOffset_conf "compiletime"
+	  TranslationThetaOffset  "0"
+	  TranslationThetaOffsetUnits "deg"
+	  TranslationThetaOffset_conf "compiletime"
+	  RotationMethod	  "StandardAxis"
+	  RotationAngleUnits	  "deg"
+	  RotationStandardAxis	  "+Z"
 	  RotationAngle		  "90"
 	  RotationAngle_conf	  "compiletime"
 	  RotationArbitraryAxis	  "[0 0 1]"
@@ -2468,7 +2558,7 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
-	  SrcBlock		  "Revolute Joint"
+	  SrcBlock		  "Rigid\nTransform9"
 	  SrcPort		  LConn1
 	  DstBlock		  "Rigid\nTranform7"
 	  DstPort		  RConn1
@@ -2559,37 +2649,37 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
-	  SrcBlock		  "Rigid\nTransform6"
+	  SrcBlock		  "Rigid\nTransform8"
 	  SrcPort		  RConn1
 	  DstBlock		  "Revolute Joint1"
 	  DstPort		  LConn1
 	}
 	Line {
 	  LineType		  "Connection"
-	  SrcBlock		  "Leg2"
+	  SrcBlock		  "Rigid\nTransform4"
 	  SrcPort		  RConn1
-	  Points		  [-190, 0]
+	  Points		  [0, -34; -160, 0; 0, -7]
 	  Branch {
-	    ConnectType		    "DEST_DEST"
-	    Points		    [1055, 301; 0, 9; 30, 0; 0, -30]
-	    Branch {
-	      ConnectType	      "SRC_DEST"
-	      SrcBlock		      "Angle\nConstraint"
-	      SrcPort		      RConn1
-	      Points		      [0, 3; 55, 0; 0, 28]
-	    }
-	    Branch {
-	      ConnectType	      "SRC_DEST"
-	      SrcBlock		      "Rigid\nTransform4"
-	      SrcPort		      RConn1
-	      Points		      [-1, 0; 0, -34; -129, 0]
-	    }
+	    ConnectType		    "DEST_SRC"
+	    Points		    [-35, 0]
+	    DstBlock		    "Prismatic\nJoint2"
+	    DstPort		    LConn1
 	  }
 	  Branch {
 	    ConnectType		    "DEST_DEST"
-	    SrcBlock		    "Prismatic\nJoint2"
-	    SrcPort		    LConn1
-	    Points		    [0, 0]
+	    Points		    [1114, 255; 0, 39; -29, 0]
+	    Branch {
+	      ConnectType	      "SRC_DEST"
+	      SrcBlock		      "Angle\nConstraint"
+	      SrcPort		      LConn1
+	      Points		      [-1, 0; 0, 25]
+	    }
+	    Branch {
+	      ConnectType	      "SRC_DEST"
+	      SrcBlock		      "Leg2"
+	      SrcPort		      RConn1
+	      Points		      [-181, 0]
+	    }
 	  }
 	}
 	Line {
@@ -2611,29 +2701,29 @@ Model {
 	}
 	Line {
 	  LineType		  "Connection"
-	  Points		  [965, 110; 0, 64; 120, 0; 0, 36]
+	  Points		  [1050, 110; 0, 50]
 	  DstBlock		  "Prismatic\nJoint2"
 	  DstPort		  RConn1
 	  Branch {
+	    ConnectType		    "SRC_SRC"
+	    DstBlock		    "Rigid\nTransform3"
+	    DstPort		    RConn1
+	  }
+	  Branch {
 	    ConnectType		    "SRC_DEST"
-	    Points		    [1000, 110; -35, 0]
+	    Points		    [1115, 110; -65, 0]
 	    Branch {
 	      ConnectType	      "SRC_DEST"
 	      SrcBlock		      "Angle\nConstraint"
-	      SrcPort		      LConn1
-	      Points		      [0, -90]
+	      SrcPort		      RConn1
+	      Points		      [0, -50]
 	    }
 	    Branch {
 	      ConnectType	      "SRC_DEST"
 	      SrcBlock		      "Leg1"
 	      SrcPort		      RConn1
-	      Points		      [-185, 0]
+	      Points		      [-70, 0]
 	    }
-	  }
-	  Branch {
-	    ConnectType		    "SRC_SRC"
-	    DstBlock		    "Rigid\nTransform3"
-	    DstPort		    RConn1
 	  }
 	}
 	Line {
@@ -2642,6 +2732,20 @@ Model {
 	  SrcPort		  RConn1
 	  DstBlock		  "Rigid\nTransform4"
 	  DstPort		  LConn1
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "Rigid\nTransform6"
+	  SrcPort		  RConn1
+	  DstBlock		  "Rigid\nTransform8"
+	  DstPort		  LConn1
+	}
+	Line {
+	  LineType		  "Connection"
+	  SrcBlock		  "Revolute Joint"
+	  SrcPort		  LConn1
+	  DstBlock		  "Rigid\nTransform9"
+	  DstPort		  RConn1
 	}
       }
       RTWSystemCode	      "Auto"
@@ -2725,7 +2829,7 @@ Model {
 Stateflow {
   machine {
     id			    1
-    name		    "hopping_robot_2012b"
+    name		    "hopping_robot_R2012b"
     created		    "17-May-2017 18:40:07"
     isLibrary		    0
     sfVersion		    76014001.0011
