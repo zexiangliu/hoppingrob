@@ -47,18 +47,19 @@ for i = 1:length(Yt_list)
     t= Yt_list(i);
     hold off;
     % Plot Center of Mass
-    surf(CoM.x+Yx_list(1,i),CoM.y+0,CoM.z+h0);
+    surf(CoM.x+Yx_list(1,i),CoM.y+Yx_list(2,i),CoM.z+h0);
     hold on;
     % Plot padel
     padel = Padel.vert;
-    padel(:,1)=padel(:,1)+Yx_list(3,i);
+    padel(:,1)=padel(:,1)+Yx_list(5,i);
+    padel(:,1)=padel(:,2)+Yx_list(6,i);
     hopping_height = h0/4*abs(sin((3*pi/2/tau)*t));
     padel(:,3)=padel(:,3)+1/20+hopping_height;
     patch('Faces',Padel.fac,'Vertices',padel,'FaceColor','r');  % patch function
     
     % Plot leg
-    l_x = [Yx_list(1,i);Yx_list(3,i)];
-    l_y = [0;0];
+    l_x = [Yx_list(1,i);Yx_list(5,i)];
+    l_y = [Yx_list(2,i);Yx_list(6,i)];
     l_z = [h0;2/20+hopping_height];
     
     plot3(l_x,l_y,l_z,'linewidth',3)
