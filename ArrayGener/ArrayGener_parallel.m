@@ -42,7 +42,7 @@ ts = TransSyst(num_X+1,num_U);          % +1 for sink node
 
 options = optimoptions('linprog','Algorithm','dual-simplex','Display','off'); % option for linprog
 %% Solving diff. eqn.
-M = 16; % num of workers to use
+M = 4; % num of workers to use
 % parfor (i = 1:num_U,M)
 
 % State Transition Matrix (for LTI)

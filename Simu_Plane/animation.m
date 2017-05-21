@@ -27,13 +27,23 @@ Padel.fac = fac;
 
 % Playground
 
-Playground.vert = [x1min-lmax,-0.5,0;
-                   x1min-lmax,0.5,0;
-                   x1max+lmax,0.5,0;
-                   -x1max-lmax,0.5,0;
+Playground.vert = [U.bnd(1,1),U.bnd(2,1),0;
+                   U.bnd(1,1),U.bnd(2,2),0;
+                   U.bnd(1,2),U.bnd(2,2),0;
+                   U.bnd(1,2),U.bnd(2,1),0;
                    ];
 
 Playground.fac = [1 2 3 4];
+
+% B_list
+
+Target.vert = [bnd_B(1,1),bnd_B(2,1),h0
+    bnd_B(1,1),bnd_B(2,2),h0
+    bnd_B(1,2),bnd_B(2,2),h0
+    bnd_B(1,2),bnd_B(2,1),h0
+    ];
+Target.fac = [1,2,3,4];
+
 figure(3);
 % axis([x1min-lmax, x1max+lmax, -0.5, 0.5, -0.5, 1.5]); 
 % axis equal;
@@ -52,7 +62,7 @@ for i = 1:length(Yt_list)
     % Plot padel
     padel = Padel.vert;
     padel(:,1)=padel(:,1)+Yx_list(5,i);
-    padel(:,1)=padel(:,2)+Yx_list(6,i);
+    padel(:,2)=padel(:,2)+Yx_list(6,i);
     hopping_height = h0/4*abs(sin((3*pi/2/tau)*t));
     padel(:,3)=padel(:,3)+1/20+hopping_height;
     patch('Faces',Padel.fac,'Vertices',padel,'FaceColor','r');  % patch function
@@ -72,13 +82,16 @@ for i = 1:length(Yt_list)
     
     
     % Playground
-     patch('Faces',Playground.fac,'Vertices',Playground.vert,'FaceColor','cyan');  % patch function
+    patch('Faces',Playground.fac,'Vertices',Playground.vert,'FaceColor','none');  % patch function
+    
+    % B_list
+    patch('Faces',Target.fac,'Vertices',Target.vert,'FaceColor','none','EdgeColor','red');  % patch function
 
     % camera configuration
 %     axis([x1min-lmax, x1max+lmax, -0.5, 0.5, -0.5, 1.5]); 
     axis equal;
-    az = 0;
-    el = 0;
+    az = 25;
+    el = 15;
     view(az, el);
     drawnow;
 end

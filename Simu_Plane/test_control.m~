@@ -147,16 +147,13 @@ animation
 
 %% Animation based on Simulink
 disp('Animation 2:')
-u_list1 = get_coord(U1_list,M_U1);
-u_list2 = get_coord(U2_list,M_U2);
+u_list = get_coord(U_list1,M_U1);
 
-save cont t_list u_list1 u_list2 % used as input in simulink
+save cont t_list u_list % used as input in simulink
 len_leg1=h0/2;
 len_leg2=sqrt(h0^2+(x1max-x1min+lmax)^2);
-C = [1,0,0,0;
-    0,1,0,0];
-D=[0,0
-   0,0];
+C = [1,0];
+D=[0];
 fre_hopping = pi/2/tau;
 % u_list = zeros(ts.n_s,1);
 % for i = 1:length(W)
@@ -166,4 +163,4 @@ fre_hopping = pi/2/tau;
 % M_X.V = [];
 
 % save cont u_list M_X
-hopping_robot_plane_R2012b
+hopping_robot
