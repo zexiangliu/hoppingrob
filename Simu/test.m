@@ -21,9 +21,9 @@ save system A B; % the system dx = Ax + Bu is saved in file system.mat
 
 %======= Test Parameter ========
 tau = 0.08;     % time interval
-eta = 0.2;
+eta = 0.1;
 mu = 0.2;
-lmax = 1.5;
+lmax = 1;
 dlim = 2.5;
 vlim = 4;
 
