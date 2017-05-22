@@ -1,4 +1,4 @@
-function ts = ArrayGener_parallel(M_X,M_U,tau,r)
+function ts = ArrayGener_parallel(M_X,M_U,tau,r,lmax)
 %% initialization
 var = load('system.mat');
 A=var.A;
@@ -46,26 +46,31 @@ M = 4; % num of workers to use
 % parfor (i = 1:num_U,M)
 
 % State Transition Matrix (for LTI)
-Phi = expm(A*tau);
-Phi_u = zeros(dim_X,dim_U);
-for i = 1:dim_U
-    u0=zeros(dim_U,1);
-    u0(i)=1;
-    y0 = [zeros(dim_X,1);u0];    % States for numerical integration
-    yt = ode45(@odefun,[0,tau],y0);
-    Phi_u(:,i) = yt.y(1:dim_X,end);
-end
+num_slice = 100; % num of time slice, used for checking the restriction of input
+Phi=cell(num_slice,1);
+Phi_u=cell(num_slice,1);
+list_tau = linspace(0,tau,num_slice);
 
+for k = 2:num_slice
+    Phi{k} = expm(A*list_tau(k));
+    Phi_u{k} = zeros(dim_X,dim_U);
+    for i = 1:dim_U
+        u0=zeros(dim_U,1);
+        u0(i)=1;
+        y0 = [zeros(dim_X,1);u0];    % States for numerical integration
+        yt = ode45(@odefun,[0,list_tau(k)],y0);
+        Phi_u{k}(:,i) = yt.y(1:dim_X,end);
+    end
+end
 %% for parallel computation
 transition_list = cell(num_U);
 pg_list = cell(num_U);
 
 parfor (i = 1:num_U,M)
-% for i = 1:10
+% for i = 1:num_U
     % calculate the input u0 corresponding to index i
     sub_u0 = M_U.ind2sub(i,:)';        
     u0 = M_U.discr_bnd(:,1)+(sub_u0-1)*M_U.gridsize;
-    
     %% Add progress group (part I)
     % Calculate equilibrium
     isEq = 1;   % flag that eq exists
@@ -101,16 +106,29 @@ parfor (i = 1:num_U,M)
     for j = 1:num_X
         sub_x0 = M_X.ind2sub(j,:)';     % Initial Condition
         x0 = M_X.discr_bnd(:,1)+(sub_x0-1)*M_X.gridsize;
+        % check input restriction
+        if(norm(x0(1:dim_X/2)-u0)>lmax)
+            PG(PG==j)=[]; % remove this state from progress group
+            continue;
+        end
     %         y0 = [x0;u0];    % States for numerical integration
     %         % ode45
     %         yt = ode45(@odefun,[0,tau],y0);
     %         xt = yt.y(1:dim_X,end);
-        % xt = zero-state + zero-input
-        xt = Phi*x0 + Phi_u*u0;
+        
 %         % rk4
 %         yt = rk4(tau,y0,10);
 %         xt = yt(1:2);
-
+        
+        % xt = zero-state + zero-input
+        % check input restriction for time slice
+        for k = 2:num_slice
+            xt = Phi{k}*x0 + Phi_u{k}*u0;
+            if(norm(xt(1:dim_X/2)-u0)>lmax)
+                PG(PG==j)=[];
+                continue;
+            end
+        end
         % Mapping: xt--->[X]_eta
         
          idx = mapping(xt,M_X,r);
@@ -151,7 +169,9 @@ for i = 1:num_U
 %    ts.state1 = [ts.state1,ts_state(:,1)'];
 %    ts.state2 = [ts.state2,ts_state(:,2)'];
 %    ts.action = [ts.action,i*ones(size(ts_state,1),1)];
-   ts.add_transition(ts_state(:,1)',ts_state(:,2)',i*ones(size(ts_state,1),1)');
+   if(~isempty(ts_state))
+       ts.add_transition(ts_state(:,1)',ts_state(:,2)',i*ones(size(ts_state,1),1)');
+   end
 end
 
 end

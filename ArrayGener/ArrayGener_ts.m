@@ -41,11 +41,13 @@ ts = TransSyst(num_X+1,num_U);          % +1 for sink node
 options = optimoptions('linprog','Algorithm','dual-simplex','Display','off'); % option for linprog
 %% Solving diff. eqn.
 
+% State Transition Matrix (for LTI)
+
 for i = 1:num_U
     % calculate the input u0 corresponding to index i
     sub_u0 = M_U.ind2sub(i,:)';        
     u0 = M_U.discr_bnd(:,1)+(sub_u0-1)*M_U.gridsize;
-    
+    if()
     %% Add progress group (part I)
     % Calculate equilibrium
     isEq = 1;   % flag that eq exists

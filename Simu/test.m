@@ -23,9 +23,9 @@ save system A B; % the system dx = Ax + Bu is saved in file system.mat
 tau = 0.08;     % time interval
 eta = 0.2;
 mu = 0.2;
-lmax = 1;
-dlim = 1.25;
-vlim = 3;
+lmax = 1.5;
+dlim = 2.5;
+vlim = 4;
 
 r1 = norm(expm(A*tau),'inf')*eta/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
 r = r1+eta/2;         % radius of norm ball when mapping xt to discr. state space
@@ -75,13 +75,13 @@ plot(X,Y,'.b','markersize',8);
 axis equal;
 %%
 % TransSyst
-ts = ArrayGener_ts(M_X,M_U,tau,r);
+ts = ArrayGener_parallel(M_X,M_U,tau,r,lmax);
 
 disp('Done.')
 %% Create B_list
 disp('Create target set B_list...')
-bnd_B = [-0.8,0.8
-         -1.5,  1.5];
+bnd_B = [x1min,x1max
+         -0.4,  0.4];
 B_list = Create_B(bnd_B,M_X);
 
 % Visualization of the target set

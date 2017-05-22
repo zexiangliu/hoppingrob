@@ -30,7 +30,7 @@ save system A B; % the system dx = Ax + Bu is saved in file system.mat
 tau = 0.08;     % time interval
 eta = 0.2;
 mu = 0.2;
-lmax = 1;
+lmax = 1.5;
 dlim = 2.5;
 vlim = 5;
 
@@ -97,8 +97,8 @@ M_U2 = GridGener(U2);
 % axis equal;
 %%
 % TransSyst
-ts1 = ArrayGener_parallel(M_X1,M_U1,tau,r);
-ts2 = ArrayGener_parallel(M_X2,M_U2,tau,r);
+ts1 = ArrayGener_parallel(M_X1,M_U1,tau,r,lmax/sqrt(2));
+ts2 = ArrayGener_parallel(M_X2,M_U2,tau,r,lmax/sqrt(2));
 disp('Done.')
 %% Create B_list
 disp('Create target set B_list...')
