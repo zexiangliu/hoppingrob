@@ -76,8 +76,8 @@ classdef Controller<handle
             % See if moved to lower
             bottom_cnt.mem_var = max(1, bottom_cnt.mem_var-1);
             
-            % Test for skipping the pitch in progress group sets (Zexiang)
-            % The pitch is that when creating the cont of pg, set V and a empty
+            % Test for skipping the error of progress group sets (Zexiang)
+            % When creating the cont of pg, set V and a empty
             % controller will always be added at first, which causes error
             % when execute line 114 'a_list = bottom_cnt.subcontrollers(state);'
             if(bottom_cnt.mem_var~=1)

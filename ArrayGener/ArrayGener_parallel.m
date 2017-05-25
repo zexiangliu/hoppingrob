@@ -1,4 +1,7 @@
 function ts = ArrayGener_parallel(M_X,M_U,tau,r,lmax)
+% modified based on ArrayGener_ts
+% add input constraints
+% parallel computing 
 %% initialization
 var = load('system.mat');
 A=var.A;
@@ -46,22 +49,35 @@ M = 4; % num of workers to use
 % parfor (i = 1:num_U,M)
 
 % State Transition Matrix (for LTI)
-num_slice = 100; % num of time slice, used for checking the restriction of input
-Phi=cell(num_slice,1);
-Phi_u=cell(num_slice,1);
-list_tau = linspace(0,tau,num_slice);
-
-for k = 2:num_slice
-    Phi{k} = expm(A*list_tau(k));
-    Phi_u{k} = zeros(dim_X,dim_U);
+% num_slice = 100; % num of time slice, used for checking the restriction of input
+Phi = expm(A*tau);
+Phi_u = zeros(dim_X,dim_U);
+if(isFull==1)
+    Phi_u = -inv(A)*(eye(dim_X)-Phi)*B;
+else
     for i = 1:dim_U
         u0=zeros(dim_U,1);
         u0(i)=1;
         y0 = [zeros(dim_X,1);u0];    % States for numerical integration
-        yt = ode45(@odefun,[0,list_tau(k)],y0);
-        Phi_u{k}(:,i) = yt.y(1:dim_X,end);
+        yt = ode45(@odefun,[0,tau],y0);
+        Phi_u(:,i) = yt.y(1:dim_X,end);
     end
 end
+% Phi=cell(num_slice,1);
+% Phi_u=cell(num_slice,1);
+% list_tau = linspace(0,tau,num_slice);
+% 
+% for k = 2:num_slice
+%     Phi{k} = expm(A*list_tau(k));
+%     Phi_u{k} = zeros(dim_X,dim_U);
+%     for i = 1:dim_U
+%         u0=zeros(dim_U,1);
+%         u0(i)=1;
+%         y0 = [zeros(dim_X,1);u0];    % States for numerical integration
+%         yt = ode45(@odefun,[0,list_tau(k)],y0);
+%         Phi_u{k}(:,i) = yt.y(1:dim_X,end);
+%     end
+% end
 %% for parallel computation
 transition_list = cell(num_U);
 pg_list = cell(num_U);
@@ -88,7 +104,7 @@ parfor (i = 1:num_U,M)
     if(isFull == 1) % if A is full rank
         idx_eq = mapping(x_part,M_X,M_X.gridsize/2); % mapping the eq into nodes in grid
         if(idx_eq ~= num_X + 1) % if eq is in the state space
-            PG(idx_eq)=[];      % remove the eq from progress group
+            PG(idx_eq)=-1;      % remove the eq from progress group
         end
     else                % if A is not full rank, then eq may not exist
         % if isEq == 0 (means no eq exists), PG are all states
@@ -106,9 +122,9 @@ parfor (i = 1:num_U,M)
     for j = 1:num_X
         sub_x0 = M_X.ind2sub(j,:)';     % Initial Condition
         x0 = M_X.discr_bnd(:,1)+(sub_x0-1)*M_X.gridsize;
-        % check input restriction
-        if(norm(x0(1:dim_X/2)-u0)>lmax)
-            PG(PG==j)=[]; % remove this state from progress group
+        % check input restriction (only for 1D)
+        if(norm(x0(1)-u0)>(lmax-M_X.gridsize/2))
+            PG(j)=-1; % remove this state from progress group
             continue;
         end
     %         y0 = [x0;u0];    % States for numerical integration
@@ -122,12 +138,19 @@ parfor (i = 1:num_U,M)
         
         % xt = zero-state + zero-input
         % check input restriction for time slice
-        for k = 2:num_slice
-            xt = Phi{k}*x0 + Phi_u{k}*u0;
-            if(norm(xt(1:dim_X/2)-u0)>lmax)
-                PG(PG==j)=[];
-                continue;
-            end
+%         for k = 2:num_slice
+%             xt = Phi{k}*x0 + Phi_u{k}*u0;
+%             if(norm(xt(1:dim_X/2)-u0)>lmax)
+%                 PG(PG==j)=[];
+%                 continue;
+%             end
+%         end
+        xt = Phi*x0+Phi_u*u0;
+        
+        % check input restriction (only for 1D)
+        if(norm(xt(1)-u0)>(lmax-r))
+            PG(j)=-1;
+            continue;
         end
         % Mapping: xt--->[X]_eta
         
@@ -164,7 +187,9 @@ parfor (i = 1:num_U,M)
 end
 
 for i = 1:num_U
-   ts.add_progress_group(i,pg_list{i}); 
+   if(~isempty(pg_list{i}))
+       ts.add_progress_group(i,pg_list{i});
+   end
    ts_state =transition_list{i};
 %    ts.state1 = [ts.state1,ts_state(:,1)'];
 %    ts.state2 = [ts.state2,ts_state(:,2)'];
