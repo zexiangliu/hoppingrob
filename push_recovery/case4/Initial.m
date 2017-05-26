@@ -1,6 +1,6 @@
 %=========Initial=========
 % Set up everything for simulation: abstraction system, controller
-% Ground Type 2: uneven ground, no holes
+% Ground Type 2: uneven ground + Ground Type 1: holes
 % No change of robot model. Map the real input to the input used in
 % model
 % Make sure that the input constraints satifies by shrinking lmax

@@ -4,45 +4,20 @@
 %% run Initial.m first.
 close all; clear all; clc;
 
+if(exist('ArrayGener_ts','file')~=2)
+    addpath(genpath('../'));
+    addpath(genpath('../../abstr-ref/'));
+    addpath('../../ArrayGener/');
+    addpath('../../Simu_2D');
+end
+
+disp('Start generating transient system...')
+
 load ts
 global A B
-%% Visualization and get initial condition from mouse
-
-% figure(1);
-% rad = linspace(0,2*pi,100);
-% plot(vlim*cos(rad),vlim*sin(rad));
-% axis equal;
-% grid on;
-% xlabel('v_1');
-% ylabel('v_2');
-% 
-% figure(2);
-% visual(M_X,B_list,bnd_B,W);
-% xlabel('x_2');
-% ylabel('v_2');
 
 
 %% Initialization
-% select the initial condition of x0(1)
-% while(x0(1)>=X.bnd(1,1)&&x0(1)<=X.bnd(1,2))
-%     if(~ismember(idx_x0,W))
-%         x0(1) = x0(1)-M_U.gridsize;
-%         idx_x0 = mapping(x0,M_X,eta/2);
-%     else
-%         break;
-%     end
-% end
-
-
-% for i = 1:length(M_X.V{1})
-%     x0 = [M_X.V{1}(i);v];
-%     idx_x0 = mapping(x0,M_X,eta/2);
-%     if(ismember(idx_x0_1,W1))
-%         break;
-%     end
-% end
-% x0 = W(1);
-
 
 idx_x = idx_x0(1);
 xt = [coord_bias+x0(1)*direction;x0(2)*direction];
@@ -54,6 +29,19 @@ t_list = [];
 
 Yt_list=[]; % record ode solution for animation
 Yx_list=[]; % record ode solution for animation
+
+% show initial conditions
+figure(1);
+hold off;
+plot(xt(1),xt(2),'*r','markersize',10);
+hold on;
+arrow('Start',[xt(1),xt(2)],'Stop',[xt(3)+xt(1),xt(4)+xt(2)],'Length',50,'TipAngle',5)
+grid on;
+hold off;
+axis([gnd.bnd_visual(1,:),gnd.bnd_visual(2,:)]);
+title('Initial Position and Velocity of the Robot')
+disp('Press any key to conitue...');
+pause;
 %% hopping
 disp('Simulating...');
 t_span = 50;
@@ -111,17 +99,17 @@ for i = 1:t_span
 
     figure(3);
     hold on;
-    plot((i-1)*tau+yt.x,yt.y(1,:),'-'); % position red
-    plot((i-1)*tau+yt.x,yt.y(2,:),'-'); % velocity blue
-    plot((i-1)*tau+yt.x,yt.y(3,:),'-'); % position red
-    plot((i-1)*tau+yt.x,yt.y(4,:),'-'); % position red
+    plot((i-1)*tau+yt.x,yt.y(1:2,:)'*direction-coord_bias'*direction,'-r'); % position red
+    plot((i-1)*tau+yt.x,yt.y(3:4,:)'*direction,'-b'); % velocity blue
     drawnow;
 end
 disp('Done.');
 
-legend('Vel of Mass Center','Pos of Mass Center');
+legend('Pos of Mass Center','Vel of Mass Center');
 xlabel('t');
 %% Trajectory in state space
+disp('Press any key to conitue...');
+pause;
 disp('Trajectory:')
 figure(2);
 visual(M_X,B_list,bnd_B,W);
@@ -131,7 +119,8 @@ for i=1:length(x1)-1
     arrow('Start',[x1(i),x2(i)],'Stop',[x1(i+1),x2(i+1)],'Length',10,'TipAngle',5)
     pause(0.01);
 end
-
+disp('Press any key to conitue...');
+pause;
 %% Animation based on Plot
 disp('Animation 1:')
 animation

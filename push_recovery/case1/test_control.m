@@ -5,6 +5,13 @@
 %% run Initial.m first.
 close all; clear all; clc;
 
+if(exist('ArrayGener_ts','file')~=2)
+    addpath(genpath('../'));
+    addpath(genpath('../../abstr-ref/'));
+    addpath('../../ArrayGener/');
+    addpath('../../Simu_2D');
+end
+
 load ts
 
 A = [0 0 1 0;
@@ -18,7 +25,6 @@ B = [0 0
 save system A B; % the system dx = Ax + Bu is saved in file system.mat
 
 %% Initialize the map
-
 bnd = [-3,3;
     -3,3];
 num_grid = [5,5];
@@ -26,7 +32,9 @@ gnd = Ground(bnd,num_grid,0);
 
 [map_X,map_Y,map_V]=gnd.ground_gen_rand(0.0);
 
-for i = 1:3
+num_holes = input('Please input the number of holes:');
+disp('Initial position of robot is at origin.');
+for i = 1:num_holes
     disp('Please select the position of hole in the figure:')
     gnd.add_hole(0.2,'circle')
 end
@@ -53,7 +61,11 @@ ylabel('v_2');
 %% Initialization
 % initial state 
 figure(1)
-disp('Please select the initial value of x_1 & v_1 on the plot:')
+disp('Please select the initial velocity:')
+grid on;
+xlabel('v_1');
+ylabel('v_2');
+title('Please select the initial velocity');
 [v1,v2]=ginput(1);
 v = norm([v1;v2]);
 direction = [v1;v2]/v;
