@@ -47,4 +47,4 @@ Initial;
 ```
 Please follow interactive instructions to finish the initialization.
 
-Note that IC and ground environment for case 1 is set each time you run *test_control*.
+Note that IC and ground environment for case 1 is set when you run *test_control*.
