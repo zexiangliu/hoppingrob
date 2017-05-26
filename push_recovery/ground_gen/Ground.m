@@ -14,10 +14,16 @@ classdef Ground<handle
         V_interp;
         hlim_hole; % height limit of holes
         V_animation; % grid values for animation (ground+holes)
+        bnd_visual
     end
     
     methods
-        function gnd = Ground(bnd,num_grid,mode)
+        function gnd = Ground(bnd,num_grid,mode,bnd_visual)
+            % bnd is the boundary of ground
+            % bnd_visual is the boundary of ground which is visualized
+            if(nargin==3)
+                bnd_visual=bnd;
+            end
             gnd.bnd = bnd; % bnd = [xmin,xmax;ymin,ymax]
             gnd.holes = {};
             x = linspace(bnd(1,1),bnd(1,2),num_grid(1));
@@ -25,8 +31,9 @@ classdef Ground<handle
             [gnd.X,gnd.Y]=meshgrid(x,y);
             gnd.V = zeros(size(gnd.X));
             gnd.mode = mode;
-            x = linspace(bnd(1,1),bnd(1,2),num_grid(1)*20);
-            y = linspace(bnd(1,1),bnd(1,2),num_grid(2)*20);
+            gnd.bnd_visual=bnd_visual;
+            x = linspace(bnd_visual(1,1),bnd_visual(1,2),num_grid(1)*20);
+            y = linspace(bnd_visual(1,1),bnd_visual(1,2),num_grid(2)*20);
             [gnd.X_interp,gnd.Y_interp]=meshgrid(x,y);
             gnd.V_interp = zeros(size(gnd.X_interp));
             gnd.hlim_hole = 10;
@@ -108,6 +115,7 @@ classdef Ground<handle
             hole.h = 10;
             hole.type = type;
             gnd.holes = [gnd.holes,{hole}];
+            gnd.visual_update();
         end
         
         function visual_holes(gnd,fig)
@@ -116,7 +124,7 @@ classdef Ground<handle
             else
                 figure(fig);
             end
-            contourf(gnd.X,gnd.Y,gnd.V);
+            contourf(gnd.X_interp,gnd.Y_interp,gnd.V_interp);
             % visualize holes
             if(~isempty(gnd.holes))
                hold on;
@@ -152,9 +160,9 @@ classdef Ground<handle
 %                    end
 %                 end
 %             end 
-            C = (V-min(V(:)))/range(V(:))*0.7;
-            surf(X,Y,V,C,'EdgeColor','none');
-%             mesh(X,Y,V);
+            C = (V-min(V(:)))/range(V(:))*1;
+%             surf(X,Y,V,C,'EdgeColor','none');
+            mesh(X,Y,V,C);
 %             axis equal;
         end
         

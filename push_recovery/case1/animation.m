@@ -50,7 +50,7 @@ fig = figure(3);
 t = 0;
 % hold on;
 
-gnd.visual_update();
+% gnd.visual_update();
 
 for i = 1:length(Yt_list)
     pause(Yt_list(i)-t);
