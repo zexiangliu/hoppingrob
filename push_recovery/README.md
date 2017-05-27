@@ -12,7 +12,7 @@ Example: Contour of the ground
 
 We set up four different cases for different ground environments and planning methods:
 
-### case 1
+### case 1 
 Even ground with holes. Do 1D planning without environment information (the worst case).
 
 Example: even ground with holes
