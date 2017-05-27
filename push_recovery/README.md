@@ -15,6 +15,8 @@ We set up four different cases for different ground environments and planning me
 ### case 1
 Even ground with holes. Do 1D planning without environment information (the worst case).
 
+![holes](pic/hole.png)
+
 ### case 2 
 Even ground with holes. Do 1D planning given positions and sizes of the holes in the line the robot moves along. 
 
