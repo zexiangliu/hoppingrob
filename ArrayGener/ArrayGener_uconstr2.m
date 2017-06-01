@@ -133,7 +133,7 @@ for i = 1:num_U
         sub_x0 = M_X.ind2sub(j,:)';     % Initial Condition
         x0 = M_X.discr_bnd(:,1)+(sub_x0-1)*eta;
         % check input restriction (only for 1D)
-        if(norm(x0(1)-u0)>h/h0*(lmax-eta/2)||~uconstraints(uconstr,u0,x0,h,r,2))
+        if((norm(x0(1)-u0)+eta/2)>h/h0*lmax||~uconstraints(uconstr,u0,x0,h,r,2))
             PG(j)=-1; % remove this state from progress group
             continue;
         end
@@ -150,7 +150,7 @@ for i = 1:num_U
         xt = Phi*x0+Phi_u*u0;
         
         % check input restriction (only for 1D)
-        if(norm(xt(1)-u0)>h/h0*(lmax-r)||~uconstraints(uconstr,u0,xt,h,r,3))
+        if((norm(xt(1)-u0)+r)>h/h0*lmax||~uconstraints(uconstr,u0,xt,h,r,3))
             PG(j)=-1;
             continue;
         end

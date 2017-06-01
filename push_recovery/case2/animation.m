@@ -52,7 +52,7 @@ t = 0;
 
 % gnd.visual_update();
 
-for i = 1:length(Yt_list)
+for i = 1:length(Yt_list)/2
     pause(Yt_list(i)-t);
     t= Yt_list(i);
     hold off;
@@ -64,7 +64,7 @@ for i = 1:length(Yt_list)
     padel = Padel.vert;
     padel(:,1)=padel(:,1)+Yx_list(5,i);
     padel(:,2)=padel(:,2)+Yx_list(6,i);
-    hopping_height = h0/4*abs(sin((3*pi/2/tau)*t));
+    hopping_height = 0;%h0/4*abs(sin((3*pi/2/tau)*t));
     padel(:,3)=padel(:,3)+1/20+hopping_height;
     patch('Faces',Padel.fac,'Vertices',padel,'FaceColor','r');  % patch function
     
@@ -94,9 +94,17 @@ for i = 1:length(Yt_list)
 %     az = 0;
 %     el = 90;
 %     view(az, el);
-%     drawnow;
+
+    drawnow;
     M(i) = getframe;
+    
+    % write to video
 end
+
+video = VideoWriter('animation.avi');
+open(video);
+writeVideo(video,M);
+close(video);
 % %%
 % t = 0;
 % for i = 1:length(Yt_list)

@@ -39,7 +39,7 @@ mu = 0.1;
 lmax = 1;
 dlim = 2.5;
 vlim = 5;
-max_leg = sqrt(h0^2+lmax^2)+2; % the largest length which the leg can extend
+max_leg = sqrt(h0^2+lmax^2)+0.5; % the largest length which the leg can extend
 
 % ==============================
 
@@ -160,7 +160,7 @@ uconstr.coord_bias = coord_bias;
 uconstr.max_leg = max_leg;
 uconstr.eta = eta;
 specify_num_workers(4);
-ts = ArrayGener_uconstr2(M_X,M_U,tau,lmax,uconstr);
+ts = ArrayGener(M_X,M_U,tau,lmax,uconstr);
 disp('Done.')
 
 %% Controller

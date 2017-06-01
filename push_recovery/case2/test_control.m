@@ -104,6 +104,7 @@ for i = 1:t_span
     plot((i-1)*tau+yt.x,yt.y(3:4,:)'*direction,'-b'); % velocity blue
 
     drawnow;
+    
 end
 disp('Done.');
 
