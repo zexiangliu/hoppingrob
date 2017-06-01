@@ -2,7 +2,7 @@
 
 ## Description
 
-The hopping robot pushed by someone has a nonzero velocity. The control algorithm is applied to recover the robot to a stable (or near-stable) state. We assume that the robot is working in an environment which may be uneven and have holes.
+The hopping robot pushed by someone has a nonzero velocity. The control algorithm is applied to recover the robot to a stable (or near-stable) state. We assume that the robot is working in an environment which may be uneven and have holes. At any time, the robot should avoid stepping in the holes.
 
 Example: Contour of the ground
 
@@ -12,8 +12,10 @@ Example: Contour of the ground
 
 We set up four different cases for different ground environments and planning methods:
 
-### case 1
+### case 1 
 Even ground with holes. Do 1D planning without environment information (the worst case).
+
+Example: even ground with holes
 
 ![holes](pic/hole.png)
 
@@ -26,6 +28,8 @@ Uneven ground without holes. Do 1D planning given maximum altitude difference *h
 Example: How the *lmax* shrinks:
 
 ![lmax](pic/lmax.png)
+
+In case 3&4, the maximum length of leg is specified to decide the upper bound of *lmax*, which means that there's no one-to-one relationship b.t. *lmax* and the maximum length of leg anymore. 
 
 ### case 4
 Uneven ground with holes. Do 1D planning given the ground information in the line the robot moves along (holes and altitudes of nodes in input space). In this case, the model parameter *h0* of the robot changes based on the altitude of input *x_ankle*.
