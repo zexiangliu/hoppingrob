@@ -44,22 +44,28 @@ eta = M_X.gridsize;
 mu = M_U.gridsize;
 uconstr.eta = eta;
 
+% dimN=0;
+% x_hom=[];
+% x_part=[];
+% ones_eta=[];
+
 % direction = uconstr.direction;
 gnd = uconstr.gnd;
 coord_bias = uconstr.coord_bias;
 ucons_fun = uconstr.ucons_fun; % constraint function of input
+ROT = uconstr.ROT;
 
-ts = TransSyst(num_X,num_U);          % +1 for sink node
+num_s = 0; % num of transitions in ts structure
 
 options = optimoptions('linprog','Algorithm','dual-simplex','Display','off'); % option for linprog
 %% Solving diff. eqn.
 % M = 4; % num of workers to use
 
 %% for parallel computation
-transition_list = cell(num_U);
-pg_list = cell(num_U);
+transition_list = cell(num_U-1);
+pg_list = cell(num_U-1);
 
-parfor i = 1:num_U
+parfor i = 1:num_U-1
 % for i = 1:num_U-1
     % calculate the input u0 corresponding to index i
     u0 = get_coord(i,M_U);
@@ -69,10 +75,10 @@ parfor i = 1:num_U
         disp('Find an unfeasible input.')
         continue;
     end
-    
+%     
     % calculate system parameter
-    tmp_u = u0 + coord_bias;
-    h = h0 - gnd.get_height(tmp_u(1),tmp_u(2));
+    tmp_u = ROT*u0 + coord_bias;
+    h = h0 ;%- gnd.get_height(tmp_u(1),tmp_u(2));
     A = [0 0 1 0;
          0 0 0 1;
         g/h 0 0 0;
@@ -88,8 +94,8 @@ parfor i = 1:num_U
     
     % calculate r
     r1 = norm(Phi,'inf')*max(eta)/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
-    r = r1+eta/2;         % radius of norm ball when mapping xt to discr. state space
-    
+    r = r1*ones(dim_X,1);    %%%     % radius of norm ball when mapping xt to discr. state space
+
     %% Add progress group (part I)
     % Calculate equilibrium
     isEq = 1;   % flag that eq exists
@@ -105,7 +111,7 @@ parfor i = 1:num_U
     % progress group
     PG = 1:num_X;    % group having all the states
     if(isFull == 1) % if A is full rank
-        idx_eq = mapping(x_part,M_X,eta/2); % mapping the eq into nodes in grid
+        idx_eq = mapping(x_part,M_X,eta/2*0); % mapping the eq into nodes in grid
         if(idx_eq ~= num_X + 1) % if eq is in the state space
             PG(idx_eq)=-1;      % remove the eq from progress group
         end
@@ -120,12 +126,13 @@ parfor i = 1:num_U
     
     %% Nonlinear equation solver
     % zero-input response (only for LTI sys)
-    state1 = [];
-    state2 = [];
+    state1 = zeros(prod(floor(2*r./eta)+1)*(num_X-1),1,'uint32');
+    state2 = state1;
+    counter_state = 1;
     for j = 1:num_X-1
         x0 = get_coord(j,M_X);
         % check input restriction
-        if(any(abs(x0(1:2)-u0)+abs(eta(1:2)/2)>h/h0*lmax/sqrt(2))||~feval(ucons_fun,uconstr,u0,x0,h,r,2))
+        if(any(abs(x0(1:2)-u0)+abs(eta(1:2)/2)>h/h0*lmax*100/sqrt(2))||~feval(ucons_fun,uconstr,u0,x0,h,r,2))
             PG(j)=-1; % remove this state from progress group
             continue;
         end
@@ -149,11 +156,15 @@ parfor i = 1:num_U
         % Mapping: xt--->[X]_eta
         
          idx = mapping(xt,M_X,r);
-         for k = idx'
-%              ts.add_transition(j,k,i);
-               state1 = [state1;j];
-               state2 = [state2;k];
-         end
+         len_idx = length(idx);
+         state1(counter_state:counter_state+len_idx-1) = j*ones(len_idx,1);
+         state2(counter_state:counter_state+len_idx-1) = idx;
+         counter_state = counter_state + len_idx;
+%          for k = idx'
+% %              ts.add_transition(j,k,i);
+%                state1 = [state1;j];
+%                state2 = [state2;k];
+%          end
          % add progress group (part II)
          if((~isFull)&&isEq)
              f_lp = ones(dimN,1);
@@ -173,20 +184,22 @@ parfor i = 1:num_U
              end
          end
     end
-    transition_list{i} = [state1,state2];
+    valid_idx = state1~=0;
+    num_s = num_s + sum(valid_idx);
+    transition_list{i} = [state1(valid_idx),state2(valid_idx)];
     PG(PG==-1)=[];
 %     ts.add_progress_group(i,PG);
     pg_list{i} = PG;
     i
 end
 
-for i = 1:num_U
+ts = TransSyst(num_X,num_U);          % +1 for sink node
+for i = 1:num_U-1
    if(~isempty(pg_list{i}))
        ts.add_progress_group(i,pg_list{i});
    end
-   ts_state =transition_list{i};
-   if(~isempty(ts_state))
-       ts.add_transition(ts_state(:,1)',ts_state(:,2)',i*ones(size(ts_state,1),1)');
+   if(~isempty(transition_list{i}))
+       ts.add_transition(transition_list{i}(:,1)',transition_list{i}(:,2)',i*ones(size(transition_list{i},1),1,'uint32')');
    end
 end
 

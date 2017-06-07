@@ -28,11 +28,11 @@ system.h0 = h0;
 
 %======= Test Parameter ========
 tau = 0.08;     % time interval
-eta = [0.2;0.1;0.2;0.1]; %gridsize in each dimension
+eta = [0.2;0.1;0.2;0.2];%[0.2;0.2;0.2;0.2]; %gridsize in each dimension
 mu = [0.2;0.2];
 lmax = 1;
 dlim = 2.5;
-vlim = 2.5;
+vlim = 4;
 
 r1 = norm(expm(A*tau),'inf')*eta/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
 r = r1+eta(1)/2;         % radius of norm ball when mapping xt to discr. state space
@@ -52,7 +52,7 @@ X.bnd = [
     -dlim,dlim;
     -dlim,dlim;
     -vlim,vlim;
-    -vlim,vlim
+    -vlim/2,vlim/2
     ];
 U.bnd = [x1min-lmax,x1max+lmax
         x1min-lmax,x1max+lmax];
@@ -97,15 +97,17 @@ coord_bias = [x1;x2];
 
 %=== Grid Constraints Config ===
 ConsConfig.cons_fun = @constraints;
-ConsConfig.angle = 10; % unit: deg
+ConsConfig.angle = 20; % unit: deg
 ConsConfig.bias = [0;0];
-ConsConfig.rotat = atan2(direction(2),direction(1))*180/pi; % unit: deg
+ConsConfig.rotat = 0; % unit: deg
 % ================================
 
 %=== Input Constraints Config ===
 UConsConfig.ucons_fun = @uconstraints;
 % UConsConfig.direction = 0;
 UConsConfig.coord_bias = coord_bias;
+theta = atan2(direction(2),direction(1))*180/pi
+UConsConfig.ROT = [cosd(theta),-sind(theta);sind(theta),cosd(theta)];
 UConsConfig.gnd=gnd;
 %================================
 disp('Initialization Done.');
@@ -113,41 +115,47 @@ disp('Initialization Done.');
 
 % Generating Grid
 M_X = GridGener(X,ConsConfig);
+ConsConfig.cons_fun = @constraints_u;
 M_U = GridGener(U,ConsConfig);
 disp('Griding Done.');
-% Visualization
-bnd = M_X.bnd;
-u = M_X.gridsize;
-discr_bnd = M_X.discr_bnd;
-[U,V] = meshgrid(bnd(1,:),bnd(2,:));
-f=[1,2,4,3];
-figure(1);
-v = [U(:),V(:)];
-patch('Faces',f,'Vertices',v,...
-    'EdgeColor','green','FaceColor','none','LineWidth',2)
+%% Visualization
 
-hold on;
-[x1,x2] = get_coord(1:length(M_X.ind2sub),M_X);
-plot(x1+coord_bias(1),x2+coord_bias(2),'.')
+visual(M_U,U.bnd,1:M_U.numV-1,coord_bias,UConsConfig.ROT,'U')
+visual(M_X,M_X.bnd,1:M_X.numV-1,coord_bias,UConsConfig.ROT,'X')
 
 axis equal;
 xlabel('x_1');ylabel('x_2');
 disp('Visualization Done.');
+save test.mat
 %% 6 Test ArrayGener_ts 
 % store the transist system in class 'TransSyst'
 % add progress group in ArrayGener_ts.m
-NP = 4;
-thePool = parpool('local',4);
+
+% if(~exist('thePool','var'))
+%     NP = 4;
+%     thePool = parpool('local',4);
+% end
+
+tic
 ts = ArrayGener(M_X,M_U,tau,lmax,UConsConfig,system);
-delete(thePool);
+toc
+% delete(thePool);
 disp('Abstraction Done.');
 
 %% 7 find target set B_list
+bnd_B = [X.bnd(1:2,:);
+         -1,  1;
+         -1,  1];
+B_list = Create_B(bnd_B,M_X);
+visual(M_X,bnd_B,B_list,coord_bias,UConsConfig.ROT,'X')
+disp('Target set Done.');
 
+%% 8 winning set
+ts.create_fast();
+[W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
 
-
-
-
+visual(M_X,bnd_B,W,coord_bias,UConsConfig.ROT,'W')
+disp('Winning set Done.')
 
 
 

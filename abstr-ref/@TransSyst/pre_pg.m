@@ -2,18 +2,24 @@ function [W, Cw, cont] = pre_pg(ts, V, B, quant1)
   % pre_pg: pre(V) under (quant1, forall) while remaining in B using progress groups
   % 
   % Returns a sorted set
+  Vlist = cell(1e4,1);
+  Klist = cell(1e4,1);
+  counter = 1;
+  
   W = uint32(V);
-  Vlist = {V};
+  Vlist{1} = V;
   Cw = [];
-  Klist = {Controller(W, containers.Map(), 'simple')};
-
+  Klist{1} = Controller(W, containers.Map(), 'simple');
+  counter = counter + 1;
+  
   for i=1:length(ts.pg_U)
     % Progress groups
     if nargout > 2
       [preVinv, Cw, preKinv] = ts.pginv(ts.pg_U{i}, ts.pg_G{i}, W, B, quant1);
-      if length(preVinv) > 0
-        Vlist{end+1} = preVinv;
-        Klist{end+1} = preKinv;
+      if ~isempty(preVinv)
+        Vlist{counter} = preVinv;
+        Klist{counter} = preKinv;
+        counter = counter + 1;
       end
     elseif nargout > 1
       [preVinv, Cw] = ts.pginv(ts.pg_U{i}, ts.pg_G{i}, W, B, quant1);
@@ -25,6 +31,6 @@ function [W, Cw, cont] = pre_pg(ts, V, B, quant1)
   end
 
   if nargout > 2
-    cont = Controller(Vlist, Klist, 'reach', 'pre_pg');
+    cont = Controller(Vlist(1:counter-1), Klist(1:counter-1), 'reach', 'pre_pg');
   end
 end

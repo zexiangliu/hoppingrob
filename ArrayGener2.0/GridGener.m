@@ -18,6 +18,7 @@ end
 
 range = abs(bnd(:,2)-bnd(:,1));  % range of each dimension
 num_node = ceil(range./u-1); % num of discretized points in each dimension
+num_node(num_node<0)=0;
 bnd_layer = (range-num_node.*u)/2;
 
 % discretize the boundaries
@@ -36,7 +37,7 @@ end
 
 % n =  size(Mesh.bnd,1);
 num_V = prod(Mesh.discr_bnd(:,3));
-Mesh.ind2sub=uint32(zeros(num_V,n));
+Mesh.ind2sub=zeros(num_V,n,'uint32');
 % for i = 1:num_V
 %     Mesh.ind2sub(i,:)=ind2sub2(Mesh.discr_bnd(:,3),i)';
 % end

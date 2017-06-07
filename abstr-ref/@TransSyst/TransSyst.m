@@ -3,7 +3,8 @@ classdef TransSyst<handle
   properties (SetAccess={?Partition})
     n_s;
     n_a;
-
+    pointer;
+    
     % Transitions
     state1;
     state2; 
@@ -28,13 +29,20 @@ classdef TransSyst<handle
   end
 
   methods
-    function ts = TransSyst(n_s, n_a)
+    function ts = TransSyst(n_s, n_a, n_state)
       % Create a TransSyst with n_s states and n_a actions
       ts.n_s = uint32(n_s);
       ts.n_a = uint32(n_a);
-      ts.state1 = uint32([]);
-      ts.state2 = uint32([]);
-      ts.action = uint32([]);
+      ts.pointer = 1;
+      if(nargin == 2)
+          ts.state1 = uint32([]);
+          ts.state2 = uint32([]);
+          ts.action = uint32([]);
+      else
+          ts.state1 = zeros(n_state,1,'uint32');
+          ts.state2 = zeros(n_state,1,'uint32');
+          ts.action = zeros(n_state,1,'uint32');
+      end
     end
 
     function numact = add_action(ts)
@@ -76,9 +84,11 @@ classdef TransSyst<handle
 %       ts.state1(end+1) = s1;
 %       ts.state2(end+1) = s2;
 %       ts.action(end+1) = a;
-        ts.state1 = [ts.state1,s1];
-        ts.state2 = [ts.state2,s2];
-        ts.action = [ts.action,a];
+        len = length(s1);
+        ts.state1(ts.pointer:ts.pointer+len-1) = s1;
+        ts.state2(ts.pointer:ts.pointer+len-1) = s2;
+        ts.action(ts.pointer:ts.pointer+len-1) = a;
+        ts.pointer = ts.pointer+len;
         ts.fast_enabled = false;
     end
 

@@ -4,8 +4,9 @@ y = true;
 % if(type==1)
     gnd = uconstr.gnd;
     coord_bias = uconstr.coord_bias;
+    ROT = uconstr.ROT;
 %     direction = uconstr.direction;
-    u = coord_bias+u0; % input in world coordinate
+    u = coord_bias+ROT*u0; % input in world coordinate
     y = ~gnd.IsInHoles(u);
 % elseif(type==2)
 %     eta = uconstr.eta;

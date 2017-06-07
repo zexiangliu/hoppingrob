@@ -25,7 +25,7 @@ siz = double(siz);
 lensiz = length(siz);
 nout = lensiz;
 
-v = zeros(lensiz,1);
+v = zeros(lensiz,length(ndx));
 
 if lensiz < nout
     siz = [siz ones(1,nout-lensiz)];
@@ -38,17 +38,17 @@ if nout > 2
     for i = nout:-1:3,
         vi = rem(ndx-1, k(i-1)) + 1;
         vj = (ndx - vi)/k(i-1) + 1;
-        v(i) = double(vj);
+        v(i,:) = double(vj);
         ndx = vi;
     end
 end
 
 if nout >= 2
     vi = rem(ndx-1, siz(1)) + 1;
-    v(2) = double((ndx - vi)/siz(1) + 1);
-    v(1) = double(vi);
+    v(2,:) = double((ndx - vi)/siz(1) + 1);
+    v(1,:) = double(vi);
 else 
-    v(1) = double(ndx);
+    v(1,:) = double(ndx);
 end
 
 
