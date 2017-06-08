@@ -11,7 +11,7 @@ tic
 ts = ArrayGener(M_X,M_U,tau,lmax,UConsConfig,system);
 toc
 disp('Abstraction Done.');
-
+save rt_ts.mat ts
 %% 7 find target set B_list
 bnd_B = [X.bnd(1:2,:);
          -1,  1;
@@ -27,4 +27,4 @@ ts.create_fast();
 % visual(M_X,bnd_B,W,coord_bias,UConsConfig.ROT,'W')
 disp('Winning set Done.')
 delete(thePool);
-save result.mat ts bnd_B B_list W cont
+save rt_cont.mat ts bnd_B B_list W cont
