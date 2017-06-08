@@ -2,6 +2,9 @@
 % store the transist system in class 'TransSyst'
 % add progress group in ArrayGener_ts.m
 clc;clear all;close all;
+addpath('../GroundGener/');
+addpath(genpath('../abstr-ref/'));
+
 if(~exist('thePool','var'))
     NP = 4;
     thePool = parpool('local',4);
@@ -23,8 +26,8 @@ disp('Target set Done.');
 %% 8 winning set
 ts.create_fast();
 [W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
-
+size(W)
 % visual(M_X,bnd_B,W,coord_bias,UConsConfig.ROT,'W')
 disp('Winning set Done.')
+save rt_cont.mat W cont
 delete(thePool);
-save rt_cont.mat ts bnd_B B_list W cont
