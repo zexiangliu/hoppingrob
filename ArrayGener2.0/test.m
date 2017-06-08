@@ -30,7 +30,7 @@ system.h0 = h0;
 tau = 0.08;     % time interval
 eta = [0.2;0.1;0.2;0.2];%[0.2;0.2;0.2;0.2]; %gridsize in each dimension
 mu = [0.2;0.2];
-lmax = 1;
+lmax = 10;
 dlim = 2.5;
 vlim = 4;
 
@@ -52,7 +52,7 @@ X.bnd = [
     -dlim,dlim;
     -dlim,dlim;
     -vlim,vlim;
-    -vlim/2,vlim/2
+    -vlim,vlim
     ];
 U.bnd = [x1min-lmax,x1max+lmax
         x1min-lmax,x1max+lmax];
@@ -126,7 +126,7 @@ visual(M_X,M_X.bnd,1:M_X.numV-1,coord_bias,UConsConfig.ROT,'X')
 axis equal;
 xlabel('x_1');ylabel('x_2');
 disp('Visualization Done.');
-save test.mat
+save test.mat M_X M_U tau lmax UConsConfig system
 %% 6 Test ArrayGener_ts 
 % store the transist system in class 'TransSyst'
 % add progress group in ArrayGener_ts.m

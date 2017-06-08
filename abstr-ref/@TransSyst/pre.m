@@ -31,39 +31,75 @@ function [V, cont] = pre(ts, X, U, quant1, quant2)
     end
   end
   
-  for q = 1:ts.n_s
-    if ~log_idx(q)
-        continue
-    end
-    act_list = false(1, length(U));   % outcome per action 
-    for i = 1:length(U)
-      a = U(i);
-      if ts.fast_enabled
-        aPost = ts.fast_post{(a-1) * ts.n_s + q};
-      else
-        aPost = ts.post(q, a);
+  if(ts.fast_enabled)
+      nout = nargout;
+      fast_enabled = ts.fast_enabled;
+      n_s = ts.n_s;
+      fast_post = ts.fast_post;
+      parfor q = 1:ts.n_s
+        if ~log_idx(q)
+            continue
+        end
+        act_list = false(1, length(U));   % outcome per action 
+        for i = 1:length(U)
+          a = U(i);
+          if fast_enabled
+            aPost = fast_post{(a-1) * n_s + q};
+          end
+          if quant2
+            act_list(i) = any(builtin('_ismemberhelper',aPost, X));
+          else
+            act_list(i) = all(builtin('_ismemberhelper',aPost, X)) && ~isempty(aPost);
+          end
+        end
+        if quant1
+          if ~any(act_list)
+            log_idx(q) = 0;
+          elseif nout > 1
+            Kmap(q) = U(act_list); 
+          end
+        else
+          if ~all(act_list)
+            log_idx(q) = 0;
+          elseif nout > 1
+            Kmap(q) = U;
+          end
+        end
       end
-      if quant2
-        act_list(i) = any(builtin('_ismemberhelper',aPost, X));
-      else
-        act_list(i) = all(builtin('_ismemberhelper',aPost, X)) && ~isempty(aPost);
+  else
+      for q = 1:ts.n_s
+        if ~log_idx(q)
+            continue
+        end
+        act_list = false(1, length(U));   % outcome per action 
+        for i = 1:length(U)
+          a = U(i);
+          if ts.fast_enabled
+            aPost = ts.fast_post{(a-1) * ts.n_s + q};
+          else
+            aPost = ts.post(q, a);
+          end
+          if quant2
+            act_list(i) = any(builtin('_ismemberhelper',aPost, X));
+          else
+            act_list(i) = all(builtin('_ismemberhelper',aPost, X)) && ~isempty(aPost);
+          end
+        end
+        if quant1
+          if ~any(act_list)
+            log_idx(q) = 0;
+          elseif nargout > 1
+            Kmap(q) = U(act_list); 
+          end
+        else
+          if ~all(act_list)
+            log_idx(q) = 0;
+          elseif nargout > 1
+            Kmap(q) = U;
+          end
+        end
       end
-    end
-    if quant1
-      if ~any(act_list)
-        log_idx(q) = 0;
-      elseif nargout > 1
-        Kmap(q) = U(act_list); 
-      end
-    else
-      if ~all(act_list)
-        log_idx(q) = 0;
-      elseif nargout > 1
-        Kmap(q) = U;
-      end
-    end
   end
-
   V = zeros(1, sum(log_idx), 'uint32');
   V(:) = find(log_idx);
   if nargout > 1

@@ -55,7 +55,7 @@ coord_bias = uconstr.coord_bias;
 ucons_fun = uconstr.ucons_fun; % constraint function of input
 ROT = uconstr.ROT;
 
-num_s = 0; % num of transitions in ts structure
+num_s = zeros(num_U-1,1,'uint32'); % num of transitions in ts structure
 
 options = optimoptions('linprog','Algorithm','dual-simplex','Display','off'); % option for linprog
 %% Solving diff. eqn.
@@ -149,6 +149,7 @@ parfor i = 1:num_U-1
         xt = Phi*x0+Phi_u*u0;
         
         % check input restriction
+%         min(h/h0*lmax/sqrt(2)-abs(r(1:2)/2))
         if(any(abs(xt(1:2)-u0)+abs(r(1:2)/2)>h/h0*lmax/sqrt(2))||~feval(ucons_fun,uconstr,u0,xt,h,r,3))
             PG(j)=-1;
             continue;
@@ -185,7 +186,7 @@ parfor i = 1:num_U-1
          end
     end
     valid_idx = state1~=0;
-    num_s = num_s + sum(valid_idx);
+    num_s(i) = sum(valid_idx);
     transition_list{i} = [state1(valid_idx),state2(valid_idx)];
     PG(PG==-1)=[];
 %     ts.add_progress_group(i,PG);
@@ -193,7 +194,7 @@ parfor i = 1:num_U-1
     i
 end
 
-ts = TransSyst(num_X,num_U);          % +1 for sink node
+ts = TransSyst(num_X,num_U,sum(num_s));          % +1 for sink node
 for i = 1:num_U-1
    if(~isempty(pg_list{i}))
        ts.add_progress_group(i,pg_list{i});

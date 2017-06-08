@@ -1,7 +1,7 @@
 %% 6 Test ArrayGener_ts 
 % store the transist system in class 'TransSyst'
 % add progress group in ArrayGener_ts.m
-
+clc;clear all;close all;
 if(~exist('thePool','var'))
     NP = 4;
     thePool = parpool('local',4);
@@ -10,7 +10,6 @@ load test.mat
 tic
 ts = ArrayGener(M_X,M_U,tau,lmax,UConsConfig,system);
 toc
-delete(thePool);
 disp('Abstraction Done.');
 
 %% 7 find target set B_list
@@ -27,4 +26,5 @@ ts.create_fast();
 
 % visual(M_X,bnd_B,W,coord_bias,UConsConfig.ROT,'W')
 disp('Winning set Done.')
+delete(thePool);
 save result.mat ts bnd_B B_list W cont

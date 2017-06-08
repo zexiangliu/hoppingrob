@@ -1,7 +1,7 @@
 function y = uconstraints(uconstr,u0,x0,h,r,type)
 % Check the input constraints. If input is feasible, return 1
 y = true;
-% if(type==1)
+if(type==1)
     gnd = uconstr.gnd;
     coord_bias = uconstr.coord_bias;
     ROT = uconstr.ROT;
@@ -21,5 +21,5 @@ y = true;
 %     if(l>max_leg)
 %         y = false;
 %     end
-% end
+end
 end
