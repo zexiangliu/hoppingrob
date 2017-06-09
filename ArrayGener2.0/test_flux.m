@@ -13,10 +13,12 @@ load test.mat
 tic
 ts = ArrayGener(M_X,M_U,tau,lmax,UConsConfig,system);
 toc
+delete(thePool);
 disp('Abstraction Done.');
-save rt_ts.mat ts
+zero = 0;
+save('rt_ts.mat','zero','ts','-v7.3')
 %% 7 find target set B_list
-bnd_B = [X.bnd(1:2,:);
+bnd_B = [M_X.bnd(1:2,:);
          -1,  1;
          -1,  1];
 B_list = Create_B(bnd_B,M_X);
@@ -29,5 +31,4 @@ ts.create_fast();
 size(W)
 % visual(M_X,bnd_B,W,coord_bias,UConsConfig.ROT,'W')
 disp('Winning set Done.')
-save rt_cont.mat W cont
-delete(thePool);
+save('rt_cont.mat','zero','W','cont','-v7.3');
