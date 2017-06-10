@@ -31,6 +31,7 @@ classdef TransSyst<handle
   methods
     function ts = TransSyst(n_s, n_a, n_state)
       % Create a TransSyst with n_s states and n_a actions
+      % n_state = num of transitions, preallocation
       ts.n_s = uint32(n_s);
       ts.n_a = uint32(n_a);
       ts.pointer = 1;

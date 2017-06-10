@@ -16,14 +16,14 @@ if(nargin<2)
     r = var.eta/2;
 end
 
-% eta = Qn.gridsize;      % grid size of discretized state space
+eta = Qn.gridsize;      % grid size of discretized state space
 bnd = Qn.bnd;           
 n = size(bnd,1);        % # dim
 discr_bnd = Qn.discr_bnd;
 V = Qn.V; 
 % check if xt is out of interested state space
-lbnd = (bnd(:,1)<=xt);  % lower bnd
-ubnd = (xt<=bnd(:,2));  % upper bnd
+lbnd = (bnd(:,1)<=xt-(r-eta/2));  % lower bnd
+ubnd = (xt+(r-eta/2)<=bnd(:,2));  % upper bnd
 if((sum(lbnd+ubnd))<2*n)    
     idx=prod(discr_bnd(:,3))+1; % if out of bnd, assign it to sink node
     return;

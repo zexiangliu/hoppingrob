@@ -13,7 +13,7 @@ clear all;clc;close all;
 addpath(genpath('../'));
 addpath(genpath('../../abstr-ref/'));
 addpath('../../ArrayGener2.0/');
-addpath('../../Simu_2D');
+% addpath('../../Simu_2D');
 disp('Start generating transient system...')
 %====== Define the system ======
 g = 10;
@@ -36,12 +36,12 @@ save system g h0 A B; % the system dx = Ax + Bu is saved in file system.mat
 tau = 0.08;     % time interval
 lmax = 1;
 dlim = 2.5;
-vlim = 5;
+vlim = 4;
 max_leg = sqrt(h0^2+lmax^2)+0.5; % the largest length which the leg can extend
 hlim = 0.15;
 
-eta = [(g/h0-g/(h0+hlim))/20;0.2;0.2];
-mu = 0.1;
+eta = [(g/h0-g/(h0+hlim))/20;0.1;0.2];
+mu = 0.2;
 
 % ==============================
 
@@ -55,8 +55,8 @@ x1min= -dlim;
 x1max= dlim;
 
 % boundaries: i^th row -->  i^th dimension
-X.bnd = [
-    g/(h0+hlim),g/h0
+X.bnd = [%g/h0,g/h0
+     g/(h0+hlim),g/h0
     -dlim,dlim;
     -vlim,vlim
     ];
@@ -69,7 +69,7 @@ ConsConfig.cons_fun = @cons_fun;
 % Generating Grid
 M_X = GridGener(X,ConsConfig);
 M_U = GridGener(U,ConsConfig);
-
+save visual_set.mat M_X
 %% Initialize the map
 
 bnd = [-10,10;
@@ -86,7 +86,7 @@ gnd = Ground(bnd,num_grid,1,bnd_visual);
 size_grid = [map_X(1,3)-map_X(1,2);map_Y(3,1)-map_Y(2,1)];
 px = px/size_grid(1);
 py = py/size_grid(2);
-dhdx_max = max(sqrt(px(:).^2 + py(:).^2))
+dhdx_max = hlim/(20/9);%max(sqrt(px(:).^2 + py(:).^2));
 % num_holes = input('Please input the number of holes:');
 % for i = 1:num_holes
 %     disp('Please select the position of hole in the figure:')
@@ -96,8 +96,9 @@ dhdx_max = max(sqrt(px(:).^2 + py(:).^2))
  
 %% Create B_list
 disp('Create target set B_list...')
-bnd_B = [M_X.bnd(1:2,:);
-         -0.4,  0.4];
+bnd_B = [M_X.bnd(1,:);
+        M_X.bnd(2,:);
+         -1.4,  1.4];
 B_list = Create_B(bnd_B,M_X);
 
 % for i = 1:length(B_list)
@@ -108,6 +109,7 @@ B_list = Create_B(bnd_B,M_X);
 %     end
 % end
 % B_list(B_list==-1)=[];
+visual_set(M_X,B_list,[2;3])
 disp('Done.')
 
 %% Calculate reference abstraction system
@@ -132,21 +134,26 @@ uconstr.coord_bias = [0;0];
 uconstr.max_leg = max_leg;
 uconstr.eta = eta;
 uconstr.hlim = hlim;
-specify_num_workers(4);
+uconstr.dhdx = dhdx_max;
+% specify_num_workers(4);
 ts = ArrayGener(M_X,M_U,tau,lmax,uconstr);
 disp('Done.')
+%%
+visual_set(M_X,ts.state1(ts.state2==M_X.numV),[2;3])
+
 
 %% Controller
 disp('Compute winning set and controller...')
 ts.create_fast();
 [W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
-
-figure(2);
-visual(M_X,B_list,bnd_B,W);
-
-disp('Done.')
+W
+visual_set(M_X,W,[2;3],'c')
+% figure(2);
+% visual(M_X,B_list,bnd_B,W);
+% 
+% disp('Done.')
 %%
 clear fig
-save ts
+save('ts','-v7.3')
 disp('Now please run ''test_control.m''!')
 open test_control

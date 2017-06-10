@@ -17,18 +17,18 @@ delete(thePool);
 disp('Abstraction Done.');
 zero = 0;
 save('rt_ts.mat','zero','ts','-v7.3')
-%% 7 find target set B_list
-bnd_B = [M_X.bnd(1:2,:);
-         -1,  1;
-         -1,  1];
-B_list = Create_B(bnd_B,M_X);
-% visual(M_X,bnd_B,B_list,coord_bias,UConsConfig.ROT,'X')
-disp('Target set Done.');
-
-%% 8 winning set
-ts.create_fast();
-[W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
-size(W)
-% visual(M_X,bnd_B,W,coord_bias,UConsConfig.ROT,'W')
-disp('Winning set Done.')
-save('rt_cont.mat','zero','W','cont','-v7.3');
+% %% 7 find target set B_list
+% bnd_B = [M_X.bnd(1:2,:);
+%          -2,  2;
+%          -2,  2];
+% B_list = Create_B(bnd_B,M_X);
+% % visual(M_X,bnd_B,B_list,coord_bias,UConsConfig.ROT,'X')
+% disp('Target set Done.');
+% 
+% %% 8 winning set
+% ts.create_fast();
+% [W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
+% size(W)
+% % visual(M_X,bnd_B,W,coord_bias,UConsConfig.ROT,'W')
+% disp('Winning set Done.')
+% save('rt_cont.mat','zero','W','cont','-v7.3');

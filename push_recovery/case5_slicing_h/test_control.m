@@ -3,16 +3,16 @@
 
 %% run Initial.m first.
 close all; clear all; clc;
-
-if(exist('ArrayGener_ts','file')~=2)
-    addpath(genpath('../'));
-    addpath(genpath('../../abstr-ref/'));
-    addpath('../../ArrayGener/');
-    addpath('../../Simu_2D');
-end
-
-disp('Start generating transient system...')
-
+% 
+% if(exist('ArrayGener_ts','file')~=2)
+% %     addpath(genpath('../'));
+%     addpath(genpath('../../abstr-ref/'));
+%     addpath('../../ArrayGener2.0/');
+% %     addpath('../../Simu_2D');
+% end
+% 
+% disp('Start generating transient system...')
+% 
 load ts
 global A B
 
@@ -36,8 +36,20 @@ title('Please Select Initial Velocity')
 v = norm([v1;v2]-[x1;x2]); 
 direction = [v1-x1;v2-x2]/v;
 
-x0 = [M_X.discr_bnd(1,1)+M_X.gridsize;v]; % Initial Condition of robot in 1D coordinates (planning coordinate)
-idx_x0 = mapping(x0,M_X,eta/2);
+x0 = [M_X.discr_bnd(2,1)+M_X.gridsize(2);v]; % Initial Condition of robot in 1D coordinates (planning coordinate)
+
+coord_bias = [x1;x2]-x0(1)*direction;
+
+figure(2);
+disp('Please select the initial position of the foot:');
+plot([-lmax;lmax],[0;0],'-o');
+grid on;
+title('Please select the initial position of the foot:');
+
+[u0_1d,~]=ginput(1);
+u0 = u0_1d*direction+coord_bias;
+c0 = g/(h0-gnd.get_height(u0(1),u0(2)));
+idx_z0 = mapping([c0;x0],M_X,[0;0;0]);
 
 % while(x0(1)>=X.bnd(1,1)&&x0(1)<=X.bnd(1,2))
 %     if(~ismember(idx_x0,W_ref))
@@ -49,21 +61,22 @@ idx_x0 = mapping(x0,M_X,eta/2);
 % end
 
 
-if(idx_x0==size(M_X.ind2sub,1)+1)
+if(idx_z0==M_X.numV+1)
     error('error: out of region of interest.');
 end
 
-coord_bias = [x1;x2]-x0(1)*direction;
 hold off;
 %% Initialization
 
-idx_x = idx_x0(1);
+idx_z = idx_z0;
 xt = [coord_bias+x0(1)*direction;x0(2)*direction];
+x_proj = x0;
+c = c0;
 
-idx_u = 0;
-X_list = [idx_x0];
-U_list = [];
-t_list = [];
+idx_u = mapping(u0,M_U,0);
+X_list = [idx_z];
+U_list = [idx_u];
+t_list = [0];
 
 Yt_list=[]; % record ode solution for animation
 Yx_list=[]; % record ode solution for animation
@@ -82,15 +95,15 @@ disp('Press any key to conitue...');
 pause;
 %% hopping
 disp('Simulating...');
-t_span = 50;
+t_span = 400;
 for i = 1:t_span
     % visual (on the grid)
     % get the options of input 
 %     disp(idx_x)
-    u_option = cont.get_input(idx_x);
+    u_option = cont.get_input(idx_z);
         % keep the same input if not necessary
     if(i==1||i>=2&&~ismember(U_list(end),u_option))
-        for j = 1:length(u_option);
+        for j = 1:length(u_option)
             idx_u = u_option(j);
             u0 = get_coord(idx_u,M_U)*direction+coord_bias; 
             if(~gnd.IsInHoles(u0))
@@ -102,25 +115,35 @@ for i = 1:t_span
             break;
         end
     end
+%     disp('u is:')
+%     get_coord(idx_u,M_U)
+%     disp('x is:')
+%     x_proj
     
     h = h0-gnd.get_height(u0(1),u0(2));
+    c = g/h;
     A = [0 0 1 0;
          0 0 0 1;
-        g/h 0 0 0;
-        0 g/h 0 0];
+        c 0 0 0;
+        0 c 0 0];
     B = [0 0
          0 0
-        -g/h 0
-        0 -g/h];
+        -c 0
+        0 -c];
 %     u0 = get_coord(idx_u,M_U)*direction + coord_bias;    % get the coordinate of input
+    xt =[x_proj(1)*direction+coord_bias;x_proj(2)*direction];
     y0 = [xt;u0];    % States for numerical integration
-    
+    norm((y0(1:2)-coord_bias)'*direction*direction-y0(1:2)+coord_bias)
+    norm(y0(3:4)'*direction*direction-y0(3:4))
     yt = ode45(@odefun2,[0,tau],y0);
     
     xt = yt.y(1:4,end); % destination in one step
     x_proj = [xt(1:2)'-coord_bias';xt(3:4)']*direction; % project xt into the line
-    idx_x  = mapping(x_proj,M_X,eta/2);
-    X_list = [X_list;idx_x]; % history of idx_x
+    idx_z  = mapping([c;x_proj],M_X,[0;0;0]);
+    if(idx_z == 40001)
+        keyboard();
+    end
+    X_list = [X_list;idx_z]; % history of idx_x
     U_list = [U_list;idx_u]; % history of idx_u
     t_list = [t_list;i*tau];
     
@@ -152,7 +175,7 @@ disp('Trajectory:')
 figure(2);
 visual(M_X,B_list,bnd_B,W);
 
-[x1,x2] = get_coord(X_list,M_X);
+[~,x1,x2] = get_coord(X_list,M_X);
 for i=1:length(x1)-1
     arrow('Start',[x1(i),x2(i)],'Stop',[x1(i+1),x2(i+1)],'Length',10,'TipAngle',5)
     pause(0.01);

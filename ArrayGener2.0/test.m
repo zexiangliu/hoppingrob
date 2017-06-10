@@ -28,9 +28,9 @@ system.h0 = h0;
 
 %======= Test Parameter ========
 tau = 0.08;     % time interval
-eta = [0.2;0.1;0.2;0.2];%[0.2;0.2;0.2;0.2]; %gridsize in each dimension
+eta = [0.2;0.2;0.2;0.2];%[0.2;0.2;0.2;0.2]; %gridsize in each dimension
 mu = [0.2;0.2];
-lmax = 10;
+lmax = 1;
 dlim = 2.5;
 vlim = 4;
 

@@ -14,7 +14,7 @@ upper_idx = mapping(bnd(:,2),M_X,zeros(dimX,1),'o');
 lower_sub = ind2sub2(M_X.discr_bnd(:,3),lower_idx);
 upper_sub = ind2sub2(M_X.discr_bnd(:,3),upper_idx);
 
-% When boundary of B and node boundary of grid coincides, use the smallest
+% When boundary of B and node boundary of grid coincides, use the largest
 % set
 [~,l_idx] = min(sum(lower_sub));
 [~,u_idx] = max(sum(upper_sub));

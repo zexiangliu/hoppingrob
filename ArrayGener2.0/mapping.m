@@ -28,9 +28,9 @@ eta = Qn.gridsize;
 % check if xt is out of interested state space
 % lbnd = (bnd(:,1)<=xt);  % lower bnd
 % ubnd = (xt<=bnd(:,2));  % upper bnd
-lbnd = abs(xt-bnd(:,1));
-ubnd = abs(xt-bnd(:,2));
-if(any(lbnd<r)||any(ubnd<r))    
+lbnd = xt-r<bnd(:,1);
+ubnd = xt+r>bnd(:,2);
+if(any(lbnd)||any(ubnd))    
     idx=Qn.numV; % if out of bnd, assign it to sink node
     if(type == 'o')
         idx = length(Qn.ind2ind);

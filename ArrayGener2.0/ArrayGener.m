@@ -10,7 +10,7 @@ function ts = ArrayGener(M_X,M_U,tau,lmax,uconstr,system)
 g = system.g;
 h0 = system.h0;
 
-isFull = 1; % equal to 1 if A is full rank
+% isFull = 1; % equal to 1 if A is full rank
 
 if(nargin==0) % if no external input
     tau = 0.5;     % time span
@@ -77,7 +77,7 @@ parfor i = 1:num_U-1
     end
 %     
     % calculate system parameter
-    tmp_u = ROT*u0 + coord_bias;
+%     tmp_u = ROT*u0 + coord_bias;
     h = h0 ;%- gnd.get_height(tmp_u(1),tmp_u(2));
     A = [0 0 1 0;
          0 0 0 1;
@@ -93,35 +93,19 @@ parfor i = 1:num_U-1
     Phi_u = -inv(A)*(eye(dim_X)-Phi)*B;
     
     % calculate r
-    r1 = norm(Phi,'inf')*max(eta)/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
-    r = r1*ones(dim_X,1);    %%%     % radius of norm ball when mapping xt to discr. state space
+    r1 = Phi*eta/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
+    r = r1;    %%%     % radius of norm ball when mapping xt to discr. state space
 
     %% Add progress group (part I)
     % Calculate equilibrium
-    isEq = 1;   % flag that eq exists
+%     isEq = 1;   % flag that eq exists
     x_part = -pinv(A)*(B*u0);  % particular solution
-    if(isFull ~= 1)  % if A isn't full rank, the eq may not exists or be unqiue
-        x_hom = null(A); % homogenuous solution of Ax + Bu = 0
-        
-        if(rank(A)~=rank([A B*u0])) % if solution doesn't exist
-            isEq = 0; % eq is not exist
-%             keyboard();
-        end
-    end
+    
     % progress group
     PG = 1:num_X;    % group having all the states
-    if(isFull == 1) % if A is full rank
-        idx_eq = mapping(x_part,M_X,eta/2*0); % mapping the eq into nodes in grid
-        if(idx_eq ~= num_X + 1) % if eq is in the state space
-            PG(idx_eq)=-1;      % remove the eq from progress group
-        end
-    else                % if A is not full rank, then eq may not exist
-        % if isEq == 0 (means no eq exists), PG are all states
-        if(isEq == 1)   % eq exists
-            dimN = size(x_hom,2);    % dim of null space of A
-            ones_eta = eta/2;%*ones(dimN,1);%   ||||| 
-            % loop over all nodes in the next section  vvvvv
-        end
+    idx_eq = mapping_ext(x_part,M_X,eta/2*0); % mapping the eq into nodes in grid
+    if(idx_eq ~= num_X + 1) % if eq is in the state space
+        PG(idx_eq)=-1;      % remove the eq from progress group
     end
     
     %% Nonlinear equation solver
@@ -156,7 +140,7 @@ parfor i = 1:num_U-1
         end
         % Mapping: xt--->[X]_eta
         
-         idx = mapping(xt,M_X,r);
+         idx = mapping_ext(xt,M_X,r);
          len_idx = length(idx);
          state1(counter_state:counter_state+len_idx-1) = j*ones(len_idx,1);
          state2(counter_state:counter_state+len_idx-1) = idx;
@@ -166,24 +150,6 @@ parfor i = 1:num_U-1
 %                state1 = [state1;j];
 %                state2 = [state2;k];
 %          end
-         % add progress group (part II)
-         if((~isFull)&&isEq)
-             f_lp = ones(dimN,1);
-             A_lp = [x_hom;-x_hom];
-             b_lp = [ones_eta+x0-x_part;ones_eta+x_part-x0];
-             % remove invalid constraints in A_lp*x <= b_lp, that's zero
-             % rows in A
-             invalid_row = (sum(A_lp==0,2)==dimN); % 
-             if(all(b_lp(invalid_row)>=0)) % the rows of b corresponding to zero rows of A have to be >= 0
-                 A_lp(invalid_row,:)=[];
-                 b_lp(invalid_row,:)=[];
-                 % check if eq in the region of node j using linear programming
-                 [~,~,EXITFLAG] = linprog(f_lp,A_lp,b_lp,[],[],[],[],[],options);    
-                if(EXITFLAG == 1) % EXITFLAG = 1 means that the region mapped into x0 has eq
-                     PG(j) = -1; % remove this eq from progress group
-                end
-             end
-         end
     end
     valid_idx = state1~=0;
     num_s(i) = sum(valid_idx);

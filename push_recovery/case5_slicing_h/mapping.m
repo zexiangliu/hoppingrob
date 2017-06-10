@@ -28,9 +28,9 @@ eta = Qn.gridsize;
 % check if xt is out of interested state space
 % lbnd = (bnd(:,1)<=xt);  % lower bnd
 % ubnd = (xt<=bnd(:,2));  % upper bnd
-lbnd = abs(xt-bnd(:,1));
-ubnd = abs(xt-bnd(:,2));
-if(any(lbnd(2:end)<r(2:end))||any(ubnd(2:end)<r(2:end)))    
+lbnd = xt>=bnd(:,1);
+ubnd = xt<=bnd(:,2);
+if (~all(lbnd(2:end))||~all(ubnd(2:end)))    
     idx=Qn.numV; % if out of bnd, assign it to sink node
     if(type == 'o')
         idx = length(Qn.ind2ind);
@@ -51,13 +51,22 @@ for i = 1:n
 end
 
 %% map sub to index
-
+if(length(SUB)==1)
+    idx = SUB{1};
+    return;
+end
 X = ndgrid2(SUB);
 idx = sub2ind2(discr_bnd(:,3),X);
 if(type ~= 'o')
     idx = Qn.ind2ind(idx);
-    idx(idx==0) = []; % Qn.numV;
+    idx(idx==0) = Qn.numV;
 end
+% lbnd = xt-r<bnd(:,1);
+% ubnd = xt+r>bnd(:,2);
+% 
+% if(any(lbnd(2:end))||any(ubnd(2:end)))
+%     idx =[idx;Qn.numV];
+% end
 idx = uint32(full(idx));
 %  % params of eval func
 % str1 (1:(3*n-1))=' ';

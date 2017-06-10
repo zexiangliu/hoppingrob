@@ -53,7 +53,7 @@ X.bnd = [
     ];
 U.bnd = [x1min-lmax,x1max+lmax];
 % ================================
-ts = ArrayGener_ts(M_X,M_U,tau,r);
+% ts = ArrayGener_ts(M_X,M_U,tau,r);
 %% 2 grid generation
 
 % Generating Grid
