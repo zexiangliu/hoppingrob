@@ -28,7 +28,7 @@ system.h0 = h0;
 
 %======= Test Parameter ========
 tau = 0.08;     % time interval
-eta = [0.2;0.2;0.2;0.2];%[0.2;0.2;0.2;0.2]; %gridsize in each dimension
+eta = [0.18;0.18;0.18;0.18];%[0.2;0.2;0.2;0.2]; %gridsize in each dimension
 mu = [0.2;0.2];
 lmax = 1;
 dlim = 2.5;
@@ -52,7 +52,7 @@ X.bnd = [
     -dlim,dlim;
     -dlim,dlim;
     -vlim,vlim;
-    -vlim,vlim
+    -vlim*2/3,vlim*2/3
     ];
 U.bnd = [x1min-lmax,x1max+lmax
         x1min-lmax,x1max+lmax];
@@ -128,34 +128,34 @@ xlabel('x_1');ylabel('x_2');
 disp('Visualization Done.');
 save test.mat M_X M_U tau lmax UConsConfig system
 %% 6 Test ArrayGener_ts 
-% store the transist system in class 'TransSyst'
-% add progress group in ArrayGener_ts.m
-
-% if(~exist('thePool','var'))
-%     NP = 4;
-%     thePool = parpool('local',4);
-% end
-
-tic
-ts = ArrayGener(M_X,M_U,tau,lmax,UConsConfig,system);
-toc
-% delete(thePool);
-disp('Abstraction Done.');
-
-%% 7 find target set B_list
-bnd_B = [X.bnd(1:2,:);
-         -1,  1;
-         -1,  1];
-B_list = Create_B(bnd_B,M_X);
-visual(M_X,bnd_B,B_list,coord_bias,UConsConfig.ROT,'X')
-disp('Target set Done.');
-
-%% 8 winning set
-ts.create_fast();
-[W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
-
-visual(M_X,bnd_B,W,coord_bias,UConsConfig.ROT,'W')
-disp('Winning set Done.')
+% % store the transist system in class 'TransSyst'
+% % add progress group in ArrayGener_ts.m
+% 
+% % if(~exist('thePool','var'))
+% %     NP = 4;
+% %     thePool = parpool('local',4);
+% % end
+% 
+% tic
+% ts = ArrayGener(M_X,M_U,tau,lmax,UConsConfig,system);
+% toc
+% % delete(thePool);
+% disp('Abstraction Done.');
+% 
+% %% 7 find target set B_list
+% bnd_B = [X.bnd(1:2,:);
+%          -1,  1;
+%          -1,  1];
+% B_list = Create_B(bnd_B,M_X);
+% visual(M_X,bnd_B,B_list,coord_bias,UConsConfig.ROT,'X')
+% disp('Target set Done.');
+% 
+% %% 8 winning set
+% ts.create_fast();
+% [W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
+% 
+% visual(M_X,bnd_B,W,coord_bias,UConsConfig.ROT,'W')
+% disp('Winning set Done.')
 
 
 
