@@ -10,7 +10,8 @@
 
 %% Generate abstraction transient system
 clear all;clc;close all;
-addpath(genpath('../'));
+addpath('../');
+addpath(genpath('../ground_gen'));
 addpath(genpath('../../abstr-ref/'));
 addpath('../../ArrayGener/');
 addpath('../../Simu_2D');
@@ -34,7 +35,7 @@ save system g h0 A B; % the system dx = Ax + Bu is saved in file system.mat
 
 %======= Test Parameter ========
 tau = 0.08;     % time interval
-eta = 0.2;
+eta = 0.1;
 mu = 0.1;
 lmax = 1;
 dlim = 2.5;

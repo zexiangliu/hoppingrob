@@ -40,6 +40,7 @@ num_X = prod(M_X.discr_bnd(:,3));   % # nodes in state space
 num_U = prod(M_U.discr_bnd(:,3));   % # nodes in input space
 dim_X = size(M_X.bnd,1);              % dim of state space
 dim_U = size(M_U.bnd,1);              % dim of input space
+eta = M_X.gridsize;
 
 ts = TransSyst(num_X+1,num_U);          % +1 for sink node
 
@@ -121,9 +122,9 @@ parfor (i = 1:num_U,M)
     state2 = [];
     for j = 1:num_X
         sub_x0 = M_X.ind2sub(j,:)';     % Initial Condition
-        x0 = M_X.discr_bnd(:,1)+(sub_x0-1)*M_X.gridsize;
+        x0 = M_X.discr_bnd(:,1)+(sub_x0-1)*eta;
         % check input restriction (only for 1D)
-        if(norm(x0(1)-u0)>(lmax-M_X.gridsize/2))
+        if(norm(x0(1)-u0)>(lmax-eta/2))
             PG(j)=-1; % remove this state from progress group
             continue;
         end
@@ -154,7 +155,7 @@ parfor (i = 1:num_U,M)
         end
         % Mapping: xt--->[X]_eta
         
-         idx = mapping(xt,M_X,r);
+         idx = mapping_ext(xt,M_X,r);
          for k = idx'
 %              ts.add_transition(j,k,i);
                state1 = [state1;j];

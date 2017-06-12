@@ -94,8 +94,8 @@ for i = 1:num_U
     end
     
     % calculate r
-    r1 = norm(Phi,'inf')*eta/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
-    r = r1+eta/2;         % radius of norm ball when mapping xt to discr. state space
+    r1 = Phi*eta/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
+    r = r1;         % radius of norm ball when mapping xt to discr. state space
     
     %% Add progress group (part I)
     % Calculate equilibrium
@@ -133,7 +133,7 @@ for i = 1:num_U
         sub_x0 = M_X.ind2sub(j,:)';     % Initial Condition
         x0 = M_X.discr_bnd(:,1)+(sub_x0-1)*eta;
         % check input restriction (only for 1D)
-        if((norm(x0(1)-u0)+eta/2)>h/h0*lmax||~uconstraints(uconstr,u0,x0,h,r1,2))
+        if((norm(x0(1)-u0)+eta/2)>h/h0*lmax||~uconstraints(uconstr,u0,x0,h,r1(1),2))
             PG(j)=-1; % remove this state from progress group
             continue;
         end
@@ -150,13 +150,13 @@ for i = 1:num_U
         xt = Phi*x0+Phi_u*u0;
         
         % check input restriction (only for 1D)
-        if((norm(xt(1)-u0)+r1)>h/h0*lmax||~uconstraints(uconstr,u0,xt,h,r1,3))
+        if((norm(xt(1)-u0)+r1(1))>h/h0*lmax||~uconstraints(uconstr,u0,xt,h,r1(1),3))
             PG(j)=-1;
             continue;
         end
         % Mapping: xt--->[X]_eta
         
-         idx = mapping(xt,M_X,r);
+         idx = mapping_ext(xt,M_X,r);
          for k = idx'
 %              ts.add_transition(j,k,i);
                state1 = [state1;j];

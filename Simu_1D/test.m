@@ -27,8 +27,8 @@ lmax = 1;
 dlim = 2.5;
 vlim = 4;
 
-r1 = norm(expm(A*tau),'inf')*eta/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
-r = r1+eta/2;         % radius of norm ball when mapping xt to discr. state space
+r1 = expm(A*tau)*[eta/2;eta/2]; % the upper bnd of ||x_0(tau)-x_1(tau)||
+r = r1;         % radius of norm ball when mapping xt to discr. state space
 idx_x0 = 20;    % idx of initial cond. in grid (ode solver test)
 idx_u0 = 7;    % idx of input in grid       (ode solver test)
 % ==============================
@@ -102,8 +102,9 @@ disp('Done.')
 %% Controller
 disp('Compute winning set and controller...')
 ts.create_fast();
-
+% tic
 [W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
+% toc
 %%
 % Visualization of winning set
 [x1,x2] = get_coord(W,M_X);

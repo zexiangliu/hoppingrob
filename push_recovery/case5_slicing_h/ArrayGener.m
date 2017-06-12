@@ -63,8 +63,8 @@ M = 4; % num of workers to use
 %% for parallel computation
 transition_list = cell(num_U);
 pg_list = cell(num_U);
-% parfor (i = 1:num_U,M)
-for i = 1:num_U
+parfor (i = 1:num_U,M)
+% for i = 1:num_U
     % calculate the input u0 corresponding to index i
     sub_u0 = double(M_U.ind2sub(i,:)');        
     u0 = M_U.discr_bnd(:,1)+(sub_u0-1).*mu;
@@ -129,8 +129,28 @@ for i = 1:num_U
             r2_1 = (1+lmax*tau)*eta(1)/2*exp(max([1;c+eta(1)/2])*tau);
             r2_2 = eta(1)/2*exp((max([0.5;c+eta(1)/2])+max([0.5;lmax]))*tau);
             r2 = min([r2_1;r2_2]);
+            
+            x1_max = max(abs(xt(1)-u0)+r1(1)+r2(1),abs(x0(1)-u0)+eta(2)/2);
+            % parameters of current heights used to estimate r2
+            tmp_h0 = g/c;
+            tmp_dh1 = tmp_h0 - g/(c+eta(1)/2);
+            tmp_dh2 = g/(c-eta(1)/2)-tmp_h0;
+            counter = 1;
+            while(1) % iterative algorithm to find the smallest r
+                du_max = max([x1_max*tmp_dh1/(h0-tmp_dh1);x1_max*tmp_dh2/(h0+tmp_dh2)]);
+                r2 = abs(Phi_u*du_max);
+                % r
+    %             r = r1+r2;         % radius of norm ball when mapping xt to discr. state space
+                if(max(abs(xt(1)-u0)+r1(1)+r2(1),abs(x0(1)-u0)+eta(2)/2) < x1_max)
+    %                 warning('special_case of r2');
+                    x1_max = max(abs(xt(1)-u0)+r1(1)+r2(1),abs(x0(1)-u0)+eta/2);
+                    counter = counter +1;
+                else
+                    break;
+                end
+            end            
             % check input restriction (only for 1D)
-            if((norm(xt(1)-u0)+r1(1)+r2)>h/h0*lmax||~uconstraints(uconstr,u0,xt,h,r1+r2,3))
+            if((norm(xt(1)-u0)+r1(1)+r2(1))>h/h0*lmax||~uconstraints(uconstr,u0,xt,h,r1+r2,3))
                 PG(j)=-1;
                 continue;
             end

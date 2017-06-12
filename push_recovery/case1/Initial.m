@@ -6,7 +6,8 @@
 
 %% Generate abstraction transient system
 clear all;clc;close all;
-addpath(genpath('../'));
+addpath('../');
+addpath('../ground_gen/');
 addpath(genpath('../../abstr-ref/'));
 addpath('../../ArrayGener/');
 addpath('../../Simu_2D');
@@ -30,14 +31,14 @@ save system A B; % the system dx = Ax + Bu is saved in file system.mat
 
 %======= Test Parameter ========
 tau = 0.08;     % time interval
-eta = 0.2;
+eta = 0.1;
 mu = 0.2;
 lmax = 1;
 dlim = 2.5;
-vlim = 5;
+vlim = 4;
 
-r1 = norm(expm(A*tau),'inf')*eta/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
-r = r1+eta/2;         % radius of norm ball when mapping xt to discr. state space
+r1 = expm(A*tau)*[eta;eta]/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
+r = r1;         % radius of norm ball when mapping xt to discr. state space
 
 % ==============================
 

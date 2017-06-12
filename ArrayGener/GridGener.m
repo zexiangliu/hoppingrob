@@ -42,6 +42,7 @@ for i = 1:num_V
     Mesh.ind2sub(i,:)=ind2sub2(Mesh.discr_bnd(:,3),i)'; 
 end
 
+Mesh.numV = num_V+1;
 end
 % 
 % 

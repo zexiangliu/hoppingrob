@@ -10,7 +10,8 @@
 
 %% Generate abstraction transient system
 clear all;clc;close all;
-addpath(genpath('../'));
+addpath('../');
+addpath('../ground_gen/');
 addpath(genpath('../../abstr-ref/'));
 addpath('../../ArrayGener/');
 addpath('../../Simu_2D');

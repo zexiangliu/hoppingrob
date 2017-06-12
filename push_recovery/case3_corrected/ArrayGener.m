@@ -136,53 +136,80 @@ for i = 1:num_U
         xt = Phi*x0+Phi_u*u0;
         
         % calculate r1
-        r1 = norm(Phi,'inf')*eta/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
-        %calculate r2
-        x_ex = Phi_ex*x0 + Phi_u_ex*u0;
-        if((x_ex(1)-u0)*(x0(1)-u0)>=0)
-            x1_max = max(abs(xt(1)-u0)+r1,abs(x0(1)-u0)+eta/2);
-        else
-            % use binary search to find the t* where x(t*)=u0
-            t1 = 0;
-            t2 = tau;
-            x0_direct = sign(x0(1)-u0);
-            tmp_x = xt;
-            while(abs(tmp_x(1)-u0)>1e-10)
-                tmp_t = (t1+t2)/2;
-                [tmp_Phi,tmp_Phi_u] = STM(A_ex,B_ex,tmp_t);
-                tmp_x = tmp_Phi*x0 + tmp_Phi_u*u0;
-                if((tmp_x(1)-u0)*x0_direct>=0)
-                    t1 = tmp_t;
-                else
-                    t2 = tmp_t;
-                end
-            end
-            [tmp_Phi,tmp_Phi_u] = STM(A,B,(t1+t2)/2);
-            tmp_x = tmp_Phi*tmp_x + tmp_Phi_u*u0;
-            x1_max = max(abs(tmp_x(1)-u0)+r1,abs(x0(1)-u0)+eta/2);
-        end
+        r1 = Phi*[eta;eta]/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
+        %calculate candidate 1 of r2
+%         x_ex = Phi_ex*x0 + Phi_u_ex*u0;
+%         if((x_ex(1)-u0)*(x0(1)-u0)>=0)
+%             x1_max = max(abs(xt(1)-u0)+r1(1),abs(x0(1)-u0)+eta/2);
+%         else
+%             % use binary search to find the t* where x(t*)=u0
+%             t1 = 0;
+%             t2 = tau;
+%             x0_direct = sign(x0(1)-u0);
+%             tmp_x = xt;
+%             while(abs(tmp_x(1)-u0)>1e-10)
+%                 tmp_t = (t1+t2)/2;
+%                 [tmp_Phi,tmp_Phi_u] = STM(A_ex,B_ex,tmp_t);
+%                 tmp_x = tmp_Phi*x0 + tmp_Phi_u*u0;
+%                 if((tmp_x(1)-u0)*x0_direct>=0)
+%                     t1 = tmp_t;
+%                 else
+%                     t2 = tmp_t;
+%                 end
+%             end
+%             [tmp_Phi,tmp_Phi_u] = STM(A,B,(t1+t2)/2);
+%             tmp_x = tmp_Phi*tmp_x + tmp_Phi_u*u0;
+%             x1_max = max(abs(tmp_x(1)-u0)+r1(1),abs(x0(1)-u0)+eta/2);
+%         end
+%         
+%         counter = 1;
+%         while(1) % iterative algorithm to find the smallest r
+%             du_max = x1_max*hlim/h;
+%             r2_1 = norm(Phi_u*du_max,'inf');
+%             % r
+% %             r = r1+r2;         % radius of norm ball when mapping xt to discr. state space
+%             if(max(abs(xt(1)-u0)+r1(1)+r2_1(1),abs(x0(1)-u0)+eta/2) < x1_max)
+% %                 warning('special_case of r2');
+%                 x1_max = max(abs(xt(1)-u0)+r1(1)+r2_1(1),abs(x0(1)-u0)+eta/2);
+%                 counter = counter +1;
+%             else
+%                 break;
+%             end
+%         end
+%         
+        %calculate candidate 2 of r2
+        cr2_1 = (1+lmax*tau)*hlim*exp(max([1;g/h0])*tau);
+        cr2_2 = hlim*exp((max([0.5;g/h0])+max([0.5;lmax]))*tau);
+        r2_2 = min([cr2_1;cr2_2]);
+        x1_max = max(abs(xt(1)-u0)+r1(1)+r2_2(1),abs(x0(1)-u0)+eta/2);
+        
         counter = 1;
         while(1) % iterative algorithm to find the smallest r
             du_max = x1_max*hlim/h;
-            r2 = norm(Phi_u*du_max,'inf');
+            r2_2 = abs(Phi_u*du_max);
             % r
-            r = r1+r2+eta/2;         % radius of norm ball when mapping xt to discr. state space
-            if(max(abs(xt(1)-u0)+r1+r2,abs(x0(1)-u0)+eta/2) < x1_max)
+%             r = r1+r2;         % radius of norm ball when mapping xt to discr. state space
+            if(max(abs(xt(1)-u0)+r1(1)+r2_2(1),abs(x0(1)-u0)+eta/2) < x1_max)
 %                 warning('special_case of r2');
-                x1_max = max(abs(xt(1)-u0)+r1+r2,abs(x0(1)-u0)+eta/2);
+                x1_max = max(abs(xt(1)-u0)+r1(1)+r2_2(1),abs(x0(1)-u0)+eta/2);
                 counter = counter +1;
             else
                 break;
             end
         end
+        
+%         r2 = min(r2_1,r2_2]);
+        r2 = r2_2;
+        r = r1 + r2;
+        
         % check input restriction (only for 1D)
-        if((norm(xt(1)-u0)+r1+r2)>h/h0*lmax||~uconstraints(uconstr,u0,xt,h,r1+r2,3))
+        if((norm(xt(1)-u0)+r1(1)+r2(1))>h/h0*lmax||~uconstraints(uconstr,u0,xt,h,r1(1)+r2(1),3))
             PG(j)=-1;
             continue;
         end
         % Mapping: xt--->[X]_eta
         
-         idx = mapping(xt,M_X,r);
+         idx = mapping_ext(xt,M_X,r);
          for k = idx'
 %              ts.add_transition(j,k,i);
                state1 = [state1;j];

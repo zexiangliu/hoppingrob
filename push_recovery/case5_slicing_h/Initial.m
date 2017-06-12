@@ -40,7 +40,7 @@ vlim = 4;
 max_leg = sqrt(h0^2+lmax^2)+0.5; % the largest length which the leg can extend
 hlim = 0.15;
 
-eta = [(g/h0-g/(h0+hlim))/20;0.1;0.2];
+eta = [(g/h0-g/(h0+hlim))/20;0.1;0.1];
 mu = 0.2;
 
 % ==============================
@@ -98,7 +98,7 @@ dhdx_max = hlim/(20/9);%max(sqrt(px(:).^2 + py(:).^2));
 disp('Create target set B_list...')
 bnd_B = [M_X.bnd(1,:);
         M_X.bnd(2,:);
-         -1.4,  1.4];
+         -0.6,  0.6];
 B_list = Create_B(bnd_B,M_X);
 
 % for i = 1:length(B_list)

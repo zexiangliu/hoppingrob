@@ -6,7 +6,8 @@
 close all; clear all; clc;
 
 if(exist('ArrayGener_ts','file')~=2)
-    addpath(genpath('../'));
+    addpath('../');
+    addpath('../ground_gen/');
     addpath(genpath('../../abstr-ref/'));
     addpath('../../ArrayGener/');
     addpath('../../Simu_2D');
@@ -72,7 +73,7 @@ direction = [v1;v2]/v;
 % x=-1.4;
 % y=-4.5;
 
-x0 = [0;v];
+x0 = [0-0.05;v];
 idx_x0 = mapping(x0,M_X,eta/2);
 
 % select the initial condition of x0(1)

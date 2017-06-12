@@ -30,11 +30,13 @@ function [V, cont] = pre(ts, X, U, quant1, quant2)
       end
     end
   end
+  
 
-  for q = 1:ts.n_s
-    if ~log_idx(q)
-        continue
-    end
+  q_list = find(log_idx==1);
+  for q = q_list
+%     if ~log_idx(q)
+%         continue
+%     end
     act_list = false(1, length(U));   % outcome per action 
     for i = 1:length(U)
       a = U(i);
@@ -63,7 +65,7 @@ function [V, cont] = pre(ts, X, U, quant1, quant2)
       end
     end
   end
-  
+
   V = zeros(1, sum(log_idx), 'uint32');
   V(:) = find(log_idx);
   if nargout > 1

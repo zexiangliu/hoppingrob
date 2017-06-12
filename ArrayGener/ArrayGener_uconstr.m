@@ -134,13 +134,13 @@ parfor (i = 1:num_U,M)
         xt = Phi*x0+Phi_u*u0;
         
         % check input restriction (only for 1D)
-        if(norm(xt(1)-u0)>(lmax-r))
+        if(norm(xt(1)-u0)>(lmax-r(1)))
             PG(j)=-1;
             continue;
         end
         % Mapping: xt--->[X]_eta
         
-         idx = mapping(xt,M_X,r);
+         idx = mapping_ext(xt,M_X,r);
          for k = idx'
 %              ts.add_transition(j,k,i);
                state1 = [state1;j];

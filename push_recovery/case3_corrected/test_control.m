@@ -5,7 +5,8 @@
 close all; clear all; clc;
 
 if(exist('ArrayGener_ts','file')~=2)
-    addpath(genpath('../'));
+    addpath('../');
+    addpath(genpath('../ground_gen'));
     addpath(genpath('../../abstr-ref/'));
     addpath('../../ArrayGener/');
     addpath('../../Simu_2D');
