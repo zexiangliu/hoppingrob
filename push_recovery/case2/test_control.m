@@ -58,7 +58,7 @@ t_span = 50;
 for i = 1:t_span
     % visual (on the grid)
     % get the options of input 
-%     disp(idx_x)
+%     disp(idx_x
     u_option = cont.get_input(idx_x);
         % keep the same input if not necessary
     if(i==1||i>=2&&~ismember(U_list(end),u_option))
@@ -109,7 +109,8 @@ for i = 1:t_span
 end
 disp('Done.');
 
-legend('Vel of Mass Center','Pos of Mass Center');
+legend('Pos of Mass Center','Vel of Mass Center');
+set(gca,'fontsize',12)
 xlabel('t');
 %% Trajectory in state space
 disp('Press any key to conitue...');

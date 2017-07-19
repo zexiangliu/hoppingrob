@@ -44,7 +44,7 @@ disp('Press any key to conitue...');
 pause;
 %% hopping
 disp('Simulating...');
-t_span = 50;
+t_span = 500;
 for i = 1:t_span
     % visual (on the grid)
     % get the options of input 
@@ -81,6 +81,7 @@ for i = 1:t_span
     
     xt = yt.y(1:4,end); % destination in one step
     x_proj = [xt(1:2)'-coord_bias';xt(3:4)']*direction; % project xt into the line
+    xt = [x_proj(1)*direction + coord_bias;x_proj(2)*direction];
     idx_x  = mapping(x_proj,M_X,eta/2);
     X_list = [X_list;idx_x]; % history of idx_x
     U_list = [U_list;idx_u]; % history of idx_u

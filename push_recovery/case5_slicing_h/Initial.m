@@ -40,7 +40,7 @@ vlim = 4;
 max_leg = sqrt(h0^2+lmax^2)+0.5; % the largest length which the leg can extend
 hlim = 0.15;
 
-eta = [(g/h0-g/(h0+hlim))/20;0.1;0.1];
+eta = [(g/h0-g/(h0+hlim))/5;0.1;0.1];
 mu = 0.2;
 
 % ==============================
@@ -86,7 +86,7 @@ gnd = Ground(bnd,num_grid,1,bnd_visual);
 size_grid = [map_X(1,3)-map_X(1,2);map_Y(3,1)-map_Y(2,1)];
 px = px/size_grid(1);
 py = py/size_grid(2);
-dhdx_max = hlim/(20/9);%max(sqrt(px(:).^2 + py(:).^2));
+dhdx_max = max(sqrt(px(:).^2 + py(:).^2)); %hlim/(20/9);
 % num_holes = input('Please input the number of holes:');
 % for i = 1:num_holes
 %     disp('Please select the position of hole in the figure:')

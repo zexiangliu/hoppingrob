@@ -52,7 +52,7 @@ t = 0;
 
 gnd.visual_update();
 
-for i = 1:length(Yt_list)/2
+for i = 1:300
     pause(Yt_list(i)-t);
 %     pause;
     t= Yt_list(i);
@@ -68,7 +68,7 @@ for i = 1:length(Yt_list)/2
     padel(:,1)=padel(:,1)+u_located(1);
     padel(:,2)=padel(:,2)+u_located(2);
     padel(:,3)=padel(:,3)+u_located(3);
-    hopping_height = 0 % h0/4*abs(sin((3*pi/2/tau)*t));
+    hopping_height = 0; % h0/4*abs(sin((3*pi/2/tau)*t));
     padel(:,3)=padel(:,3)+1/20+hopping_height;
     patch('Faces',Padel.fac,'Vertices',padel,'FaceColor','r');  % patch function
     

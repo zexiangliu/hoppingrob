@@ -106,7 +106,7 @@ for i = 1:t_span
     
     h = h0-gnd.get_height(u0(1),u0(2));
     A = [0 0 1 0;
-         0 0 0 1;
+          0 0 0 1;
         g/h 0 0 0;
         0 g/h 0 0];
     B = [0 0

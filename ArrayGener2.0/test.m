@@ -10,6 +10,7 @@ addpath(genpath('../abstr-ref/'));
 % Please modify the parameter into the path of 'abstr_refinement' in your computer
 addpath(genpath('../abstr-refinement/abstr-ref/')); 
 
+
 %====== Define the system ======
 g = 10;
 h0 = 1;
@@ -26,6 +27,7 @@ system.h0 = h0;
 % save system A B; % the system dx = Ax + Bu is saved in file system.mat
 
 
+
 %======= Test Parameter ========
 tau = 0.08;     % time interval
 eta = [0.18;0.18;0.18;0.18];%[0.2;0.2;0.2;0.2]; %gridsize in each dimension
@@ -37,6 +39,7 @@ vlim = 4;
 r1 = norm(expm(A*tau),'inf')*eta/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
 r = r1+eta(1)/2;         % radius of norm ball when mapping xt to discr. state space
 % ==============================
+
 
 
 % === Discretization Config ===
@@ -58,6 +61,8 @@ U.bnd = [x1min-lmax,x1max+lmax
         x1min-lmax,x1max+lmax];
 %==========================
 
+
+
 %==== Ground Constraints Config ===
 
 bnd = X.bnd(1:2,:);
@@ -72,6 +77,8 @@ end
 gnd.visual_holes();
 hold on;
 %==================================
+
+
 
 %=== Initial Condition ===
 fig = figure(1);
@@ -95,12 +102,14 @@ coord_bias = [x1;x2];
 %=========================    
 
 
+
 %=== Grid Constraints Config ===
 ConsConfig.cons_fun = @constraints;
 ConsConfig.angle = 20; % unit: deg
 ConsConfig.bias = [0;0];
 ConsConfig.rotat = 0; % unit: deg
 % ================================
+
 
 %=== Input Constraints Config ===
 UConsConfig.ucons_fun = @uconstraints;
