@@ -1,5 +1,5 @@
 % Generate uniform grid of set A given the boundaries and grid size [A]_u 
-function Mesh = GridGener(DiscrConfig)
+function Mesh = GridGener(DiscrConfig,ConsConfig)
 % Input: a structure containing discretization configuration
 % ~.bnd : nx2 matrix, i^th row [left_bound, right_bound] for i^th elem in
 %        R^n
@@ -17,8 +17,9 @@ if(size(bnd,2)~=2)
 end
 
 range = abs(bnd(:,2)-bnd(:,1));  % range of each dimension
-num_node = ceil(range/u-1); % num of discretized points in each dimension
-bnd_layer = (range-num_node*u)/2;
+num_node = ceil(range./u-1); % num of discretized points in each dimension
+num_node(num_node<0)=0;
+bnd_layer = (range-num_node.*u)/2;
 
 % discretize the boundaries
 Mesh.discr_bnd = [bnd(:,1)+bnd_layer, bnd(:,2)-bnd_layer, num_node+1]; 
@@ -36,13 +37,35 @@ end
 
 % n =  size(Mesh.bnd,1);
 num_V = prod(Mesh.discr_bnd(:,3));
-Mesh.ind2sub=zeros(num_V,n);
+Mesh.ind2sub=zeros(num_V,n,'uint32');
+% for i = 1:num_V
+%     Mesh.ind2sub(i,:)=ind2sub2(Mesh.discr_bnd(:,3),i)';
+% end
 
+%% Check the real boundary of the region and build up the hash mapping index of rectangle 
+% region to the region of interest
+count = 1;
+cons_fun = ConsConfig.cons_fun;
+Mesh.ind2ind = sparse(num_V+1,1);
 for i = 1:num_V
-    Mesh.ind2sub(i,:)=ind2sub2(Mesh.discr_bnd(:,3),i)'; 
+    coord = get_coord(i,Mesh);
+    if(feval(cons_fun,coord,ConsConfig)==1)
+        Mesh.ind2ind(i)=count;
+        Mesh.ind2sub(count,:) = ind2sub2(Mesh.discr_bnd(:,3),i)';
+        count = count+1;
+    end
+end
+Mesh.numV = count;
+% Mesh.ind2ind(num_V+1,1)=count;
+% Mesh.ind2ind(Mesh.ind2ind==0)=count;
+if(count ~= num_V+1)
+    Mesh.ind2sub(count:end,:)=[];
+end
 end
 
-Mesh.numV = num_V+1;
+function coord = get_coord(X,Mesh)
+    sub = ind2sub2(Mesh.discr_bnd(:,3),X);
+    coord = Mesh.discr_bnd(:,1) + (sub-1).*Mesh.gridsize;
 end
 % 
 % 

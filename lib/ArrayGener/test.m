@@ -1,41 +1,45 @@
-%=========Test code=========
-% Segment 2~4: test each part of ArrayGener(), 
-%      grid generation-------GridGener()
-%      ode solver
-%      mapping the solution xt into discretized state space----mapping()
-% Segment 5: test ArrayGener()
-% Segment 6: test ArrayGener_ts()
-    % transfer the array into struct of TransSyst.m
-    % add progress group for linear case
-%======================
+% ===============Test code=====================
+% Generate even grid within a irregular region
+% =============================================
+
 %% 1 Initialization
 clc;clear all;close all;
+addpath('../GroundGener/');
+addpath(genpath('../abstr-ref/'));
 
 % Please modify the parameter into the path of 'abstr_refinement' in your computer
 addpath(genpath('../abstr-refinement/abstr-ref/')); 
 
+
 %====== Define the system ======
 g = 10;
 h0 = 1;
-% A =[0 1;g/h0 0];
-A = [0 1; g/h0 0];
-B = [0;-g/h0];
-save system A B; % the system dx = Ax + Bu is saved in file system.mat
+A = [0 0 1 0;
+     0 0 0 1;
+    g/h0 0 0 0;
+    0 g/h0 0 0];
+B = [0 0
+     0 0
+     -g/h0 0
+     0 -g/h0];
+system.g = 10;
+system.h0 = h0;
+% save system A B; % the system dx = Ax + Bu is saved in file system.mat
+
 
 
 %======= Test Parameter ========
 tau = 0.08;     % time interval
-eta = 0.2;
-mu = 0.2;
+eta = [0.18;0.18;0.18;0.18];%[0.2;0.2;0.2;0.2]; %gridsize in each dimension
+mu = [0.2;0.2];
 lmax = 1;
 dlim = 2.5;
-vlim = 2.5;
+vlim = 4;
 
 r1 = norm(expm(A*tau),'inf')*eta/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
-r = r1+eta/2;         % radius of norm ball when mapping xt to discr. state space
-idx_x0 = 20;    % idx of initial cond. in grid (ode solver test)
-idx_u0 = 7;    % idx of input in grid       (ode solver test)
+r = r1+eta(1)/2;         % radius of norm ball when mapping xt to discr. state space
 % ==============================
+
 
 
 % === Discretization Config ===
@@ -49,92 +53,118 @@ x1max= dlim;
 % boundaries: i^th row -->  i^th dimension
 X.bnd = [           
     -dlim,dlim;
-    -vlim,vlim
+    -dlim,dlim;
+    -vlim,vlim;
+    -vlim*2/3,vlim*2/3
     ];
-U.bnd = [x1min-lmax,x1max+lmax];
+U.bnd = [x1min-lmax,x1max+lmax
+        x1min-lmax,x1max+lmax];
+%==========================
+
+
+
+%==== Ground Constraints Config ===
+
+bnd = X.bnd(1:2,:);
+gridsize = [5,5];
+gnd = Ground(bnd,gridsize,1);
+
+gnd.ground_gen_rand(0.0);
+for i = 1:1
+    gnd.add_hole(0.1,'square')
+end
+
+gnd.visual_holes();
+hold on;
+%==================================
+
+
+
+%=== Initial Condition ===
+fig = figure(1);
+gnd.visual_holes(fig);
+disp('Please select the initial value of x_1 & x_2 on the plot:')
+title('Please Select Initial Position')
+[x1,x2]=ginput(1); % The initial position of robot in world coordinate
+
+plot(x1,x2,'*r','Markersize',5);
+
+rad = linspace(0,2*pi,100);
+plot(vlim*cos(rad)+x1,vlim*sin(rad)+x2);
+axis equal;
+disp('Please select the initial value of v_1 & v_2 on the plot:')
+title('Please Select Initial Velocity')
+[v1,v2]=ginput(1); % The initial velocity of robot in world coordinate
+v = norm([v1;v2]-[x1;x2]); 
+direction = [v1-x1;v2-x2]/v;
+direction = direction*sign(direction(1));
+coord_bias = [x1;x2];
+%=========================    
+
+
+
+%=== Grid Constraints Config ===
+ConsConfig.cons_fun = @constraints;
+ConsConfig.angle = 20; % unit: deg
+ConsConfig.bias = [0;0];
+ConsConfig.rotat = 0; % unit: deg
 % ================================
-% ts = ArrayGener_ts(M_X,M_U,tau,r);
+
+
+%=== Input Constraints Config ===
+UConsConfig.ucons_fun = @uconstraints;
+% UConsConfig.direction = 0;
+UConsConfig.coord_bias = coord_bias;
+theta = atan2(direction(2),direction(1))*180/pi
+UConsConfig.ROT = [cosd(theta),-sind(theta);sind(theta),cosd(theta)];
+UConsConfig.gnd=gnd;
+%================================
+disp('Initialization Done.');
 %% 2 grid generation
 
 % Generating Grid
-M_X = GridGener(X);
-M_U = GridGener(U);
+M_X = GridGener(X,ConsConfig);
+ConsConfig.cons_fun = @constraints_u;
+M_U = GridGener(U,ConsConfig);
+disp('Griding Done.');
+%% Visualization
 
-% Visualization
-bnd = M_X.bnd;
-u = M_X.gridsize;
-discr_bnd = M_X.discr_bnd;
-[U,V] = meshgrid(bnd(1,:),bnd(2,:));
-f=[1,2,4,3];
-v = [U(:),V(:)];
-patch('Faces',f,'Vertices',v,...
-    'EdgeColor','green','FaceColor','none','LineWidth',2)
+visual(M_U,U.bnd,1:M_U.numV-1,coord_bias,UConsConfig.ROT,'U')
+visual(M_X,M_X.bnd,1:M_X.numV-1,coord_bias,UConsConfig.ROT,'X')
 
-hold on;
-x = linspace(discr_bnd(1,1),discr_bnd(1,2),discr_bnd(1,3));
-y = linspace(discr_bnd(2,1),discr_bnd(2,2),discr_bnd(2,3));
-[X,Y] = meshgrid(x,y);
-plot(X,Y,'.','markersize',8);
 axis equal;
-
-%% Testing for array generation
-% %% 3 nonlinear equation solver
-% sub_x0 = M_X.ind2sub(idx_x0,:);     % subscripts of x0
-% x0 = [M_X.V{1}(sub_x0(1));M_X.V{2}(sub_x0(2))];    % initial cond.
-% sub_u0 = M_U.ind2sub(idx_u0);
-% u0 = M_U.V{1}(sub_u0);                 % input
-% 
-% y0 = [x0;u0];    % States for numerical integration
-% 
-% yt = ode45(@odefun,[0,tau],y0);
-% xt = yt.y(1:2,end)
-% 
-% %% 4 mapping: A--->[A]_u
-% % xt = [1.5;4.5];
-% idx = mapping(xt,M_X,r);
-% 
-% % Visualization
-% plot(xt(1),xt(2),'*','markersize',10)
-% [x1,x2] = ind2sub(M_X.discr_bnd(:,3),idx); % xt
-% 
-% x1 = discr_bnd(1,1)+(x1-1)*u;
-% x2 = discr_bnd(2,1)+(x2-1)*u;
-% plot(x1,x2,'.r','markersize',12);    % nodes included
-% 
-% [U,V] = meshgrid([xt(1)-r,xt(1)+r],[xt(2)-r,xt(2)+r]);
-% f=[1,2,4,3];
-% v = [U(:),V(:)];
-% % norm ball
-% patch('Faces',f,'Vertices',v,...
-%     'EdgeColor','red','FaceColor','none','LineWidth',2);
-
-%%% 5 Wrap everthing up (task 1)
-% tic
-% array = ArrayGener(M_X,M_U,tau,r);
-% running_time = toc
-% 
-% % Simple Verification
-% idx_x0 = mapping(x0,M_X,0.001);
-% idx_u = idx_u0;
-% 
-% idx_ver = find(array{idx_u}(idx_x0,:)==1)';
-% if(isempty(find((idx~=idx_ver), 1)))
-%     disp('Verification Pass.');
-% else
-%     disp('Verification Fail.');
-% end
-
+xlabel('x_1');ylabel('x_2');
+disp('Visualization Done.');
+save test.mat M_X M_U tau lmax UConsConfig system
 %% 6 Test ArrayGener_ts 
-% store the transist system in class 'TransSyst'
-% add progress group in ArrayGener_ts.m
-ts = ArrayGener_ts(M_X,M_U,tau,r);
-
-%% 7 find target set B_list
-
-
-
-
-
+% % store the transist system in class 'TransSyst'
+% % add progress group in ArrayGener_ts.m
+% 
+% % if(~exist('thePool','var'))
+% %     NP = 4;
+% %     thePool = parpool('local',4);
+% % end
+% 
+% tic
+% ts = ArrayGener(M_X,M_U,tau,lmax,UConsConfig,system);
+% toc
+% % delete(thePool);
+% disp('Abstraction Done.');
+% 
+% %% 7 find target set B_list
+% bnd_B = [X.bnd(1:2,:);
+%          -1,  1;
+%          -1,  1];
+% B_list = Create_B(bnd_B,M_X);
+% visual(M_X,bnd_B,B_list,coord_bias,UConsConfig.ROT,'X')
+% disp('Target set Done.');
+% 
+% %% 8 winning set
+% ts.create_fast();
+% [W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
+% 
+% visual(M_X,bnd_B,W,coord_bias,UConsConfig.ROT,'W')
+% disp('Winning set Done.')
 
 
 
