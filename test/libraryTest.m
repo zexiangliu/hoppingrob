@@ -59,6 +59,8 @@ function ind2sub2_test(testCase)
   assert(all(all(sub == [s1;s2;s3])));
 end
 
+function 
+
 function setupOnce(testCase)
   clc;
   cd ../lib/ArrayGener/
