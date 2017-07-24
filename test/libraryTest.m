@@ -59,7 +59,22 @@ function ind2sub2_test(testCase)
   assert(all(all(sub == [s1;s2;s3])));
 end
 
-function 
+function ndgrid2_test(testCase)
+  SUB = {[1;1],[2;2],[3;3]};
+  [Xref,Yref,Zref] = ndgrid(SUB{1},SUB{2},SUB{3});
+  X = ndgrid2(SUB);
+  assert(all(X{1}(:)==Xref(:)&X{2}(:)==Yref(:)&X{3}(:)==Zref(:)));
+  
+  
+  SUB = {[1;1]',[2;2]',[3;3]'};
+  [Xref,Yref,Zref] = ndgrid(SUB{1},SUB{2},SUB{3});
+  X = ndgrid2(SUB);
+  assert(all(X{1}(:)==Xref(:)&X{2}(:)==Yref(:)&X{3}(:)==Zref(:)));
+end
+
+function GridGener_test(testCase)
+  
+end
 
 function setupOnce(testCase)
   clc;

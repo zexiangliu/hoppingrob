@@ -1,6 +1,8 @@
 function ndx = sub2ind2(siz,X)
 % modify the built-in func 'sub2ind.m'
-
+% input : size of matrix [x,..,y]
+%	  cell of vectors of subscripts {[..],...,[..]}
+% output: vector of idx
 siz = double(siz);
 lensiz = length(siz);
 if lensiz < 2

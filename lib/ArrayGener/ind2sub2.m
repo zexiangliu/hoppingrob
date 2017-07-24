@@ -1,5 +1,8 @@
 function [v] = ind2sub2(siz,ndx)
 % modified from built-in function 'ind2sub'
+% input : size of matrix
+%         vector of indeces
+% output: cell of vectors of subscripts {[..],...,[..]}
 siz = double(siz);
 lensiz = length(siz);
 nout = lensiz;
