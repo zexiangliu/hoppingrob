@@ -73,7 +73,11 @@ function ndgrid2_test(testCase)
 end
 
 function GridGener_test(testCase)
-  
+  % 1D (ig. input space)
+  gridsize = 0.2;
+  bnd = [-1,1];
+  DisConfig = SetDisConfig(gridsize,bnd);
+  GridGener = 
 end
 
 function setupOnce(testCase)
