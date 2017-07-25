@@ -72,14 +72,6 @@ function ndgrid2_test(testCase)
   assert(all(X{1}(:)==Xref(:)&X{2}(:)==Yref(:)&X{3}(:)==Zref(:)));
 end
 
-function GridGener_test(testCase)
-  % 1D (ig. input space)
-  gridsize = 0.2;
-  bnd = [-1,1];
-  DisConfig = SetDisConfig(gridsize,bnd);
-  GridGener = 
-end
-
 function setupOnce(testCase)
   clc;
   cd ../lib/ArrayGener/
