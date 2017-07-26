@@ -59,32 +59,6 @@ if(type ~= 'o')
     idx(idx==0) = []; % Qn.numV;
 end
 idx = uint32(full(idx));
-%  % params of eval func
-% str1 (1:(3*n-1))=' ';
-% str2 (1:(7*n-1))=' ';
-% str1(1:3:(3*n-2))='X';
-% str1(2:3:(3*n-1))=strN;
-% str1(3:3:(3*n-3))=',';
-% str2(1:7:(7*n-6))='S';
-% str2(2:7:(7*n-5))='U';
-% str2(3:7:(7*n-4))='B';
-% str2(4:7:(7*n-3))='{';
-% str2(5:7:(7*n-2))=strN;
-% str2(6:7:(7*n-1))='}';
-% str2(7:7:(7*n-7))=',';
-% 
-% % generate grid coord X1~Xn
-% eval(['[',str1,']=ndgrid2(',str2,');']); 
-% 
-% % re-use str2
-% str2(1:7:(7*n-6))=' ';
-% str2(2:7:(7*n-5))='X';
-% str2(3:7:(7*n-4))=strN;
-% str2(4:7:(7*n-3))='(';
-% str2(5:7:(7*n-2))=':';
-% str2(6:7:(7*n-1))=')';
-% 
-% % mapping 
-% eval(['idx = sub2ind(discr_bnd(:,3),',str2,');'])
+
 
 
