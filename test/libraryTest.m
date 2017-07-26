@@ -1,5 +1,5 @@
 function tests = libraryTest
-tests = functiontests(localfunctions);
+  tests = functiontests(localfunctions);
 end
 
 function sub2ind2_test(testCase)

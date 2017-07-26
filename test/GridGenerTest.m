@@ -1,5 +1,5 @@
 function tests = GridGenerTest
-tests = functiontests(localfunctions);
+  tests = functiontests(localfunctions);
 end
 
 function GridGener_noconstraint_test(testCase)
