@@ -121,5 +121,37 @@ methods
             v1 = coord; % output everything if nout == 1
         end
     end
+    
+    function fig = visual(Mesh, fig, X, MAC, markersize)
+        % input: fig: figure handle
+        %        X: set for visualization
+        %        MAC: marker and color (option of plot)
+        %        markersize
+        if(nargin == 4)
+            markersize = 1;
+        end
+        coords = get_coord(Mesh, X);
+        figure(fig);
+        plot(coords(1,:),coords(2,:),MAC,'markersize',markersize);
+    end
+    
+     function fig = visual_bnd(Mesh, fig, bnd, color,linewidth)
+        % input: fig: figure handle
+        %        color
+        if(nargin == 2)
+            color = 'black';
+            linewidth = 2;
+        elseif (nargin == 3)
+            linewidth = 2;
+        end
+        if(isempty(bnd))
+            bnd = Mesh.bnd;
+        end
+        [U,V] = meshgrid(bnd(1,:),bnd(2,:));
+        f=[1,2,4,3];
+        v = [U(:),V(:)];
+        patch('Faces',f,'Vertices',v,...
+        'EdgeColor',color,'FaceColor','none','LineWidth',linewidth)
+    end
 end
 end
