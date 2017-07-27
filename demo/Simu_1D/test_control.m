@@ -6,61 +6,45 @@ load ts
 
 %% Visualization and get initial condition from mouse
 
-figure(1);
+fig = figure(1);
 title('State Space (Black), B\_list (Red), Winning Set (Cyan)')
 % Visualization of state space
 bnd = M_X.bnd;
 u = M_X.gridsize;
 discr_bnd = M_X.discr_bnd;
-[U,V] = meshgrid(bnd(1,:),bnd(2,:));
-f=[1,2,4,3];
-v = [U(:),V(:)];
-patch('Faces',f,'Vertices',v,...
-    'EdgeColor','black','FaceColor','none','LineWidth',2)
 
+M_X.visual_bnd(fig, [], 'black', 2);
 hold on;
-x = linspace(discr_bnd(1,1),discr_bnd(1,2),discr_bnd(1,3));
-y = linspace(discr_bnd(2,1),discr_bnd(2,2),discr_bnd(2,3));
-[X,Y] = meshgrid(x,y);
-plot(X,Y,'.b','markersize',8);
+M_X.visual(fig,1:M_X.numV-1,'.b',8);
 axis equal;
-% Visualization of the target set
-[x1,x2] = get_coord(B_list,M_X);
-plot(x1,x2,'.r','markersize',12);    % nodes included
 
-[U,V] = meshgrid([bnd_B(1,:)],[bnd_B(2,:)]);
-f=[1,2,4,3];
-v = [U(:),V(:)];
-% norm ball
-patch('Faces',f,'Vertices',v,...
-    'EdgeColor','red','FaceColor','none','LineWidth',2);
+% Visualization of the target set
+M_X.visual(fig,B_list,'.r',12);
+M_X.visual_bnd(fig,bnd_B,'red',2);
 
 % Visualization of winning set
-[x1,x2] = get_coord(W,M_X);
-plot(x1,x2,'.c','markersize',12);    % nodes included
-
-[U,V] = meshgrid([bnd_B(1,:)],[bnd_B(2,:)]);
-f=[1,2,4,3];
-v = [U(:),V(:)];
+M_X.visual(fig,W,'.c',12);
 
 %% Initialization
+% constants
+eta = M_X.gridsize;
 % initial state 
 disp('Please select the initial point on the plot:')
 [x,y]=ginput(1);
 % x=-1.4;
 % y=-4.5;
 x0 = [x;y];
-idx_x0 = mapping(x0,M_X,eta/2);
+idx_x0 = mapping(x0,M_X,eta/2*0);
 if(~ismember(idx_x0,W))
     error('x0 is beyond winning set.');
 end
 % x0 = W(1);
 
-[x1,x2] =get_coord(idx_x0,M_X)
+[x1,x2] =get_coord(M_X,idx_x0)
 plot(x1,x2,'xb','markersize',10)
 
 idx_x = idx_x0;
-[x1,x2] = get_coord(idx_x,M_X);
+[x1,x2] = get_coord(M_X,idx_x);
 xt = [x0];
 
 idx_u = 0;
@@ -83,13 +67,13 @@ for i = 1:t_span
         idx_u = u_option(1);
     end
      
-    u0 = get_coord(idx_u,M_U);    % get the coordinate of input
+    u0 = get_coord(M_U,idx_u);    % get the coordinate of input
     y0 = [xt;u0];    % States for numerical integration
     
     yt = ode45(@odefun,[0,tau],y0);
     
     xt = yt.y(1:2,end); % destination in one step
-    idx_x  = mapping(xt,M_X,eta/2);
+    idx_x  = mapping(xt,M_X,eta/2*0);
     X_list = [X_list;idx_x]; % history of idx_x
     U_list = [U_list;idx_u]; % history of idx_u
     t_list = [t_list;i*tau];
@@ -117,9 +101,9 @@ legend('Vel of Mass Center','Pos of Mass Center');
 xlabel('t');
 %% Trajectory in state space
 disp('Trajectory:')
-figure(1);
+fig = figure(1);
 
-[x1,x2] = get_coord(X_list,M_X);
+[x1,x2] = get_coord(M_X,X_list);
 for i=1:length(x1)-1
     arrow('Start',[x1(i),x2(i)],'Stop',[x1(i+1),x2(i+1)],'Length',10,'TipAngle',5)
     pause(0.1);
