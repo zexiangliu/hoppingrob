@@ -81,12 +81,56 @@ function get_coord_test(testCase)
   title('It should be a circle with radius 0.5')
 end
 
+
+function Create_B_test(testCase)
+  % 4D (ig. state space for 2D planning)
+  % no constraints
+  gridsize = 0.2;
+  bnd = [-1,1;3,4;1,10;2,5];
+  X = SetDisConfig(gridsize,bnd);
+  M_X = GridGener(X);
+  B_bnd = [-0.5,0.5;3.1,3.5;2,3;2,4];
+  B_list = Create_B(B_bnd,M_X);
+  for i = 1:length(B_list)
+      % loose version: the target set is enlarged by gridsize/2 s.t. the B
+      % list isn't empty when target set is too 'narrow'.
+      assert(all(M_X.get_coord(B_list(i))>=B_bnd(:,1)-M_X.gridsize/2-1e-10));
+      assert(all(M_X.get_coord(B_list(i))<=B_bnd(:,2)+M_X.gridsize/2+1e-10));
+  end
+  
+  % constraints
+  gridsize = [0.1;0.2;0.1;0.2];
+  bnd = [-1,1;-1,1;1,10;2,5];
+  X = SetDisConfig(gridsize,bnd);
+  wid = 0.5; len = 0.5; hig = 0.5;
+  Consfig = SetConsConfig(@cons_fun,wid,len,hig);
+  M_X = GridGener(X,Consfig);
+  % target set is inside constraints
+  B_bnd = [-0.2,0.2;-0.2,0.2;2,3;2,3];
+  B_list = Create_B(B_bnd,M_X);
+  for i = 1:length(B_list)
+      coord = M_X.get_coord(B_list(i));
+      assert(all(coord>=B_bnd(:,1)-M_X.gridsize/2-1e-10));
+      assert(all(coord<=B_bnd(:,2)+M_X.gridsize/2+1e-10));
+      assert(norm(coord(1:2))<=(wid*len*hig)^(1/3));
+  end
+  
+  % target set intersects with constraints
+  B_bnd = [-1,1;-1,1;2,3;2,3];
+  B_list = Create_B(B_bnd,M_X);
+  for i = 1:length(B_list)
+      coord = M_X.get_coord(B_list(i));
+      assert(all(coord>=B_bnd(:,1)-M_X.gridsize/2-1e-10));
+      assert(all(coord<=B_bnd(:,2)+M_X.gridsize/2+1e-10));
+      assert(norm(coord(1:2))<=(wid*len*hig)^(1/3));
+  end
+  
+end
+
 function setupOnce(testCase)
-  clc;
-  cd ../lib/ArrayGener/
+  cd ../lib/GridGener/
 end
 
 function teardownOnce(testCase)
-  clear all;
   cd ../../test/
 end

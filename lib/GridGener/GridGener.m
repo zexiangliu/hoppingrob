@@ -90,7 +90,7 @@ methods
         coord = Mesh.discr_bnd(:,1) + (sub-1).*Mesh.gridsize;
     end
     
-    function [v1,v2,varargout] = get_coord(Mesh,X)
+    function [v1,v2,varargout] = get_coord(Mesh,X,idx)
         % input index of nodes and mesh structure, return the coordinates of input
         % nodes
         nout = max(nargout,1);

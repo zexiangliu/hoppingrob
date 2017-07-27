@@ -1,4 +1,4 @@
-function tests = libraryTest
+function tests = LibraryTest
   tests = functiontests(localfunctions);
 end
 
@@ -73,11 +73,9 @@ function ndgrid2_test(testCase)
 end
 
 function setupOnce(testCase)
-  clc;
-  cd ../lib/ArrayGener/
+  cd ../lib/GridGener/
 end
 
 function teardownOnce(testCase)
-  close all; clear all;
   cd ../../test/
 end

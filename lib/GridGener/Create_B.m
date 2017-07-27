@@ -33,6 +33,9 @@ for i = 1:num_B
    B_list(i) = sub2ind2(size_X,num2cell(sub_i));
 end
 
-B_list = full(M_X.ind2ind(B_list));
+if(~isempty(M_X.ind2ind))
+  B_list = full(M_X.ind2ind(B_list));
+end
+
 B_list(B_list==0)=[];
 end

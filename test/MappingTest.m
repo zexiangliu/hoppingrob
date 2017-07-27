@@ -61,11 +61,9 @@ function bool = cons_fun(coord,ConsConfig)
 end
 
 function setupOnce(testCase)
-  clc;
-  cd ../lib/ArrayGener/
+  cd ../lib/GridGener/
 end
 
 function teardownOnce(testCase)
-  clear all;
   cd ../../test/
 end
