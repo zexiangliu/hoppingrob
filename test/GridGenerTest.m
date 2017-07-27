@@ -12,6 +12,7 @@ function GridGener_noconstraint_test(testCase)
   assert(all(M_X.discr_bnd(:,2)<=bnd(:,2)-gridsize/2+1e-10));
   assert(all(abs(M_X.discr_bnd(:,1)-M_X.discr_bnd(:,2))./...
       (M_X.discr_bnd(:,3)-1)<=gridsize+1e-10));
+  assert(M_X.numV == prod(M_X.discr_bnd(:,3))+1);
   % 2D (ig. state space for 1D planning)
   gridsize = 0.2;
   bnd = [-1,1;3,5];
@@ -21,6 +22,7 @@ function GridGener_noconstraint_test(testCase)
   assert(all(M_X.discr_bnd(:,2)<=bnd(:,2)-gridsize/2+1e-10));
   assert(all(abs(M_X.discr_bnd(:,1)-M_X.discr_bnd(:,2))./...
       (M_X.discr_bnd(:,3)-1)<=gridsize+1e-10));
+  assert(M_X.numV == prod(M_X.discr_bnd(:,3))+1);
   % 4D (ig. state space for 2D planning)
   gridsize = 0.2;
   bnd = [-1,1;3,4;1,10;2,5];
@@ -31,6 +33,7 @@ function GridGener_noconstraint_test(testCase)
   assert(all(M_X.discr_bnd(:,2)<=bnd(:,2)-gridsize/2+1e-10));
   assert(all(abs(M_X.discr_bnd(:,1)-M_X.discr_bnd(:,2))./...
       (M_X.discr_bnd(:,3)-1)<=gridsize+1e-10));
+  assert(M_X.numV == prod(M_X.discr_bnd(:,3))+1);
 end
 
 function GridGener_constraint_test(testCase)

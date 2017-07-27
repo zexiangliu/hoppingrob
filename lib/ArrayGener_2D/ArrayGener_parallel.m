@@ -83,10 +83,10 @@ end
 transition_list = cell(num_U);
 pg_list = cell(num_U);
 
-parfor (i = 1:num_U,M)
-% for i = 1:num_U
+% parfor (i = 1:num_U,M)
+for i = 1:num_U
     % calculate the input u0 corresponding to index i
-    sub_u0 = M_U.ind2sub(i,:)';        
+    sub_u0 = double(M_U.ind2sub(i,:)');        
     u0 = M_U.discr_bnd(:,1)+(sub_u0-1)*M_U.gridsize;
     %% Add progress group (part I)
     % Calculate equilibrium
@@ -121,8 +121,8 @@ parfor (i = 1:num_U,M)
     state1 = [];
     state2 = [];
     for j = 1:num_X
-        sub_x0 = M_X.ind2sub(j,:)';     % Initial Condition
-        x0 = M_X.discr_bnd(:,1)+(sub_x0-1)*eta;
+        sub_x0 = double(M_X.ind2sub(j,:)');     % Initial Condition
+        x0 = M_X.discr_bnd(:,1)+(sub_x0-1).*eta;
         % check input restriction (only for 1D)
         if(norm(x0(1)-u0)>(lmax-eta/2))
             PG(j)=-1; % remove this state from progress group

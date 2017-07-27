@@ -8,7 +8,7 @@ function idx = mapping_ext(xt,Qn,r,type)
 %   Qn: the mesh of discretized state space
 % Output:
 %   idx: the index of nodes contained by the Br(x(t)) in Qn
-%   type: 
+%   type: 'n' normal mode, 'o' original idx, used only for grid with constraints 
 if(size(xt,2)~=1)
     error('xt must be a column vector.');
 end
@@ -44,7 +44,7 @@ ubnd = xt+r_r>discr_bnd(:,2)+eta/2;
 if (any(lbnd)||any(ubnd))    
     idx=Qn.numV; % if out of bnd, assign it to sink node
     if(type == 'o')
-        idx = length(Qn.ind2ind);
+        idx = Qn.numVfull;
     end
     return;
 end
@@ -66,7 +66,7 @@ end
 
 X = ndgrid2(SUB);
 idx = sub2ind2(discr_bnd(:,3),X);
-if(type ~= 'o')
+if(type ~= 'o' && Qn.withCons)
     idx = Qn.ind2ind(idx);
     idx(idx==0) = []; % Qn.numV;
 end

@@ -10,14 +10,14 @@ function mapping_noconstraint_test(testCase)
   M_X = GridGener(X);
   xt = [0.1;3.5];
   r = [0.1;0.2];
-  idx = mapping(xt,M_X,r,'o');
+  idx = mapping(xt,M_X,r);
   coords = M_X.get_coord(idx);
   for i = 1:size(coords,2)
       assert(all(abs(coords(:,i)-xt)<=M_X.gridsize/2+r+1e-10));
   end
   
   r = [0.1,0.2;0.3,0.4];
-  idx = mapping_ext(xt,M_X,r,'o');
+  idx = mapping_ext(xt,M_X,r);
   coords = M_X.get_coord(idx);
   for i = 1:size(coords,2)
       assert(all(coords(:,i)<=xt+M_X.gridsize/2+r(:,2)+1e-10));
@@ -46,6 +46,22 @@ function mapping_constraint_test(testCase)
   r = [0.1,0.2;0.3,0.4];
   idx = mapping_ext(xt,M_X,r);
   coords = M_X.get_coord(idx);
+  for i = 1:size(coords,2)
+      assert(all(coords(:,i)<=xt+M_X.gridsize/2+r(:,2)+1e-10));
+      assert(all(coords(:,i)>=xt-M_X.gridsize/2-r(:,1)-1e-10));
+  end
+  
+  r = [0.1;0.2];
+  idx = mapping(xt,M_X,r,'o');
+  coords = M_X.get_coord_full(idx);
+  for i = 1:size(coords,2)
+      assert(all(abs(coords(:,i)-xt)<=M_X.gridsize/2+r+1e-10));
+      assert(norm(coords(:,i)-xt)<=radius);
+  end
+  
+  r = [0.1,0.2;0.3,0.4];
+  idx = mapping_ext(xt,M_X,r,'o');
+  coords = M_X.get_coord_full(idx);
   for i = 1:size(coords,2)
       assert(all(coords(:,i)<=xt+M_X.gridsize/2+r(:,2)+1e-10));
       assert(all(coords(:,i)>=xt-M_X.gridsize/2-r(:,1)-1e-10));

@@ -3,8 +3,9 @@
 %======================
 clear all;clc;close all;
 addpath(genpath('./'));
-addpath(genpath('../abstr-ref/'));
-addpath('../ArrayGener/');
+addpath(genpath('../../lib/abstr-ref/'));
+addpath('../../lib/GridGener/');
+addpath('../../lib/ArrayGener_2D/');
 
 
 %% Generate abstraction transient system
@@ -85,7 +86,7 @@ bnd_B = [x1min,x1max
 B_list = Create_B(bnd_B,M_X);
 
 % Visualization of the target set
-[x1,x2] = get_coord(B_list,M_X);
+[x1,x2] = get_coord(M_X,B_list);
 plot(x1,x2,'.r','markersize',12);    % nodes included
 
 [U,V] = meshgrid([bnd_B(1,:)],[bnd_B(2,:)]);
@@ -107,7 +108,7 @@ ts.create_fast();
 % toc
 %%
 % Visualization of winning set
-[x1,x2] = get_coord(W,M_X);
+[x1,x2] = get_coord(M_X,W);
 plot(x1,x2,'.c','markersize',12);    % nodes included
 
 [U,V] = meshgrid([bnd_B(1,:)],[bnd_B(2,:)]);

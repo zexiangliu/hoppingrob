@@ -7,6 +7,8 @@ classdef GridGener < handle
         ind2sub;
         ind2ind;
         numV;
+        numVfull;
+        withCons;
     end
 methods 
     % Generate uniform grid of set A given the boundaries and grid size [A]_u 
@@ -18,9 +20,11 @@ methods
         % Output: Input + discr_bnd
         % ~.discr_bnd: nx2 matrix, i^th row [ln,rn,num] means left node
         % position ln, right node pos rn and # nodes in total in this dimension
+        Mesh.withCons = true;
         if(nargin == 1)
             default_cons_fun = @(coord,ConsConfig)true;
             ConsConfig.cons_fun = default_cons_fun;
+            Mesh.withCons = false;
         end
         Mesh.gridsize = DiscrConfig.gridsize;
         Mesh.bnd = DiscrConfig.bnd;
@@ -56,6 +60,7 @@ methods
 
         % n =  size(Mesh.bnd,1);
         num_V = prod(Mesh.discr_bnd(:,3));
+        Mesh.numVfull = num_V + 1;
         Mesh.ind2sub=zeros(num_V,n,'uint32');
         % for i = 1:num_V
         %     Mesh.ind2sub(i,:)=ind2sub2(Mesh.discr_bnd(:,3),i)';
