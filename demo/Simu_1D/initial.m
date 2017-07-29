@@ -6,6 +6,7 @@ addpath(genpath('./'));
 addpath(genpath('../../lib/abstr-ref/'));
 addpath('../../lib/GridGener/');
 addpath('../../lib/ArrayGener_2D/');
+addpath('../../lib/SimuAndAnim/');
 
 
 %% Generate abstraction transient system
@@ -97,12 +98,9 @@ hold on;
 
 title('State Space (Black), B\_list (Red), Winning (Cyan)')
 %%
-pause;
 disp('Press any key...');
+pause;
 close all;
 save ts
 
 disp('Done.')
-%%
-disp('Now please run ''test_control.m''!')
-open test_control
