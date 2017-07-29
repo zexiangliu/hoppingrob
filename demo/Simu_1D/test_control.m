@@ -1,7 +1,7 @@
 % Simulation of the hopping robot
 %% run test.m first.
 close all; clear all; clc;
-
+addpath('../../lib/SimuAndAnim/');
 load ts
 
 %% Visualization and get initial condition from mouse
@@ -9,9 +9,6 @@ load ts
 fig = figure(1);
 title('State Space (Black), B\_list (Red), Winning Set (Cyan)')
 % Visualization of state space
-bnd = M_X.bnd;
-u = M_X.gridsize;
-discr_bnd = M_X.discr_bnd;
 
 M_X.visual_bnd(fig, [], 'black', 2);
 hold on;
@@ -34,7 +31,7 @@ disp('Please select the initial point on the plot:')
 % x=-1.4;
 % y=-4.5;
 x0 = [x;y];
-idx_x0 = mapping(x0,M_X,eta/2*0);
+idx_x0 = mapping(x0,M_X, M_X.gridsize/2*0);
 if(~ismember(idx_x0,W))
     error('x0 is beyond winning set.');
 end
@@ -44,7 +41,6 @@ end
 plot(x1,x2,'xb','markersize',10)
 
 idx_x = idx_x0;
-[x1,x2] = get_coord(M_X,idx_x);
 xt = [x0];
 
 idx_u = 0;
@@ -103,12 +99,7 @@ xlabel('t');
 disp('Trajectory:')
 fig = figure(1);
 
-[x1,x2] = get_coord(M_X,X_list);
-for i=1:length(x1)-1
-    arrow('Start',[x1(i),x2(i)],'Stop',[x1(i+1),x2(i+1)],'Length',10,'TipAngle',5)
-    pause(0.1);
-end
-
+traj_anim(fig,M_X,X_list);
 %% Animation based on Plot
 disp('Animation 1:')
 animation

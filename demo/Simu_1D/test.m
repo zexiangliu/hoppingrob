@@ -97,6 +97,9 @@ hold on;
 
 title('State Space (Black), B\_list (Red), Winning (Cyan)')
 %%
+pause;
+disp('Press any key...');
+close all;
 save ts
 
 disp('Done.')
