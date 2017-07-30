@@ -3,14 +3,18 @@
 % Ground Type 1: holes distributed in ground. The robot needs to avoid
 % stepping in these holes.
 %======================
+clear all;clc;close all;
+addpath('../../../lib/');
+resetpath;
+addpath(genpath('./'));
+addpath('../');
+addpath(genpath('../../../lib/abstr-ref/'));
+addpath('../../../lib/GridGener/');
+addpath('../../../lib/ArrayGener_2D/');
+addpath('../../../lib/SimuAndAnim/');
+addpath('../../../lib/GroundGener/');
 
 %% Generate abstraction transient system
-clear all;clc;close all;
-addpath('../');
-addpath('../ground_gen/');
-addpath(genpath('../../abstr-ref/'));
-addpath('../../ArrayGener/');
-addpath('../../Simu_2D');
 disp('Start generating transient system...')
 %====== Define the system ======
 g = 10;
@@ -67,21 +71,12 @@ M_X = GridGener(X);
 M_U = GridGener(U);
 
 % Visualization
-% bnd = M_X.bnd;
-% u = M_X.gridsize;
-% discr_bnd = M_X.discr_bnd;
-% [U,V] = meshgrid(bnd(1,:),bnd(2,:));
-% f=[1,2,4,3];
-% v = [U(:),V(:)];
-% patch('Faces',f,'Vertices',v,...
-%     'EdgeColor','black','FaceColor','none','LineWidth',2)
-% 
-% hold on;
-% x = linspace(discr_bnd(1,1),discr_bnd(1,2),discr_bnd(1,3));
-% y = linspace(discr_bnd(2,1),discr_bnd(2,2),discr_bnd(2,3));
-% [X,Y] = meshgrid(x,y);
-% plot(X,Y,'.b','markersize',8);
-% axis equal;
+fig = figure;
+M_X.visual_bnd(fig,[],'black',2);
+
+hold on;
+M_X.visual(fig,1:M_X.numV-1,'.b',8);
+axis equal;
 %%
 % TransSyst
 ts = ArrayGener_parallel(M_X,M_U,tau,r,lmax);
@@ -91,19 +86,12 @@ disp('Create target set B_list...')
 bnd_B = [X.bnd(1,:);
          -0.4,  0.4];
 B_list = Create_B(bnd_B,M_X);
-% Visualization of the target set
-% [x1,x2] = get_coord(B_list,M_X);
-% plot(x1,x2,'.r','markersize',12);    % nodes included
-% 
-% [U,V] = meshgrid([bnd_B(1,:)],[bnd_B(2,:)]);
-% f=[1,2,4,3];
-% v = [U(:),V(:)];
-% % norm ball
-% patch('Faces',f,'Vertices',v,...
-%     'EdgeColor','red','FaceColor','none','LineWidth',2);
-% 
-% hold on;
 
+% Visualization of the target set
+M_X.visual(fig,B_list,'.r',12);
+M_X.visual_bnd(fig,bnd_B,'red',2);
+
+hold on;
 
 disp('Done.')
 %% Controller
@@ -112,19 +100,12 @@ ts.create_fast();
 [W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
 %%
 % Visualization of winning set
-% [x1,x2] = get_coord(W,M_X);
-% plot(x1,x2,'.c','markersize',12);    % nodes included
-% 
-% [U,V] = meshgrid([bnd_B(1,:)],[bnd_B(2,:)]);
-% f=[1,2,4,3];
-% v = [U(:),V(:)];
-% 
-% title('State Space (Black), B\_list (Red), Winning (Cyan)')
+M_X.visual(fig,W,'.c',12);
+
+title('State Space (Black), B\_list (Red), Winning (Cyan)')
+disp('Press any key to continue...');
+pause;
 
 save ts
 
-
 disp('Done.')
-%%
-disp('Now please run ''test_control.m''!')
-open test_control

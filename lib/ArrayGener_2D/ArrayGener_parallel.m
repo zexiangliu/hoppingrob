@@ -103,7 +103,7 @@ for i = 1:num_U
     % progress group
     PG = 1:num_X;    % group having all the states
     if(isFull == 1) % if A is full rank
-        idx_eq = mapping(x_part,M_X,M_X.gridsize/2); % mapping the eq into nodes in grid
+        idx_eq = mapping(x_part,M_X,M_X.gridsize*0); % mapping the eq into nodes in grid
         if(idx_eq ~= num_X + 1) % if eq is in the state space
             PG(idx_eq)=-1;      % remove the eq from progress group
         end

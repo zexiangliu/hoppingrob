@@ -150,7 +150,7 @@ classdef Ground<handle
             else
                 figure(fig);
             end
-            hold on;
+%             hold on;
             X=gnd.X_interp;
             Y=gnd.Y_interp;
             V=gnd.V_animation;

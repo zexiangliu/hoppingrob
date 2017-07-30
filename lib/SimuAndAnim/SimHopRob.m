@@ -78,8 +78,9 @@ classdef SimHopRob < handle
 
 
             % Playground
-            patch('Faces',rob.Playground.fac,'Vertices',rob.Playground.vert,'FaceColor','cyan');  % patch function
-
+            if(~isempty(rob.Playground))
+                patch('Faces',rob.Playground.fac,'Vertices',rob.Playground.vert,'FaceColor','cyan');  % patch function
+            end
         end
     end
 end

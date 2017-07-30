@@ -34,6 +34,13 @@ function GridGener_noconstraint_test(testCase)
   assert(all(abs(M_X.discr_bnd(:,1)-M_X.discr_bnd(:,2))./...
       (M_X.discr_bnd(:,3)-1)<=gridsize+1e-10));
   assert(M_X.numV == prod(M_X.discr_bnd(:,3))+1);
+  
+  % Test the simplified input gridsize
+  %%% When the gridsize in each dim is the same, user can only input scalar
+  %%% instead of a vector. The GridGener should generate a vector
+  %%% automatically.
+  assert(all(M_X.gridsize==gridsize));
+  assert(length(M_X.gridsize)==size(M_X.bnd,1));
 end
 
 function GridGener_constraint_test(testCase)

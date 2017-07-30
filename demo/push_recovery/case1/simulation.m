@@ -5,14 +5,6 @@
 %% run Initial.m first.
 close all; clear all; clc;
 
-if(exist('ArrayGener_ts','file')~=2)
-    addpath('../');
-    addpath('../ground_gen/');
-    addpath(genpath('../../abstr-ref/'));
-    addpath('../../ArrayGener/');
-    addpath('../../Simu_2D');
-end
-
 load ts
 
 A = [0 0 1 0;
@@ -74,13 +66,13 @@ direction = [v1;v2]/v;
 % y=-4.5;
 
 x0 = [0-0.05;v];
-idx_x0 = mapping(x0,M_X,eta/2);
+idx_x0 = mapping(x0,M_X,[0;0]);
 
 % select the initial condition of x0(1)
 while(x0(1)>=X.bnd(1,1)&&x0(1)<=X.bnd(1,2))
     if(~ismember(idx_x0,W))
         x0(1) = x0(1)-M_U.gridsize;
-        idx_x0 = mapping(x0,M_X,eta/2);
+        idx_x0 = mapping(x0,M_X,[0;0]);
     else
         break;
     end
@@ -113,7 +105,7 @@ Yt_list=[]; % record ode solution for animation
 Yx_list=[]; % record ode solution for animation
 %% hopping
 disp('Simulating...');
-t_span = 30;
+t_span = 60;
 for i = 1:t_span
     % visual (on the grid)
     % get the options of input 
@@ -123,7 +115,7 @@ for i = 1:t_span
     if(i==1||i>=2&&~ismember(U_list(end),u_option))
         for j = 1:length(u_option);
             idx_u = u_option(j);
-            u0 = get_coord(idx_u,M_U)*direction+coord_bias; 
+            u0 = get_coord(M_U,idx_u)*direction+coord_bias; 
             if(~gnd.IsInHoles(u0))
                 break;
             end
@@ -141,7 +133,7 @@ for i = 1:t_span
     
     xt = yt.y(1:4,end); % destination in one step
     x_proj = [xt(1:2)'-coord_bias';xt(3:4)']*direction; % project xt into the line
-    idx_x  = mapping(x_proj,M_X,eta/2);
+    idx_x  = mapping(x_proj,M_X,[0;0]);
     X_list = [X_list;idx_x]; % history of idx_x
     U_list = [U_list;idx_u]; % history of idx_u
     t_list = [t_list;i*tau];
@@ -171,15 +163,13 @@ legend('Vel of Mass Center','Pos of Mass Center');
 xlabel('t');
 %% Trajectory in state space
 disp('Trajectory:')
-figure(2);
-visual(M_X,B_list,bnd_B,W);
+fig = figure(2);
+hold on;
+M_X.visual(fig,1:M_X.numV-1,'.b',8);
+axis equal;
+M_X.visual(fig,B_list,'.r',12);
+M_X.visual_bnd(fig,bnd_B,'red',2);
+M_X.visual(fig,W,'.c',12);
 
-[x1,x2] = get_coord(X_list,M_X);
-for i=1:length(x1)-1
-    arrow('Start',[x1(i),x2(i)],'Stop',[x1(i+1),x2(i+1)],'Length',10,'TipAngle',5)
-    pause(0.01);
-end
+traj_anim(fig,M_X,X_list,[],0.1);
 
-%% Animation based on Plot
-disp('Animation 1:')
-animation

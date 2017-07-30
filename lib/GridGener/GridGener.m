@@ -26,7 +26,13 @@ methods
             ConsConfig.cons_fun = default_cons_fun;
             Mesh.withCons = false;
         end
-        Mesh.gridsize = DiscrConfig.gridsize;
+        if(length(DiscrConfig.gridsize)~=size(DiscrConfig.bnd,1))
+            % When the gridsize in each dimension is the same, input one scalar instead.
+            Mesh.gridsize = DiscrConfig.gridsize*ones([size(DiscrConfig.bnd,1),1]);
+        else
+            Mesh.gridsize = DiscrConfig.gridsize;
+        end
+
         Mesh.bnd = DiscrConfig.bnd;
 
         bnd = DiscrConfig.bnd;            % boundary values for set A
