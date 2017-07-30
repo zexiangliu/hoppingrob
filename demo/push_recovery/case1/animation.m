@@ -1,6 +1,3 @@
-
-addpath('../../lib/SimuAndAnim/');
-
 % Playground
 
 Playground.vert = [x1min-lmax,-0.5,0;
@@ -38,7 +35,7 @@ for i = 1:length(Yt_list)
     hopping_height = h0/4*abs(sin((3*pi/2/tau)*t));
     gnd.visual_ground(fig);
     hold on;
-    rob.visual(fig,[Yx_list(1,i);0;h0],[Yx_list(3,i);0;hopping_height]);
+    rob.visual(fig,[Yx_list(1,i);Yx_list(2,i);h0],[Yx_list(5,i);Yx_list(6,i);hopping_height]);
     % camera configuration
     % axis([x1min-lmax, x1max+lmax, -0.5, 0.5, -0.5, 1.5]); 
     axis equal;

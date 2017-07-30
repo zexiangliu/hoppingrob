@@ -74,7 +74,7 @@ pg_list = cell(num_U);
 % parfor (i = 1:num_U,M)
 for i = 1:num_U
     % calculate the input u0 corresponding to index i
-    sub_u0 = M_U.ind2sub(i,:)';        
+    sub_u0 = double(M_U.ind2sub(i,:)');        
     u0 = M_U.discr_bnd(:,1)+(sub_u0-1)*mu;
     
     if(~uconstraints(uconstr,u0,[0;0],0,0,1))
@@ -98,7 +98,7 @@ for i = 1:num_U
     % progress group
     PG = 1:num_X;    % group having all the states
     if(isFull == 1) % if A is full rank
-        idx_eq = mapping(x_part,M_X,eta/2); % mapping the eq into nodes in grid
+        idx_eq = mapping(x_part,M_X,M_X.gridsize*0); % mapping the eq into nodes in grid
         if(idx_eq ~= num_X + 1) % if eq is in the state space
             PG(idx_eq)=-1;      % remove the eq from progress group
         end
@@ -116,10 +116,10 @@ for i = 1:num_U
     state1 = [];
     state2 = [];
     for j = 1:num_X
-        sub_x0 = M_X.ind2sub(j,:)';     % Initial Condition
-        x0 = M_X.discr_bnd(:,1)+(sub_x0-1)*eta;
+        sub_x0 = double(M_X.ind2sub(j,:)');     % Initial Condition
+        x0 = M_X.discr_bnd(:,1)+(sub_x0-1).*eta;
         % check input restriction (only for 1D)
-        if((norm(x0(1)-u0)+eta/2)>h/h0*lmax||~uconstraints(uconstr,u0,x0,h,0,2))
+        if((norm(x0(1)-u0)+eta(1)/2)>h/h0*lmax||~uconstraints(uconstr,u0,x0,h,0,2))
             PG(j)=-1; % remove this state from progress group
             continue;
         end
@@ -136,7 +136,7 @@ for i = 1:num_U
         xt = Phi*x0+Phi_u*u0;
         
         % calculate r1
-        r1 = Phi*[eta;eta]/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
+        r1 = Phi*eta/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
         %calculate candidate 1 of r2
 %         x_ex = Phi_ex*x0 + Phi_u_ex*u0;
 %         if((x_ex(1)-u0)*(x0(1)-u0)>=0)
@@ -181,7 +181,7 @@ for i = 1:num_U
         cr2_1 = (1+lmax*tau)*hlim*exp(max([1;g/h0])*tau);
         cr2_2 = hlim*exp((max([0.5;g/h0])+max([0.5;lmax]))*tau);
         r2_2 = min([cr2_1;cr2_2]);
-        x1_max = max(abs(xt(1)-u0)+r1(1)+r2_2(1),abs(x0(1)-u0)+eta/2);
+        x1_max = max(abs(xt(1)-u0)+r1(1)+r2_2(1),abs(x0(1)-u0)+eta(1)/2);
         
         counter = 1;
         while(1) % iterative algorithm to find the smallest r
@@ -189,9 +189,9 @@ for i = 1:num_U
             r2_2 = abs(Phi_u*du_max);
             % r
 %             r = r1+r2;         % radius of norm ball when mapping xt to discr. state space
-            if(max(abs(xt(1)-u0)+r1(1)+r2_2(1),abs(x0(1)-u0)+eta/2) < x1_max)
+            if(max(abs(xt(1)-u0)+r1(1)+r2_2(1),abs(x0(1)-u0)+eta(1)/2) < x1_max)
 %                 warning('special_case of r2');
-                x1_max = max(abs(xt(1)-u0)+r1(1)+r2_2(1),abs(x0(1)-u0)+eta/2);
+                x1_max = max(abs(xt(1)-u0)+r1(1)+r2_2(1),abs(x0(1)-u0)+eta(1)/2);
                 counter = counter +1;
             else
                 break;

@@ -1,17 +1,8 @@
 % Test push_recovery
-% Ground Type I: only holes
 % Information of holes is considered when 1D planning
 
 %% run Initial.m first.
 close all; clear all; clc;
-
-if(exist('ArrayGener_ts','file')~=2)
-    addpath('../');
-    addpath(genpath('../ground_gen'));
-    addpath(genpath('../../abstr-ref/'));
-    addpath('../../ArrayGener/');
-    addpath('../../Simu_2D');
-end
 
 load ts
 
@@ -25,9 +16,7 @@ B = [0 0
      0 -g/h0];
 save system A B; % the system dx = Ax + Bu is saved in file system.mat
 
-
 %% Initialization
-
 idx_x = idx_x0(1);
 xt = [coord_bias+x0(1)*direction;x0(2)*direction];
 
@@ -51,14 +40,13 @@ axis([gnd.bnd_visual(1,:),gnd.bnd_visual(2,:)]);
 title('Initial Position and Velocity of the Robot')
 disp('Press any key to conitue...');
 pause;
-
 %% hopping
 disp('Simulating...');
 t_span = 50;
 for i = 1:t_span
     % visual (on the grid)
     % get the options of input 
-%     disp(idx_x
+%     disp(idx_x)
     u_option = cont.get_input(idx_x);
         % keep the same input if not necessary
     if(i==1||i>=2&&~ismember(U_list(end),u_option))
@@ -100,33 +88,29 @@ for i = 1:t_span
 
     figure(3);
     hold on;
-    
     plot((i-1)*tau+yt.x,yt.y(1:2,:)'*direction-coord_bias'*direction,'-r'); % position red
     plot((i-1)*tau+yt.x,yt.y(3:4,:)'*direction,'-b'); % velocity blue
 
     drawnow;
-    
 end
 disp('Done.');
 
-legend('Pos of Mass Center','Vel of Mass Center');
-set(gca,'fontsize',12)
+legend('Vel of Mass Center','Pos of Mass Center');
 xlabel('t');
 %% Trajectory in state space
 disp('Press any key to conitue...');
 pause;
 disp('Trajectory:')
-figure(2);
-visual(M_X,B_list,bnd_B,W);
+fig = figure(2);
+hold on;
+M_X.visual(fig,1:M_X.numV-1,'.b',8);
+axis equal;
+M_X.visual(fig,B_list,'.r',12);
+M_X.visual_bnd(fig,bnd_B,'red',2);
+M_X.visual(fig,W,'.c',12);
 
-[x1,x2] = get_coord(X_list,M_X);
-for i=1:length(x1)-1
-    arrow('Start',[x1(i),x2(i)],'Stop',[x1(i+1),x2(i+1)],'Length',10,'TipAngle',5)
-    pause(0.01);
-end
+traj_anim(fig,M_X,X_list,[],0.1);
 
-%% Animation based on Plot
 disp('Press any key to conitue...');
 pause;
-disp('Animation 1:')
-animation
+

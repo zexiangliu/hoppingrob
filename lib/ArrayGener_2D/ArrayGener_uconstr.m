@@ -70,11 +70,11 @@ end
 transition_list = cell(num_U);
 pg_list = cell(num_U);
 
-parfor (i = 1:num_U,M)
-% for i = 1:num_U
+% parfor (i = 1:num_U,M)
+for i = 1:num_U
     % calculate the input u0 corresponding to index i
-    sub_u0 = M_U.ind2sub(i,:)';        
-    u0 = M_U.discr_bnd(:,1)+(sub_u0-1)*M_U.gridsize;
+    sub_u0 = double(M_U.ind2sub(i,:)');        
+    u0 = M_U.discr_bnd(:,1)+(sub_u0-1).*M_U.gridsize;
     
     if(~uconstraints(uconstr,u0))
         % u0 is not feasible
@@ -96,7 +96,7 @@ parfor (i = 1:num_U,M)
     % progress group
     PG = 1:num_X;    % group having all the states
     if(isFull == 1) % if A is full rank
-        idx_eq = mapping(x_part,M_X,M_X.gridsize/2); % mapping the eq into nodes in grid
+        idx_eq = mapping(x_part,M_X,M_X.gridsize*0); % mapping the eq into nodes in grid
         if(idx_eq ~= num_X + 1) % if eq is in the state space
             PG(idx_eq)=-1;      % remove the eq from progress group
         end
@@ -114,8 +114,8 @@ parfor (i = 1:num_U,M)
     state1 = [];
     state2 = [];
     for j = 1:num_X
-        sub_x0 = M_X.ind2sub(j,:)';     % Initial Condition
-        x0 = M_X.discr_bnd(:,1)+(sub_x0-1)*M_X.gridsize;
+        sub_x0 = double(M_X.ind2sub(j,:)');     % Initial Condition
+        x0 = M_X.discr_bnd(:,1)+(sub_x0-1).*M_X.gridsize;
         % check input restriction (only for 1D)
         if(norm(x0(1)-u0)>(lmax-M_X.gridsize/2))
             PG(j)=-1; % remove this state from progress group

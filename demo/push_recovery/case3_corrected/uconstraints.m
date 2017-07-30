@@ -10,7 +10,7 @@ if(type==1)
 elseif(type==2)
     eta = uconstr.eta;
     max_leg = uconstr.max_leg;
-    l = sqrt(h^2+(abs(x0(1)-u0)+eta/2)^2);
+    l = sqrt(h^2+(abs(x0(1)-u0)+eta(1)/2)^2);
     if(l>max_leg)
         y = false;
     end

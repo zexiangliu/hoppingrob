@@ -11,8 +11,12 @@ PATH_old = pwd;
 cd(PATH);
 
 save PATH PATH_old
-%% Generate abstraction and controller
+
+%% Initialize
 initial
+
+%% Generate abstraction and controller
+abstraction
 
 %% Simulation
 simulation
