@@ -7,14 +7,19 @@ function manual_mode()
 %     exec + demotag/
 %     demotag        ---- execute the demo
 %     doc + demotag  ---- show the description of the demo
+% Note: tag.m in each demo's directory is necessary for manual_mode
+% discovering the demos.
     disp('Initialize environment...');
     [cmd_dict,demo,doc] = initial();
     disp(' ');
-    disp('Please type "h" for help information.')
+    disp('Please type ''h'' for help information.')
     disp(' ');
     while(1)
         cmd = input('manual$ ','s');
         if(strcmp(cmd,'q')||strcmp(cmd,'quit'))
+            disp(' ');
+            disp('Quit manual mode...');
+            disp(' ');
             break;
         end
         keywords = split(lower(cmd));

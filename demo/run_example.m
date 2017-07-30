@@ -1,4 +1,6 @@
 function run_example(PATH)
+addpath('../lib/')
+resetpath
 addpath('console/')
 if(nargin == 0)
     % Enter manual mode
