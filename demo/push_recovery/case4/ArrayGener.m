@@ -63,8 +63,8 @@ pg_list = cell(num_U);
 % parfor (i = 1:num_U,M)
 for i = 1:num_U
     % calculate the input u0 corresponding to index i
-    sub_u0 = M_U.ind2sub(i,:)';        
-    u0 = M_U.discr_bnd(:,1)+(sub_u0-1)*mu;
+    sub_u0 = double(M_U.ind2sub(i,:)');        
+    u0 = M_U.discr_bnd(:,1)+(sub_u0-1).*mu;
     
     if(~uconstraints(uconstr,u0,[0;0],0,0,1))
         % u0 is not feasible
@@ -112,7 +112,7 @@ for i = 1:num_U
     % progress group
     PG = 1:num_X;    % group having all the states
     if(isFull == 1) % if A is full rank
-        idx_eq = mapping(x_part,M_X,eta/2); % mapping the eq into nodes in grid
+        idx_eq = mapping(x_part,M_X,eta*0); % mapping the eq into nodes in grid
         if(idx_eq ~= num_X + 1) % if eq is in the state space
             PG(idx_eq)=-1;      % remove the eq from progress group
         end
@@ -120,7 +120,7 @@ for i = 1:num_U
         % if isEq == 0 (means no eq exists), PG are all states
         if(isEq == 1)   % eq exists
             dimN = size(x_hom,2);    % dim of null space of A
-            ones_eta = eta/2*ones(dimN,1);%   ||||| 
+            ones_eta = eta/2;%eta/2*ones(dim_X,1);            ||||| 
             % loop over all nodes in the next section  vvvvv
         end
     end
@@ -130,10 +130,10 @@ for i = 1:num_U
     state1 = [];
     state2 = [];
     for j = 1:num_X
-        sub_x0 = M_X.ind2sub(j,:)';     % Initial Condition
-        x0 = M_X.discr_bnd(:,1)+(sub_x0-1)*eta;
+        sub_x0 = double(M_X.ind2sub(j,:)');     % Initial Condition
+        x0 = M_X.discr_bnd(:,1)+(sub_x0-1).*eta;
         % check input restriction (only for 1D)
-        if((norm(x0(1)-u0)+eta/2)>h/h0*lmax||~uconstraints(uconstr,u0,x0,h,r1(1),2))
+        if((norm(x0(1)-u0)+eta(1)/2)>h/h0*lmax||~uconstraints(uconstr,u0,x0,h,r1(1),2))
             PG(j)=-1; % remove this state from progress group
             continue;
         end

@@ -4,13 +4,6 @@
 %% run Initial.m first.
 close all; clear all; clc;
 
-if(exist('ArrayGener_ts','file')~=2)
-    addpath(genpath('../'));
-    addpath(genpath('../../abstr-ref/'));
-    addpath('../../ArrayGener/');
-    addpath('../../Simu_2D');
-end
-
 disp('Start generating transient system...')
 
 load ts
@@ -54,7 +47,7 @@ for i = 1:t_span
     if(i==1||i>=2&&~ismember(U_list(end),u_option))
         for j = 1:length(u_option);
             idx_u = u_option(j);
-            u0 = get_coord(idx_u,M_U)*direction+coord_bias; 
+            u0 = get_coord(M_U,idx_u)*direction+coord_bias; 
             if(~gnd.IsInHoles(u0))
                 break;
             end
@@ -82,7 +75,7 @@ for i = 1:t_span
     xt = yt.y(1:4,end); % destination in one step
     x_proj = [xt(1:2)'-coord_bias';xt(3:4)']*direction; % project xt into the line
     xt = [x_proj(1)*direction + coord_bias;x_proj(2)*direction];
-    idx_x  = mapping(x_proj,M_X,eta/2);
+    idx_x  = mapping(x_proj,M_X,M_X.gridsize*0);
     X_list = [X_list;idx_x]; % history of idx_x
     U_list = [U_list;idx_u]; % history of idx_u
     t_list = [t_list;i*tau];
@@ -112,16 +105,10 @@ xlabel('t');
 disp('Press any key to conitue...');
 pause;
 disp('Trajectory:')
-figure(2);
-visual(M_X,B_list,bnd_B,W);
+fig = figure(2);
+visual_all(fig,M_X,B_list,bnd_B,W);
 
-[x1,x2] = get_coord(X_list,M_X);
-for i=1:length(x1)-1
-    arrow('Start',[x1(i),x2(i)],'Stop',[x1(i+1),x2(i+1)],'Length',10,'TipAngle',5)
-    pause(0.01);
-end
+traj_anim(fig,M_X,X_list,[],0.01);
+
 disp('Press any key to conitue...');
 pause;
-%% Animation based on Plot
-disp('Animation 1:')
-animation

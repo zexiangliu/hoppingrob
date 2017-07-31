@@ -104,19 +104,28 @@ methods
     function [v1,v2,varargout] = get_coord(Mesh,X,idx)
         % input index of nodes and mesh structure, return the coordinates of input
         % nodes
+        if(nargin == 2)
+            idx = [];
+        end
         nout = max(nargout,1);
         x_B = double(Mesh.ind2sub(X,:)); % xt
         n = length(Mesh.discr_bnd(:,1));
         coord = zeros(n,length(X));
-
+    
         for i = 1:n
             % ith coordinates of all nodes in X
             coord(i,:) = Mesh.discr_bnd(i,1)+(x_B(:,i)'-1)*Mesh.gridsize(i);
         end
-
+        
+        % remove unexpected dimension
+        if(~isempty(idx))
+            coord(~idx,:)=[];
+        end
+                
         if(nout>2)
             v1 = coord(1,:)';
             v2 = coord(2,:)';
+            varargout = cell(nout - 2,1);
             for i = 3:nout
                 varargout{i-2}=coord(i,:)';
             end
@@ -137,7 +146,11 @@ methods
             markersize = 1;
         end
         coords = get_coord(Mesh, X);
-        figure(fig);
+        if(isempty(fig))
+            figure;
+        else
+            figure(fig);
+        end
         plot(coords(1,:),coords(2,:),MAC,'markersize',markersize);
     end
     
