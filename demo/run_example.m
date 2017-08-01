@@ -24,10 +24,10 @@ if(nargin == 2)
 end
 
 
-if(~ismember('f',exec_mode))
-    eval(info.run);
-else
+if(ismember('f',exec_mode)&&info.fast_able)
     eval(info.fast);
+else
+    eval(info.run);
 end
 
 %% teardown
