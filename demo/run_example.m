@@ -1,9 +1,11 @@
-function run_example(PATH)
+function run_example(PATH,info,exec_mode)
 % input: PATH      ---- the path of folder of demo
 %        exec_mode ---- execution mode -f: fast -p: profile on
+%        info      ---- output of tag(), contains the names of main files
 % Note: The process of generating abstraction and controller is slow.
 % Alternatively, you can see the simulation and animation using previous
 % abstraction and controller by setting -f in the exec_mode.
+
 addpath('../lib/')
 resetpath
 addpath('../lib/console/')
@@ -17,25 +19,17 @@ cd(PATH);
 
 save PATH PATH_old
 
-if(nargin == 1)
+if(nargin == 2)
     exec_mode = '';
 end
 
-if(~ismember('f',exec_mode))
-    %% Initialize
-    initial
 
-    %% Generate abstraction and controller
-    abstraction
+if(~ismember('f',exec_mode))
+    eval(info.run);
 else
-    initial
+    eval(info.fast);
 end
 
-%% Simulation
-simulation
-
-%% Animation 
-animation
 %% teardown
 disp('Please any key to quit...');
 pause;

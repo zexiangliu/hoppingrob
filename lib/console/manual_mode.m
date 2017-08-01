@@ -3,8 +3,8 @@ function manual_mode()
 % The commands available:
 %     q/quit         ---- quit
 %     h/help         ---- show the help document
-%     l/list         ---- list all the demos
-%     demotag + option -- execute the demo, option: -f fast -p profile on
+%     l/list + option --- list all the demos, option: -a print description
+%     demotag + option -- execute the demo, option: -f fast
 %     doc + demotag  ---- show the description of the demo
 %     cmd            ---- command window (return manual mode by typing 'dbcont')
 %     clc            ---- clear screen
@@ -12,8 +12,7 @@ function manual_mode()
 % discovering the demos.
 %  (2) If you want to skip the process of calculation, you can use previous
 %  result by using fast mode, e.g. 'demo -f'
-%  (3) You can set profiler for abstraction part by using p mode, e.g.
-%  'demo -p'
+
     disp('Initialize environment...');
     [cmd_dict,demo,doc] = initial();
     disp(' ');
@@ -41,8 +40,11 @@ function manual_mode()
         elseif(demo.isKey(key))
             KeyCallback('reset');
             try
-                run_example(demo(key),value);
+                run_example(demo(key),doc(key),value);
             catch EM
+                load PATH
+                delete('PATH.mat');
+                cd(PATH_old);
                 rethrow(EM);
             end
 
@@ -52,12 +54,13 @@ end
 
 
 function [cmd_dict,demo,doc] = initial()
+    % register commands
     cmd_dict = containers.Map;
     cmd_dict('h')='help manual_mode;';
     cmd_dict('help')='help manual_mode;';
     cmd_dict('l') = 'list(doc,value)';
     cmd_dict('list') = 'list(doc,value)';
-    cmd_dict('doc') = 'if(doc.isKey(value)) disp(doc(value)); end';
+    cmd_dict('doc') = 'if(doc.isKey(value)) disp(doc(value).description); end';
     cmd_dict('exec') = 'if(demo.isKey(value)) run_example(demo(value)); end';
     cmd_dict('cmd') = 'keyboard();';
     cmd_dict('clc') = 'clc';
@@ -70,7 +73,7 @@ function [cmd_dict,demo,doc] = initial()
         cd(tags(i).folder);
         info = tag();
         demo(lower(info.nametag)) = tags(i).folder;
-        doc(lower(info.nametag)) = info.description;
+        doc(lower(info.nametag)) = info;
     end
     cd(PATH);
     
@@ -79,6 +82,7 @@ function [cmd_dict,demo,doc] = initial()
 end
 
 function list(doc,type)
+% print list of demos
     disp(' ');
     disp('The list of demonstrations:');
     disp(' ');
