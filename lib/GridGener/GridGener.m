@@ -119,7 +119,7 @@ methods
         
         % remove unexpected dimension
         if(~isempty(idx))
-            coord(~idx,:)=[];
+            coord=coord(idx,:);
         end
                 
         if(nout>2)
@@ -137,7 +137,7 @@ methods
         end
     end
     
-    function fig = visual(Mesh, fig, X, MAC, markersize)
+    function fig = visual(Mesh, fig, X, MAC, markersize,idx)
         % input: fig: figure handle
         %        X: set for visualization
         %        MAC: marker and color (option of plot)
@@ -145,7 +145,10 @@ methods
         if(nargin == 4)
             markersize = 1;
         end
-        coords = get_coord(Mesh, X);
+        if(nargin == 5)
+            idx = [];
+        end
+        coords = get_coord(Mesh, X, idx);
         if(isempty(fig))
             figure;
         else
@@ -154,17 +157,23 @@ methods
         plot(coords(1,:),coords(2,:),MAC,'markersize',markersize);
     end
     
-     function fig = visual_bnd(Mesh, fig, bnd, color,linewidth)
+     function fig = visual_bnd(Mesh, fig, bnd, color,linewidth,idx)
         % input: fig: figure handle
         %        color
-        if(nargin == 2)
+        if(nargin == 3)
             color = 'black';
             linewidth = 2;
-        elseif (nargin == 3)
+            idx = [1;2];
+        elseif (nargin == 4)
             linewidth = 2;
+            idx = [1;2];
+        elseif (nargin == 5)
+            idx = [1;2];
         end
         if(isempty(bnd))
-            bnd = Mesh.bnd;
+            bnd = Mesh.bnd(idx,:);
+        else
+            bnd = bnd(idx,:);
         end
         [U,V] = meshgrid(bnd(1,:),bnd(2,:));
         f=[1,2,4,3];

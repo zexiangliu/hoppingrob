@@ -20,7 +20,7 @@ t = 0;
 % hold on;
 
 for i = 1:length(Yt_list)
-    
+    KeyCallback();
     pause(Yt_list(i)-t);
     t= Yt_list(i);
     hold off;

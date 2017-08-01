@@ -1,6 +1,4 @@
 clear all;clc;close all;
-addpath('../../../lib/');
-resetpath;
 addpath(genpath('./'));
 addpath('../');
 addpath(genpath('../../../lib/abstr-ref/'));

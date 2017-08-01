@@ -19,6 +19,7 @@ t = 0;
 gnd.visual_update();
 
 for i = 1:length(Yt_list)/2
+    KeyCallback();
     pause(Yt_list(i)-t);
 %     pause;
     t= Yt_list(i);

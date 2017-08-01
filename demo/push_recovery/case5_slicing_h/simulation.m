@@ -3,16 +3,6 @@
 
 %% run Initial.m first.
 close all; clear all; clc;
-% 
-% if(exist('ArrayGener_ts','file')~=2)
-% %     addpath(genpath('../'));
-%     addpath(genpath('../../abstr-ref/'));
-%     addpath('../../ArrayGener2.0/');
-% %     addpath('../../Simu_2D');
-% end
-% 
-% disp('Start generating transient system...')
-% 
 load ts
 global A B
 
@@ -172,16 +162,12 @@ xlabel('t');
 disp('Press any key to conitue...');
 pause;
 disp('Trajectory:')
-figure(2);
-visual(M_X,B_list,bnd_B,W);
+fig = figure(2);
+visual_all(fig,M_X,B_list,bnd_B,W,[2;3]);
 
-[~,x1,x2] = get_coord(X_list,M_X);
-for i=1:length(x1)-1
-    arrow('Start',[x1(i),x2(i)],'Stop',[x1(i+1),x2(i+1)],'Length',10,'TipAngle',5)
-    pause(0.01);
-end
+[x1,x2] = get_coord(M_X,X_list,[2;3]);
+
+traj_anim(fig,M_X,X_list,[2;3],0.01);
+
 disp('Press any key to conitue...');
 pause;
-%% Animation based on Plot
-disp('Animation 1:')
-animation

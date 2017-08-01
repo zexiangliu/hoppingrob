@@ -42,7 +42,6 @@ t = 0;
 
 
 for i = 1:length(Yt_list)
-    
     pause(Yt_list(i)-t);
     t= Yt_list(i);
     hold off;
