@@ -15,6 +15,10 @@ coords = get_coord(M_X,X_list);
 x1 = coords(idx(1),:)';
 x2 = coords(idx(2),:)';
 for i=1:length(x1)-1
+    if(KeyCallback())
+        KeyCallback('reset');
+        break;
+    end
     arrow('Start',[x1(i),x2(i)],'Stop',[x1(i+1),x2(i+1)],'Length',10,'TipAngle',5)
     pause(tstep);
 end
