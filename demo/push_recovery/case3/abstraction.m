@@ -1,6 +1,6 @@
 %=========Initial=========
 % Set up everything for simulation: abstraction system, controller
-% Ground Type 2: uneven ground, no holes
+% Ground Type 2: uneven ground + Ground Type 1: holes
 % No change of robot model. Map the real input to the input used in
 % model
 % Make sure that the input constraints satifies by shrinking lmax
@@ -23,20 +23,17 @@ B = [0
 %      0 0
 %      -g/h0 0
 %      0 -g/h0];
-save system A B; % the system dx = Ax + Bu is saved in file system.mat
+save system g h0 A B; % the system dx = Ax + Bu is saved in file system.mat
 
 
 %======= Test Parameter ========
 tau = 0.08;     % time interval
-eta = 0.2;
+eta = 0.1;
 mu = 0.1;
 lmax = 1;
 dlim = 2.5;
 vlim = 5;
-max_leg = sqrt(h0^2+lmax^2)+1.5; % the largest length which the leg can extend
-
-r1 = norm(expm(A*tau),'inf')*eta/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
-r = [r1;r1];         % radius of norm ball when mapping xt to discr. state space
+max_leg = sqrt(h0^2+lmax^2)+0.5; % the largest length which the leg can extend
 
 % ==============================
 
@@ -66,12 +63,14 @@ M_U = GridGener(U);
 
 %% Initialize the map
 
-bnd = [-5,5;
-    -5,5];
-num_grid = [5,5];
-gnd = Ground(bnd,num_grid,1);
+bnd = [-10,10;
+    -10,10];
+bnd_visual = [-5,5;
+             -5,5];
+num_grid = [10,10];
+gnd = Ground(bnd,num_grid,1,bnd_visual);
 
-hlim = 1;
+hlim = 0.15;
 [map_X,map_Y,map_V]=gnd.ground_gen_rand(hlim);
 
 % num_holes = input('Please input the number of holes:');
@@ -110,56 +109,17 @@ ts_ref.create_fast();
 % Please comment the following line when you modify the parameters of abstraction
 % load W_ref;
 
-%% Initial Condition (Push)
-fig = figure(1);
-gnd.visual_holes(fig);
-hold on;
-disp('Please select the initial value of x_1 & x_2 on the plot:')
-title('Please Select Initial Position')
-[x1,x2]=ginput(1); % The initial position of robot in world coordinate
 
-plot(x1,x2,'*r','Markersize',5);
-
-rad = linspace(0,2*pi,100);
-plot(vlim*cos(rad)+x1,vlim*sin(rad)+x2);
-axis equal;
-disp('Please select the initial value of v_1 & v_2 on the plot:')
-title('Please Select Initial Velocity')
-[v1,v2]=ginput(1); % The initial velocity of robot in world coordinate
-v = norm([v1;v2]-[x1;x2]); 
-direction = [v1-x1;v2-x2]/v;
-
-x0 = [M_X.discr_bnd(1,1)+M_X.gridsize(1);v]; % Initial Condition of robot in 1D coordinates (planning coordinate)
-idx_x0 = mapping(x0,M_X,M_X.gridsize*0);
-
-% while(x0(1)>=X.bnd(1,1)&&x0(1)<=X.bnd(1,2))
-%     if(~ismember(idx_x0,W_ref))
-%         x0(1) = x0(1)-M_U.gridsize;
-%         idx_x0 = mapping(x0,M_X,eta/2);
-%     else
-%         break;
-%     end
-% end
-
-
-if(idx_x0==size(M_X.ind2sub,1)+1)
-    error('error: out of region of interest.');
-end
-
-coord_bias = [x1;x2]-x0(1)*direction;
 %%
 % TransSyst
 uconstr.gnd = gnd;
-uconstr.direction = direction;
-uconstr.coord_bias = coord_bias;
-
-
-lmax_ub = h0/(h0+hlim)*sqrt(max_leg^2-(h0+hlim)^2); % the upper bound of lmax
-
-if(lmax_ub<lmax)
-    lmax=lmax_ub;% make sure that the leg is long enough to reach the ground
-end
-ts = ArrayGener_uconstr(M_X,M_U,tau,r,lmax,uconstr);
+uconstr.direction = [0;0];
+uconstr.coord_bias = [0;0];
+uconstr.max_leg = max_leg;
+uconstr.eta = eta;
+uconstr.hlim = hlim;
+specify_num_workers(4);
+ts = ArrayGener(M_X,M_U,tau,lmax,uconstr);
 disp('Done.')
 
 %% Controller
@@ -167,17 +127,13 @@ disp('Compute winning set and controller...')
 ts.create_fast();
 [W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
 
+%% Visualization
 fig = figure(2);
-hold on;
-M_X.visual(fig,1:M_X.numV-1,'.b',8);
-axis equal;
-M_X.visual(fig,B_list,'.r',12);
-M_X.visual_bnd(fig,bnd_B,'red',2);
-M_X.visual(fig,W,'.c',12);
+visual_all(fig,M_X,B_list,bnd_B,W);
 
-%%
 disp('Please press any key to continue...');
 pause;
 close all;
 save ts
 disp('Done.')
+

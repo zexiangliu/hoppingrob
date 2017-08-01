@@ -1,4 +1,3 @@
-
 rob = SimHopRob(1/15,1/10,[]);
 
 % % B_list
@@ -18,7 +17,8 @@ t = 0;
 
 gnd.visual_update();
 
-for i = 1:length(Yt_list)
+for i = 1:length(Yt_list)/2
+    KeyCallback();
     pause(Yt_list(i)-t);
 %     pause;
     t= Yt_list(i);
@@ -27,7 +27,9 @@ for i = 1:length(Yt_list)
     gnd.visual_ground(fig);
     hold on;
     rob.visual(fig,[Yx_list(1,i);Yx_list(2,i);h0],[Yx_list(5,i);Yx_list(6,i);hopping_height]);
-    gnd.visual_ground(fig);
+
+%     % B_list
+%     patch('Faces',Target.fac,'Vertices',Target.vert,'FaceColor','none','EdgeColor','red');  % patch function
 
     % camera configuration
 %     axis([x1min-lmax, x1max+lmax, -0.5, 0.5, -0.5, 1.5]); 
@@ -36,8 +38,13 @@ for i = 1:length(Yt_list)
     el = 25;
     view(az, el);
     drawnow;
-%     M(i) = getframe;
+    M(i) = getframe;
 end
+
+video = VideoWriter('animation.avi');
+open(video);
+writeVideo(video,M);
+close(video);
 % %%
 % t = 0;
 % for i = 1:length(Yt_list)
