@@ -46,12 +46,19 @@ To learn more about one demo,
 manual$ doc "demo's name"
 ```
 
+
+
 To run a demo in the list, just type its name printed by command 'list'
 ```
 manual$ "demo's name"
 ```
+or
+```
+manual$ exec num
+```
+where 'num' is the number shown ahead the demo's name in the printed list.
+
 If you don't want to wait for a long time for abstraction generation, you can use fast mode
 ```
 manual$ "demo's name" -f
 ```
-
