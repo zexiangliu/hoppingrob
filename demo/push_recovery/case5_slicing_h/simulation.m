@@ -95,7 +95,7 @@ for i = 1:t_span
     if(i==1||i>=2&&~ismember(U_list(end),u_option))
         for j = 1:length(u_option)
             idx_u = u_option(j);
-            u0 = get_coord(idx_u,M_U)*direction+coord_bias; 
+            u0 = get_coord(M_U,idx_u)*direction+coord_bias; 
             if(~gnd.IsInHoles(u0))
                 break;
             end
@@ -164,8 +164,6 @@ pause;
 disp('Trajectory:')
 fig = figure(2);
 visual_all(fig,M_X,B_list,bnd_B,W,[2;3]);
-
-[x1,x2] = get_coord(M_X,X_list,[2;3]);
 
 traj_anim(fig,M_X,X_list,[2;3],0.01);
 

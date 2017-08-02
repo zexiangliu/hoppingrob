@@ -23,6 +23,7 @@ for i = 1:300
 %     pause;
     t= Yt_list(i);
     hold off;
+    hopping_height = 0; %h0/4*abs(sin((3*pi/2/tau)*t));
     % Plot Center of Mass
     plot3(Yx_list(1,1:i),Yx_list(2,1:i),h0*ones(1,i),'or','markersize',1);
     hold on;

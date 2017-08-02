@@ -126,17 +126,17 @@ function exec(demo,doc,keywords)
     keys = doc.keys;
     try
         key = keys{num};
-        KeyCallback('reset');
-        try
-            run_example(demo(key),doc(key),val);
-        catch EM
-            load PATH
-            delete('PATH.mat');
-            cd(PATH_old);
-            rethrow(EM);
-        end
-    catch EM2
+    catch EM
         return;
+    end
+    KeyCallback('reset');
+    try
+        run_example(demo(key),doc(key),val);
+    catch EM
+        load PATH
+        delete('PATH.mat');
+        cd(PATH_old);
+        rethrow(EM);
     end
         
 end
