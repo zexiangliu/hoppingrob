@@ -7,9 +7,9 @@ function fig = traj_anim(fig,M_X,X_list,idx,tstep)
 %        time step    : tstep
 if(nargin == 3||isempty(idx))
     idx = [1,2];
-    tstep = 0.1;
+    tstep = 0.01;
 elseif(nargin == 4)
-    tstep = 0.1;
+    tstep = 0.01;
 end
 coords = get_coord(M_X,X_list);
 x1 = coords(idx(1),:)';

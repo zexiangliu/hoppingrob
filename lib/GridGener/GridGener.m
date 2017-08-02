@@ -169,6 +169,8 @@ methods
             idx = [1;2];
         elseif (nargin == 5)
             idx = [1;2];
+        elseif (nargin == 6 && isempty(idx))
+            idx = [1;2];
         end
         if(isempty(bnd))
             bnd = Mesh.bnd(idx,:);

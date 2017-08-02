@@ -16,13 +16,13 @@ save system A B; % the system dx = Ax + Bu is saved in file system.mat
 
 %% Visualization and get initial condition from mouse
 
-figure(1);
-visual(M_X1,B_list1,bnd_B1,W1);
+fig = figure(1);
+visual_all(fig,M_X1,B_list1,bnd_B1,W1);
 xlabel('x_1');
 ylabel('v_1');
 
-figure(2);
-visual(M_X2,B_list2,bnd_B2,W2);
+fig = figure(2);
+visual_all(fig,M_X2,B_list2,bnd_B2,W2);
 xlabel('x_2');
 ylabel('v_2');
 
@@ -39,20 +39,20 @@ disp('Please select the initial value of x_1 & v_1 on the plot:')
 % x=-1.4;
 % y=-4.5;
 x0 = [x1;x2;v1;v2];
-idx_x0_1 = mapping(x0([1,3]),M_X1,eta/2);
-idx_x0_2 = mapping(x0([2,4]),M_X2,eta/2);
+idx_x0_1 = mapping(x0([1,3]),M_X1,M_X1.gridsize*0);
+idx_x0_2 = mapping(x0([2,4]),M_X2,M_X2.gridsize*0);
 if(~ismember(idx_x0_1,W1)||~ismember(idx_x0_2,W2))
     error('x0 is beyond winning set.');
 end
 % x0 = W(1);
 
 figure(1)
-[x1,x2] = get_coord(idx_x0_1,M_X1)
+[x1,x2] = get_coord(M_X1,idx_x0_1)
 plot(x1,x2,'xb','markersize',10)
 
 
 figure(2)
-[x1,x2] = get_coord(idx_x0_2,M_X2)
+[x1,x2] = get_coord(M_X2,idx_x0_2)
 plot(x1,x2,'xb','markersize',10)
 
 
@@ -87,14 +87,14 @@ for i = 1:t_span
         idx_u2 = u_option2(1);
     end
     
-    u0 = [get_coord(idx_u1,M_U1);get_coord(idx_u2,M_U2)];    % get the coordinate of input
+    u0 = [get_coord(M_U1,idx_u1);get_coord(M_U2,idx_u2)];    % get the coordinate of input
     y0 = [xt;u0];    % States for numerical integration
     
     yt = ode45(@odefun,[0,tau],y0);
     
     xt = yt.y(1:4,end); % destination in one step
-    idx_x1  = mapping(xt([1,3]),M_X1,eta/2);
-    idx_x2  = mapping(xt([2,4]),M_X2,eta/2);
+    idx_x1  = mapping(xt([1,3]),M_X1,M_X1.gridsize*0);
+    idx_x2  = mapping(xt([2,4]),M_X2,M_X2.gridsize*0);
     X1_list = [X1_list;idx_x1]; % history of idx_x
     X2_list = [X2_list;idx_x2]; % history of idx_x
     U1_list = [U1_list;idx_u1]; % history of idx_u
@@ -126,44 +126,10 @@ legend('Vel of Mass Center','Pos of Mass Center');
 xlabel('t');
 %% Trajectory in state space
 disp('Trajectory:')
-figure(1);
+fig = figure(1);
 
-[x1,x2] = get_coord(X1_list,M_X1);
-for i=1:length(x1)-1
-    arrow('Start',[x1(i),x2(i)],'Stop',[x1(i+1),x2(i+1)],'Length',10,'TipAngle',5)
-    pause(0.01);
-end
+traj_anim(fig,M_X1,X1_list);
 
 figure(2);
 
-[x1,x2] = get_coord(X2_list,M_X2);
-for i=1:length(x1)-1
-    arrow('Start',[x1(i),x2(i)],'Stop',[x1(i+1),x2(i+1)],'Length',10,'TipAngle',5)
-    pause(0.01);
-end
-%% Animation based on Plot
-disp('Animation 1:')
-animation
-
-%% Animation based on Simulink
-disp('Animation 2:')
-u_list1 = get_coord(U1_list,M_U1);
-u_list2 = get_coord(U2_list,M_U2);
-
-save cont t_list u_list1 u_list2 % used as input in simulink
-len_leg1=h0/2;
-len_leg2=sqrt(h0^2+(x1max-x1min+lmax)^2);
-C = [1,0,0,0;
-    0,1,0,0];
-D=[0,0
-   0,0];
-fre_hopping = pi/2/tau;
-% u_list = zeros(ts.n_s,1);
-% for i = 1:length(W)
-%     tmp=cont.get_input(W(i));
-%     u_list(W(i))=get_coord(tmp(1),M_U);
-% end
-% M_X.V = [];
-
-% save cont u_list M_X
-hopping_robot_plane_R2012b
+traj_anim(fig,M_X2,X2_list);

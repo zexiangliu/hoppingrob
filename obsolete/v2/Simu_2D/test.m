@@ -144,8 +144,6 @@ ts2.create_fast();
 
 save ts
 
-
 disp('Done.')
-%%
-disp('Now please run ''test_control.m''!')
+
 open test_control

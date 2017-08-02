@@ -2,13 +2,13 @@ classdef SimHopRob < handle
     properties(SetAccess = protected)
         CoM;                 
         Padel;
-        Playground;
+        Height;
         PadelHeight;
         CoMRadius;
     end
     
     methods
-        function rob = SimHopRob(CoMRadius,PadelHeight,Playground)
+        function rob = SimHopRob(CoMRadius,PadelHeight,Height)
             % input: CoMRadius: radius of CoM
             %        PadelHeight: height/width of padel
             %        Playground: paraments passed into 'patch', a struct which
@@ -42,7 +42,7 @@ classdef SimHopRob < handle
             Padel.fac = fac;
             rob.Padel = Padel;
             
-            rob.Playground = Playground;
+            rob.Height = Height;
         end
 
         function visual(rob,fig,pCoM, pPadel)
@@ -75,12 +75,6 @@ classdef SimHopRob < handle
             leg_y = 1/25*cos(rad)+ linspace(l_y(1),l_y(2),500);
             leg_z = linspace(l_z(1),l_z(2),500);
             plot3(leg_x,leg_y,leg_z,'linewidth',1)
-
-
-            % Playground
-            if(~isempty(rob.Playground))
-                patch('Faces',rob.Playground.fac,'Vertices',rob.Playground.vert,'FaceColor','cyan');  % patch function
-            end
         end
     end
 end

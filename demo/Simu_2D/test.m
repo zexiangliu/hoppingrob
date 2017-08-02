@@ -4,9 +4,6 @@
 
 %% Generate abstraction transient system
 clear all;clc;close all;
-addpath(genpath('./'));
-addpath(genpath('../abstr-ref/'));
-addpath('../ArrayGener/');
 
 disp('Start generating transient system...')
 %====== Define the system ======
@@ -35,7 +32,7 @@ dlim = 2.5;
 vlim = 5;
 
 r1 = norm(expm(A*tau),'inf')*eta/2; % the upper bnd of ||x_0(tau)-x_1(tau)||
-r = r1+eta/2;         % radius of norm ball when mapping xt to discr. state space
+r = [r1;r1];         % radius of norm ball when mapping xt to discr. state space
 
 % ==============================
 
@@ -146,6 +143,3 @@ save ts
 
 
 disp('Done.')
-%%
-disp('Now please run ''test_control.m''!')
-open test_control
