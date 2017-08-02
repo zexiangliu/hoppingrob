@@ -1,52 +1,12 @@
-% Playground
-
-Playground.vert = [x1min-lmax,-0.5,0;
-                   x1min-lmax,0.5,0;
-                   x1max+lmax,0.5,0;
-                   -x1max-lmax,0.5,0;
-                   ];
-
-Playground.fac = [1 2 3 4];
-
-rob = SimHopRob(1/15,1/10,[]);
-
-% % B_list
-% 
-% Target.vert = [bnd_B(1,1),bnd_B(2,1),h0
-%     bnd_B(1,1),bnd_B(2,2),h0
-%     bnd_B(1,2),bnd_B(2,2),h0
-%     bnd_B(1,2),bnd_B(2,1),h0
-%     ];
-% Target.fac = [1,2,3,4];
+rob = SimHopRob(1/15,1/10,1);
 
 fig = figure(3);
-% axis([x1min-lmax, x1max+lmax, -0.5, 0.5, -0.5, 1.5]); 
-% axis equal;
-t = 0;
-% hold on;
+az = 45;
+el = 30;
 
-% gnd.visual_update();
+M = rob_anim(fig,Yt_list,Yx_list([1,2],:),Yx_list([5,6],:),[],rob,gnd,[az,el]);
 
-for i = 1:length(Yt_list)
-    KeyCallback();
-    pause(Yt_list(i)-t);
-    t= Yt_list(i);
-    
-    hold off;
-    hopping_height = h0/4*abs(sin((3*pi/2/tau)*t));
-    gnd.visual_ground(fig);
-    hold on;
-    rob.visual(fig,[Yx_list(1,i);Yx_list(2,i);h0],[Yx_list(5,i);Yx_list(6,i);hopping_height]);
-    % camera configuration
-    % axis([x1min-lmax, x1max+lmax, -0.5, 0.5, -0.5, 1.5]); 
-    axis equal;
-    az = 45;
-    el = 30;
-    view(az, el);
-    drawnow;
-    % record video
-%     M(i) = getframe;
-end
+save_video(M,'PR_case1.avi');
 % %%
 % t = 0;
 % for i = 1:length(Yt_list)

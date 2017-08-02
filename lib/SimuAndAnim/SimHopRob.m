@@ -5,14 +5,18 @@ classdef SimHopRob < handle
         Height;
         PadelHeight;
         CoMRadius;
+        Target;
     end
     
     methods
-        function rob = SimHopRob(CoMRadius,PadelHeight,Height)
+        function rob = SimHopRob(CoMRadius,PadelHeight,Height,bnd_B)
             % input: CoMRadius: radius of CoM
             %        PadelHeight: height/width of padel
-            %        Playground: paraments passed into 'patch', a struct which
-            %        contains 'vert' and 'fac'
+            %        Height: h0, the height of rob
+            %        B_bnd: boundary of target set
+            if(nargin == 3)
+                bnd_B = [];
+            end
             rob.CoMRadius = CoMRadius;
             rob.PadelHeight = PadelHeight;
             
@@ -75,6 +79,7 @@ classdef SimHopRob < handle
             leg_y = 1/25*cos(rad)+ linspace(l_y(1),l_y(2),500);
             leg_z = linspace(l_z(1),l_z(2),500);
             plot3(leg_x,leg_y,leg_z,'linewidth',1)
+            
         end
     end
 end

@@ -6,3 +6,4 @@ addpath('../../../lib/GridGener/');
 addpath('../../../lib/ArrayGener_2D/');
 addpath('../../../lib/SimuAndAnim/');
 addpath('../../../lib/GroundGener/');
+addpath('../../../lib/console/')
