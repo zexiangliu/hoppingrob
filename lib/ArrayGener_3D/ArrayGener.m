@@ -68,7 +68,7 @@ pg_list = cell(num_U-1);
 parfor i = 1:num_U-1
 % for i = 1:num_U-1
     % calculate the input u0 corresponding to index i
-    u0 = get_coord(i,M_U);
+    u0 = get_coord(M_U,i);
     
     if(~feval(ucons_fun,uconstr,u0,[0;0],0,0,1))
         % u0 is not feasible
@@ -114,7 +114,7 @@ parfor i = 1:num_U-1
     state2 = state1;
     counter_state = 1;
     for j = 1:num_X-1
-        x0 = get_coord(j,M_X);
+        x0 = get_coord(M_X,j);
         % check input restriction
         if(any(abs(x0(1:2)-u0)+abs(eta(1:2)/2)>h/h0*lmax*100/sqrt(2))||~feval(ucons_fun,uconstr,u0,x0,h,r,2))
             PG(j)=-1; % remove this state from progress group

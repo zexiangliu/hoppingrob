@@ -1,6 +1,6 @@
 function info = tag()
     info.nametag = 'push_rec_case2';
-    info.description = ' ';
+    info.description = 'Even ground with holes. Do 1D planning given positions and size of the holes in the line where it moves.';
     % Define how to execute the example
     info.run = 'initial;abstraction;simulation;animation';
     % Define how to execute the example in a fast way, by using abstr. and
