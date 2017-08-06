@@ -17,6 +17,12 @@ classdef Zonotope < handle
         end
         
         function y = plus(zt1,zt2)
+            if(isa(zt2,'double'))                
+                cvNew = zt1.cv + zt2;
+                generNew = [zt1.gener];
+                y = Zonotope(cvNew,generNew);
+                return;
+            end
             cvNew = zt1.cv + zt2.cv;
             generNew = [zt1.gener,zt2.gener];
             y = Zonotope(cvNew,generNew);
@@ -54,6 +60,59 @@ classdef Zonotope < handle
                 bool = false;
                 return;
             end
+        end
+        
+        function bool = in(zt,vec)
+            % input: vec, the vector you want to see if in the zonotope.
+            bool = true;
+            Aeq = zt.gener;
+            beq = vec - zt.cv;
+            % if beq isn't in the range of Aeq, vec isn't in the zonotope
+            if(rank([Aeq,beq])~=rank(Aeq))
+                bool = false;
+                return;
+            end
+            % see if LS solution is one feasiable solution
+            x1 = Aeq\beq;
+            x2 = pinv(Aeq)*beq;
+            if(all(abs(x1)<=1)||abs(x2)<=1)
+                bool = true;
+                return;
+            end
+            % if solution is unique, vec isn't in zt
+            [m,n] = size(Aeq);
+            if(rank(Aeq)==m)
+                bool = false;
+                return;
+            end
+            % finally, try linear programming
+            f = zeros(n,1);
+            ub = ones(n,1);
+            lb = -ub;
+            [~,~,exitflag,~] = linprog(f,[],[],Aeq,beq,lb,ub);
+            if(exitflag == 1)
+                bool = true;
+            else
+                bool = false;
+            end
+        end
+        
+        function zt = CH(zt1,zt2)
+        % calculate convex hull of two zonotopes
+            cvNew = zt1.cv+zt2.cv;
+            gc = zt1.cv - zt2.cv;
+            [~,n1] = size(zt1.gener);
+            [~,n2] = size(zt2.gener);
+            n = min(n1,n2);
+            g1 = zt1.gener(:,1:n)+zt2.gener(:,1:n);
+            g2 = zt1.gener(:,1:n)-zt2.gener(:,1:n);
+            g3 = [];
+            if(n1<n2)
+                g3 = zt2.gener(:,n+1:n2);
+            elseif(n1>n2)
+                g3 = zt1.gener(:,n+1:n2);
+            end
+            zt = 1/2*Zonotope(cvNew,[gc,g1,g2,g3]);
         end
     end
 end
