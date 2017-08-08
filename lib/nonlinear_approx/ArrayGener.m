@@ -19,11 +19,13 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
     
     transition_list = cell(num_U-1);
 %    pg_list = cell(num_U-1);
-    r1 = 0*r_max;
-    r2 = r_max;
+
     for i = 1:num_X-1
         q = M_X.get_coord(i);
-        for k = 1:num_U-1
+        parfor k = 1:num_U-1
+            r1 = 0*r_max;
+            r2 = r_max;
+            
             u = M_U.get_coord(k);
             A = feval(Aq,q,u);
             f = feval(fq,q,u);
@@ -62,7 +64,7 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
             
             % test the constraints
             % if pass, return 1.
-            if(~constr_test(Rq_tube,u))
+            if(~feval(constr_test,Rq_tube,u))
                 continue;
             end
             

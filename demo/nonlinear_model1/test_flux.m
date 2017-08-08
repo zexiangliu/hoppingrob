@@ -1,3 +1,5 @@
+% test code for flux
+
 %=========Test code=========
 % Test controller strategy generation and do simulation for hopping robot
 %======================
@@ -46,17 +48,15 @@ U.bnd = [x1min-lmax,x1max+lmax
 M_X = GridGener(X);
 M_U = GridGener(U);
 
-%% Visualization
-fig = figure;
-M_X.visual_bnd(fig,[],'black',2,[1;2]);
+save('flux_pre.mat');
 
-hold on;
-M_X.visual(fig,1:M_X.numV-1,'.b',8,[1;2]);
-axis equal;
 %% TransSyst
 ts = ArrayGener(M_X,M_U,tau,[1;1;1;1],@Aq,@fq,@Dq,@constr_test);
 
 zero = 0;
+
+save('flux_ts.mat','zero','ts','-v7.3')
+
 disp('Done.')
 %% Create B_list
 disp('Create target set B_list...')
@@ -65,14 +65,6 @@ bnd_B = [x1min,x1max;
          -0.4, 0.4;
          -0.2, 0.2];
 B_list = Create_B(bnd_B,M_X);
-
-M_X.visual(fig,B_list,'.r',12,[1,2]);
-
-M_X.visual_bnd(fig,bnd_B,'red',2,[1,2]);
-
-hold on;
-
-
 disp('Done.')
 %% Controller
 disp('Compute winning set and controller...')
@@ -80,17 +72,8 @@ ts.create_fast();
 % tic
 [W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
 % toc
-%%
-% Visualization of winning set
-M_X.visual(fig,W,'.c',12);
 
-hold on;
 
-title('State Space (Black), B\_list (Red), Winning (Cyan)')
-%%
-disp('Press any key...');
-pause;
-close all;
-save ts
+save('flux_cont.mat','zero','cont','W','B_list','-v7.3');
 
 disp('Done.')

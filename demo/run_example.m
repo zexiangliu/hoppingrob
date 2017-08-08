@@ -19,6 +19,11 @@ cd(PATH);
 
 save PATH PATH_old
 
+
+if(nargin == 1||isempty(info))
+    info = tag();
+end
+
 if(nargin == 2)
     exec_mode = '';
 end
@@ -26,6 +31,8 @@ end
 
 if(ismember('f',exec_mode)&&info.fast_able)
     eval(info.fast);
+elseif(ismember('h',exec_mode))
+    eval(info.flux);
 else
     eval(info.run);
 end
