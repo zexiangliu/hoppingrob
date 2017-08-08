@@ -8,8 +8,11 @@ classdef Zonotope < handle
         function zt = Zonotope(cv,gener)
         % input: cv    ---- central vector
         %        gener ---- matrix where each column is a generator
-            if(size(cv,1)~=size(gener,1)&&~isempty(gener))
+            if(isempty(cv))
+                cv = zeros(size(gener,1),1);
+            elseif(size(cv,1)~=size(gener,1)&&~isempty(gener))
                 error('some:siz_dismatch:id','Please make sure the dimension of cv and gener are the same.');
+            
             end
            
             zt.cv = cv;
@@ -75,7 +78,7 @@ classdef Zonotope < handle
             % see if LS solution is one feasiable solution
             x1 = Aeq\beq;
             x2 = pinv(Aeq)*beq;
-            if(all(abs(x1)<=1)||abs(x2)<=1)
+            if(all(abs(x1)<=1|abs(x2)<=1))
                 bool = true;
                 return;
             end
@@ -113,6 +116,10 @@ classdef Zonotope < handle
                 g3 = zt1.gener(:,n+1:n2);
             end
             zt = 1/2*Zonotope(cvNew,[gc,g1,g2,g3]);
+        end
+        
+        function vec = abs(zt)
+            vec = abs(zt.cv) + sum(abs(zt.gener),2);
         end
     end
 end

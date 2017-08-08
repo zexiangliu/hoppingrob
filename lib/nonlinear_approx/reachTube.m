@@ -1,5 +1,5 @@
-function [Rq,Rq_tube]=reachTube(q,tau,X0,Aq,fq,Dq)
-    X_q_hat = zonoBox([],eta/2);
+function [Rq,Rq_tube]=reachTube(M_X,M_U,q,tau,X0,Aq,fq,Dq)
+    X_q_hat = zonoBox([],M_X.gridsize/2);
     e_At = expm(Aq*tau);
     
     % Calculate G
@@ -23,9 +23,9 @@ function [Rq,Rq_tube]=reachTube(q,tau,X0,Aq,fq,Dq)
     max_u = max(norm(M_U.discr_bnd(:,1),'inf'),norm(M_U.discr_bnd(:,2),'inf'));
     beta_t = com_fact*inf_A^(-1)*max_u*one;
     
-    gamma_t = com_fact*inf_A^(-1)*norm(b,'inf')*one;
+    gamma_t = com_fact*inf_A^(-1)*norm(fq,'inf')*one;
     
-    Yt = (e_At*X_q_hat) + G*fq + tau*Dq + zonoBox(beta_t);
+    Yt = (e_At*X_q_hat) + G*fq + tau*Dq + zonoBox([],beta_t);
     
     Rq = Yt + q;
     

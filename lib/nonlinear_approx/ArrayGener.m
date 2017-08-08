@@ -1,4 +1,4 @@
-function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq)
+function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
 % Generate over-approximate abstraction of nonlinear system    
 % input: M_X  ---- mesh structure of state space
 %        M_U  ---- mesh structure of input space
@@ -7,6 +7,7 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq)
 %        fq   ---- function handle witch outputs fq of linearized system
 %        Dq   ---- function handle which approximates the Lagrange
 %                  remainder.
+%        constr_test ---- function handle with constraints of robot
     num_X =M_X.numV;  % remove the sink node
     num_U = M_U.numV; 
     num_s = 0; % used to count the num of transitions
@@ -17,14 +18,14 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq)
     bnd_X = zonoBox(avrg,M_X.bnd(:,2)-avrg);
     
     transition_list = cell(num_U-1);
-%     pg_list = cell(num_U-1);
+%    pg_list = cell(num_U-1);
     r1 = 0*r_max;
     r2 = r_max;
     for i = 1:num_X-1
         q = M_X.get_coord(i);
         for k = 1:num_U-1
             u = M_U.get_coord(k);
-            A = feval(Aq,q);
+            A = feval(Aq,q,u);
             f = feval(fq,q,u);
             X0 = zonoBox(q,eta/2);
             
@@ -33,7 +34,7 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq)
                 r = r2;
                 B_r = Zonotope(q,r);
                 D = feval(Dq,q,r);
-                [~,Rq_tube]=reachTube(q,tau,X0,A,f,D);
+                [~,Rq_tube]=reachTube(M_X,M_U,q,tau,X0,A,f,D);
                 if(zono_contain(Rq_tube,B_r))
                     break;
                 else
@@ -47,7 +48,7 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq)
                 r = 1/2*(r1+r2);
                 B_r = Zonotope(q,r);
                 D= feval(Dq,q,r);
-                [~,Rq_tube]=reachTube(q,tau,X0,A,f,D);
+                [~,Rq_tube]=reachTube(M_X,M_U,q,tau,X0,A,f,D);
                 if(zono_contain(Rq_tube,B_r))
                     r2 = r_max;
                 else
@@ -57,8 +58,15 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq)
             
             r = r2;
             D= feval(Dq,q,r);
-            [Rq,~]=reachTube(q,tau,X0,A,f,D);
+            [Rq,Rq_tube]=reachTube(M_X,M_U,q,tau,X0,A,f,D);
             
+            % test the constraints
+            % if pass, return 1.
+            if(~constr_test(Rq_tube,u))
+                continue;
+            end
+            
+            % if Rq is in the finite state space
             if(zono_contain(Rq,bnd_X))
                 state1 = zeros(1e3,1,'uint32'); % you can enlarge 1e3 based on the scale of the problem
                 state2 = zeros(1e3,1,'uint32');
