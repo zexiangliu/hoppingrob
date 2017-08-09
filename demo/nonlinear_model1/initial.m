@@ -6,4 +6,4 @@ addpath('../../lib/nonlinear_approx/');
 addpath('../../lib/console/');
 addpath('../../lib/Parallel/');
 
-specify_num_workers(4);
+specify_num_workers();
