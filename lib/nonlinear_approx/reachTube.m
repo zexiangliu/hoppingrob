@@ -32,4 +32,8 @@ function [Rq,Rq_tube]=reachTube(M_X,M_U,q,tau,X0,Aq,fq,Dq)
     B_ag = zonoBox([],alpha_t+gamma_t);
     
     Rq_tube = CH(X_q_hat,Yt+B_ag)+q;
+    
+    % clean zero generators
+    Rq.clean_gener;
+    Rq_tube.clean_gener;
 end

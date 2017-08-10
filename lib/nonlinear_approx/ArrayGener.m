@@ -23,6 +23,7 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
     for i = 1:num_X-1
         q = M_X.get_coord(i);
         parfor k = 1:num_U-1
+%         for k = 1:num_U-1
             r1 = 0*r_max;
             r2 = r_max;
             
@@ -46,7 +47,7 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
             end
             
             % Find the smallest feasible r
-            while(norm(r2-r1)>1e-5)
+            while(norm(r2-r1)>1e-3)
                 r = 1/2*(r1+r2);
                 B_r = Zonotope(q,r);
                 D= feval(Dq,q,r);

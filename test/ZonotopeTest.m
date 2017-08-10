@@ -86,6 +86,16 @@ function zonotope_in_test(testCase)
     
 end
 
+function zonotope_clean_gener_test(testCase)
+    c = [1;1;1];
+    r = [1;0;2];
+    zt = zonoBox(c,r);
+    assert(any(sum(abs(zt.gener))==0));
+    keyboard();
+    zt.clean_gener;
+    assert(all(sum(abs(zt.gener))~=0));
+end
+
 function setupOnce(testCase)
   cd ../lib/nonlinear_approx/
 end

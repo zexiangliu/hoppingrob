@@ -121,5 +121,10 @@ classdef Zonotope < handle
         function vec = abs(zt)
             vec = abs(zt.cv) + sum(abs(zt.gener),2);
         end
+        
+        function clean_gener(zt)
+            % clean zero generators
+             zt.gener(:,sum(abs(zt.gener))==0)=[];
+        end
     end
 end
