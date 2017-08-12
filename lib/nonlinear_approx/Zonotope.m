@@ -71,20 +71,21 @@ classdef Zonotope < handle
             Aeq = zt.gener;
             beq = vec - zt.cv;
             % if beq isn't in the range of Aeq, vec isn't in the zonotope
-            if(rank([Aeq,beq])~=rank(Aeq))
+            r_A = rank(Aeq);
+            if(rank([Aeq,beq])~=r_A)
                 bool = false;
                 return;
             end
             % see if LS solution is one feasiable solution
-            x1 = Aeq\beq;
-            x2 = pinv(Aeq)*beq;
-            if(all(abs(x1)<=1|abs(x2)<=1))
+%             x1 = Aeq\beq;
+%             x2 = pinv(Aeq)*beq;
+            if(all(abs(Aeq\beq)<=1))%||all(abs(pinv(Aeq)*beq)<=1))
                 bool = true;
                 return;
             end
             % if solution is unique, vec isn't in zt
             [m,n] = size(Aeq);
-            if(rank(Aeq)==m)
+            if(r_A==m)
                 bool = false;
                 return;
             end

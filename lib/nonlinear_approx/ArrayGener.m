@@ -19,11 +19,13 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
     
     transition_list = cell(num_U-1);
 %    pg_list = cell(num_U-1);
-
+    
+    % used in third nested for loop
+    Bq_pi = zonoBox([],eta/2);
+    
     for i = 1:num_X-1
         q = M_X.get_coord(i);
-        parfor k = 1:num_U-1
-%         for k = 1:num_U-1
+        for k = 1:num_U-1
             r1 = 0*r_max;
             r2 = r_max;
             
@@ -53,9 +55,9 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
                 D= feval(Dq,q,r);
                 [~,Rq_tube]=reachTube(M_X,M_U,q,tau,X0,A,f,D);
                 if(zono_contain(Rq_tube,B_r))
-                    r2 = r_max;
+                    r2 = r;
                 else
-                    r1 = r_max;
+                    r1 = r;
                 end
             end
             
@@ -76,7 +78,7 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
                 counter = 0;
                 for j = 1:num_X-1
                     q_pi = M_X.get_coord(j);
-                    Bq_pi = Zonotope(q_pi,eta/2);
+%                     Bq_pi = zonoBox(q_pi,eta/2);
                     zt_int = Zonotope([],[Rq.gener,Bq_pi.gener]);
 
                     % If q_pi-Rq.cv is in the zonotope (0,[Bq_pi.gener,Rq.gener]),
@@ -96,6 +98,7 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
             num_s = num_s + counter;
             transition_list{k} = [transition_list{k};[state1(1:counter),state2(1:counter)]];
         end
+        i
     end
     
     ts = TransSyst(num_X,num_U-1,num_s); 

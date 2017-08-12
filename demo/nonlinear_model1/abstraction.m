@@ -54,7 +54,10 @@ hold on;
 M_X.visual(fig,1:M_X.numV-1,'.b',8,[1;2]);
 axis equal;
 %% TransSyst
+
+profile on;
 ts = ArrayGener(M_X,M_U,tau,[1;1;1;1],@Aq,@fq,@Dq,@constr_test);
+profile viewer
 
 zero = 0;
 disp('Done.')
