@@ -56,7 +56,7 @@ axis equal;
 %% TransSyst
 
 profile on;
-ts = ArrayGener(M_X,M_U,tau,[1;1;1;1],@Aq,@fq,@Dq,@constr_test);
+ts = ArrayGener_simplified(M_X,M_U,tau,[1;1;1;1],@Aq,@fq,@Dq,@constr_test);
 profile viewer
 
 zero = 0;
@@ -64,7 +64,7 @@ disp('Done.')
 %% Create B_list
 disp('Create target set B_list...')
 bnd_B = [x1min,x1max;
-          g/h0-0.2,g/h0+0.2;
+          h0-hlim,h0+hlim;
          -0.4, 0.4;
          -0.2, 0.2];
 B_list = Create_B(bnd_B,M_X);

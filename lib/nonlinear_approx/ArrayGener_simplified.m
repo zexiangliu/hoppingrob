@@ -1,4 +1,4 @@
-function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
+function ts = ArrayGener_simplified(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
 % Generate over-approximate abstraction of nonlinear system    
 % input: M_X  ---- mesh structure of state space
 %        M_U  ---- mesh structure of input space
@@ -17,15 +17,17 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
     avrg = mean(M_X.bnd,2);
     bnd_X = zonoBox(avrg,M_X.bnd(:,2)-avrg);
     
-    transition_list = cell(num_U-1);
+    transition_list = cell(num_X-1,1);
 %    pg_list = cell(num_U-1);
     
     % used in third nested for loop
     Bq_pi = zonoBox([],eta/2);
     
-    for i = 1:num_X-1
+    parfor i = 1:num_X-1
         q = M_X.get_coord(i);
-        parfor k = 1:num_U-1
+        
+        temp_list = cell(num_U-1,1);
+        for k = 1:num_U-1
             r1 = 0*r_max;
             r2 = r_max;
             
@@ -73,41 +75,46 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
             
             % if Rq is in the finite state space
             if(zono_contain(Rq,bnd_X))
-                state1 = zeros(1e3,1,'uint32'); % you can enlarge 1e3 based on the scale of the problem
+%                 state1 = zeros(1e3,1,'uint32'); % you can enlarge 1e3 based on the scale of the problem
                 state2 = zeros(1e3,1,'uint32');
                 counter = 0;
                 for j = 1:num_X-1
                     q_pi = M_X.get_coord(j);
 %                     Bq_pi = zonoBox(q_pi,eta/2);
-                    zt_int = Zonotope([],[Rq.gener,Bq_pi.gener]);
-
-                    % If q_pi-Rq.cv is in the zonotope (0,[Bq_pi.gener,Rq.gener]),
-                    % then Bq_pi intersects with Rq.
-                    if(zt_int.in(q_pi - Rq.cv))
+%                     zt_int = Zonotope([],[Rq.gener,Bq_pi.gener]);
+                    bnd_int = sum(abs([Rq.gener,Bq_pi.gener]),2);
+                    
+                    % enlarge the zonotope to a box
+                    if(all(abs(q_pi - Rq.cv)<=bnd_int))
                         counter = counter+1;
-                        state1(counter) = i;
+%                         state1(counter) = i;
                         state2(counter) = j;
                     end
                 end
             else
                 % if the reachable set outside state space
-                state1 = i;
+%                 state1 = i;
                 state2 = num_X;
                 counter = 1;
             end
             num_s = num_s + counter;
-            transition_list{k} = [transition_list{k};[state1(1:counter),state2(1:counter)]];
+            temp_list{k} = state2(1:counter);
         end
+        transition_list{i} = temp_list;
         i
     end
     
     ts = TransSyst(num_X,num_U-1,num_s); 
-    for i = 1:num_U-1
-%         if(~isempty(pg_list{i}))
-%            ts.add_progress_group(i,pg_list{i});
-%         end
-        if(~isempty(transition_list{i}))
-           ts.add_transition(transition_list{i}(:,1)',transition_list{i}(:,2)',i*ones(size(transition_list{i},1),1,'uint32')');
+    
+    for i = 1:num_X-1
+        temp_list = transition_list{i};
+        for k = 1:num_U-1
+    %         if(~isempty(pg_list{i}))
+    %            ts.add_progress_group(i,pg_list{i});
+    %         end
+            if(~isempty(temp_list{k}))
+               ts.add_transition(i*ones(size(temp_list{k},1),1,'uint32')',temp_list{k}',k*ones(size(temp_list{k},1),1,'uint32')');
+            end
         end
     end
 end
