@@ -9,7 +9,7 @@ disp('Start generating transient system...')
 %======= Test Parameter ========
 g = 10;
 tau = 0.08;     % time interval
-eta = [0.18;0.18;0.18;0.18];
+eta = [0.3;0.1;0.2;0.2];
 mu = [0.2;1];
 dlim = 2.5;
 vlim = 4;
