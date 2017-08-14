@@ -9,7 +9,7 @@ disp('Start generating transient system...')
 %======= Test Parameter ========
 g = 10;
 tau = 0.08;     % time interval
-eta = [0.3;0.1;0.2;0.2];
+eta = [0.2;0.2;0.2;0.2];
 mu = [0.2;1];
 dlim = 2.5;
 vlim = 4;
@@ -60,21 +60,21 @@ save('flux_ts.mat','zero','ts','-v7.3')
 
 disp('Done.')
 %% Create B_list
-disp('Create target set B_list...')
-bnd_B = [x1min,x1max;
-          h0-hlim,h0+hlim;
-         -0.4, 0.4;
-         -0.2, 0.2];
-B_list = Create_B(bnd_B,M_X);
-disp('Done.')
-%% Controller
-disp('Compute winning set and controller...')
-ts.create_fast();
-% tic
-[W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
-% toc
-
-
-save('flux_cont.mat','zero','cont','W','B_list','-v7.3');
-
-disp('Done.')
+% disp('Create target set B_list...')
+% bnd_B = [x1min,x1max;
+%           h0-hlim,h0+hlim;
+%          -0.4, 0.4;
+%          -0.2, 0.2];
+% B_list = Create_B(bnd_B,M_X);
+% disp('Done.')
+% %% Controller
+% disp('Compute winning set and controller...')
+% ts.create_fast();
+% % tic
+% [W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
+% % toc
+% 
+% 
+% save('flux_cont.mat','zero','cont','W','B_list','-v7.3');
+% 
+% disp('Done.')
