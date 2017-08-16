@@ -39,7 +39,7 @@ end
 
 %% teardown
 disp('Please any key to quit...');
-pause;
+pause(20);
 load PATH
 delete('PATH.mat');
 cd(PATH_old);
