@@ -6,8 +6,8 @@ load flux_ts.mat
 disp('Create target set B_list...')
 bnd_B = [x1min,x1max;
           h0-hlim,h0+hlim;
-         -1, 1;
-         -1, 1];
+         -2, 2;
+         -2, 2];
 B_list = Create_B(bnd_B,M_X);
 disp('Done.')
 %% Controller
