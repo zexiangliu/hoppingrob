@@ -1,5 +1,5 @@
-function D = Dq(q,u,r)
-    [Hc,Hd] = Hessian(q,u,r);
+function D = Dq2(q,u,r)
+    [Hc,Hd] = Hessian2(q,u,r);
     n = length(Hc);
     p = length(r);
     sigma = (p+2)*(p+1)/2 - 1;

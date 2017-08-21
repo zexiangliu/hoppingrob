@@ -114,9 +114,9 @@ classdef Zonotope < handle
             if(n1<n2)
                 g3 = zt2.gener(:,n+1:n2);
             elseif(n1>n2)
-                g3 = zt1.gener(:,n+1:n2);
+                g3 = zt1.gener(:,n+1:n1);
             end
-            zt = 1/2*Zonotope(cvNew,[gc,g1,g2,g3]);
+            zt = Zonotope(cvNew/2,[gc/2,g1/2,g2/2,g3]);
         end
         
         function vec = abs(zt)

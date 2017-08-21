@@ -38,7 +38,7 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
             while(1)
                 r = r2;
                 B_r = Zonotope(q,r);
-                D = feval(Dq,q,r);
+                D = feval(Dq,q,u,r);
                 [~,Rq_tube]=reachTube(M_X,M_U,q,tau,X0,A,f,D);
                 if(zono_contain(Rq_tube,B_r))
                     break;
@@ -52,7 +52,7 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
             while(norm(r2-r1)>1e-3)
                 r = 1/2*(r1+r2);
                 B_r = Zonotope(q,r);
-                D= feval(Dq,q,r);
+                D= feval(Dq,q,u,r);
                 [~,Rq_tube]=reachTube(M_X,M_U,q,tau,X0,A,f,D);
                 if(zono_contain(Rq_tube,B_r))
                     r2 = r;
@@ -62,7 +62,7 @@ function ts = ArrayGener(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
             end
             
             r = r2;
-            D= feval(Dq,q,r);
+            D= feval(Dq,q,u,r);
             [Rq,Rq_tube]=reachTube(M_X,M_U,q,tau,X0,A,f,D);
             
             % test the constraints
