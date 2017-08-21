@@ -51,7 +51,7 @@ M_U = GridGener(U);
 save('flux_pre.mat');
 
 %% TransSyst
-ts = ArrayGener_simplified(M_X,M_U,tau,[1;1;1;1],@Aq,@fq,@Dq,@constr_test);
+ts = ArrayGener_md1(M_X,M_U,tau,[1;1;1;1],@Aq,@fq,@Dq,@constr_test);
 adding_progress_group(M_X,M_U,ts)
 
 zero = 0;
