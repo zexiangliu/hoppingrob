@@ -35,6 +35,7 @@ function [V, C, cont] = win_eventually_or_persistence(ts, P, B_list, quant1)
     end
     
     if nargout > 2
+      % try to find all the states in B_list U P_inner that can stay in B_list or go to P_inner
       [Vt, ~, Kt] = ts.win_until_or_always(B_list, P_inner, quant1);
       Vlist{counter} = Vt;
       Klist{counter} = Kt;
