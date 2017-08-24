@@ -6,10 +6,10 @@ function modify_map(cont,subc,P_l)
     end
     
     % modify "modified states" in map container
-    idx = find((subc.idx_mod&~subc.idx_lost)==1);
+    idx = find((subc.idx_mod&~subc.idx_lost));
     for i = 1:length(idx)
         s = subc.set(idx(i)); % global idx of state
-        cont.subcontrollers(s) = find(subc.sa_map(idx(i),:)==1);
+        cont.subcontrollers(s) = find(subc.sa_map(idx(i),:));
     end
 
     % modify the '.sets' in cont

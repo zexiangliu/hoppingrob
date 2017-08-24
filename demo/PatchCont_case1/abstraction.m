@@ -91,7 +91,7 @@ ts.create_fast();
 [W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
 
 %% with u_res
-u_res = [4,5,10,12,24];
+u_res = [1:20];
 % TransSyst
 ts_ref = ArrayGener_parallel(M_X,M_U,tau,r,lmax,u_res);
 disp('Done.')

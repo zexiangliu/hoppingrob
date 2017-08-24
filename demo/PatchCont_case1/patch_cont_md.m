@@ -15,7 +15,7 @@ function patch_cont_md(cont,ts,u_res)
         patch_pre(cont.subcontrollers{i*3-2},ts_arr,u_res,P_lost);
         set_all{i*3-2} = union(P,cont.subcontrollers{i*3-2}.sets);
 
-        [U_n] = patch_pre_pg_md(cont.subcontrollers{i*3-1},ts_arr,u_res,P_lost);
+        [U_n] = patch_pre_pg_md2(cont.subcontrollers{i*3-1},ts_arr,u_res,P_lost);
         set_all{i*3-1} = union(set_all{i*3-2},U_n);
         
         P_lost = setdiff(union(sets_old{i*3-2},sets_old{i*3-1}),set_all{i*3-1});

@@ -6,7 +6,6 @@ function modify_map_pg(cont,P_set,u)
     for i=1:length(new_keys)
         cont.subcontrollers(new_keys(i)) = u;
     end
-
     % modify the '.sets' in cont
     cont.sets = P_set;
 end
