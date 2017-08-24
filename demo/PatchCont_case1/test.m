@@ -1,9 +1,9 @@
-load ts.mat
+load ts_ref.mat
 
 % ts = TransSyst_array(ts);
 % sets_old = cont.sets;
 % % list of actions which need to be removed
-u_res = [1;3;4;5];
+% u_res = [1;3;4;5];
 % P = []; % input P of function win_eventually_or_persistence
 % % P_l = patch_until_or_always(cont.subcontrollers{3}.subcontrollers{1},ts,u_res,[]);
 % 
@@ -24,7 +24,11 @@ u_res = [1;3;4;5];
 %     set_all{i*3-2} = union(P,cont.subcontrollers{i*3-2}.sets);
 %     [U_n,U_o] = patch_pre_pg(cont.subcontrollers{i*3-1},ts,u_res,P_lost);
 %     set_all{i*3-1} = union(set_all{i*3-2},U_n);
+%     % The set_all{i*3-1} is the real P_inner (union of pre's)
 %     P_lost = setdiff(union(sets_old{i*3-2},sets_old{i*3-1}),set_all{i*3-1});
+%     % Remove the states in the previous controller, since it has a chance
+%     % to be remained as a transition state.
+%     P_lost = setdiff(P_lost,cont.subcontrollers{i*3}.subcontrollers{1}.sets); 
 %     P_lost = patch_until_or_always(cont.subcontrollers{i*3}.subcontrollers{1},ts,u_res,P_lost);
 %     set_all{i*3} = union(set_all{i*3-1},cont.subcontrollers{i*3}.subcontrollers{1}.sets);
 %     cont.subcontrollers{i*3}.set_sets({set_all{i*3}});
@@ -35,3 +39,5 @@ u_res = [1;3;4;5];
 profile on;
 patch_cont(cont,ts,u_res);
 profile viewer
+% 
+% save cont2.mat

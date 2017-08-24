@@ -66,9 +66,11 @@ M_X.visual_bnd(fig,[],'black',2);
 hold on;
 M_X.visual(fig,1:M_X.numV-1,'.b',8);
 axis equal;
-%%
+
+%% withouth u_res
+u_res = [];
 % TransSyst
-ts = ArrayGener_parallel(M_X,M_U,tau,r,lmax);
+ts = ArrayGener_parallel(M_X,M_U,tau,r,lmax,u_res);
 disp('Done.')
 %% Create B_list
 disp('Create target set B_list...')
@@ -87,14 +89,26 @@ disp('Done.')
 disp('Compute winning set and controller...')
 ts.create_fast();
 [W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
+
+%% with u_res
+u_res = [4,5,10,12,24];
+% TransSyst
+ts_ref = ArrayGener_parallel(M_X,M_U,tau,r,lmax,u_res);
+disp('Done.')
+
+%% Controller
+disp('Compute winning set and controller...')
+ts.create_fast();
+[W_ref, C, cont_ref]=ts.win_eventually_or_persistence([],{B_list'},1);
 %%
 % Visualization of winning set
-M_X.visual(fig,W,'.c',12);
+fig = figure(2);
+M_X.visual(fig,W_ref,'.c',12);
 
 title('State Space (Black), B\_list (Red), Winning (Cyan)')
 disp('Press any key to continue...');
 pause;
 close all;
-save ts
+save ts_ref
 
 disp('Done.')

@@ -6,7 +6,7 @@ function [Un_new,Un_old] = patch_pre_pg(cont,ts,u_res,P_lost)
     P_lost_old = P_lost;
     Un_old = cont.subcontrollers{1}.sets;
 
-    P_list = cell(length(cont),1); % used to set the new 'sets' for cont
+    P_list = cell(length(cont.sets),1); % used to set the new 'sets' for cont
     % delete lost states from cont.subcontroller{1}
     P_list{1} = setdiff(cont.subcontrollers{1}.sets,P_lost);
     cont.subcontrollers{1}.restrict_to(P_list{1});
@@ -18,6 +18,7 @@ function [Un_new,Un_old] = patch_pre_pg(cont,ts,u_res,P_lost)
         u = u{1};
         if(ismember(u,u_res))
             Un_old = union(Un_old,cont.subcontrollers{i}.sets);
+            P_lost_old = union(P_lost_old,cont.subcontrollers{i}.sets);
             cont.subcontrollers{i}.restrict_to([]);
             continue;
         end
@@ -25,6 +26,7 @@ function [Un_new,Un_old] = patch_pre_pg(cont,ts,u_res,P_lost)
         set = cont.subcontrollers{i}.sets;
         subarray = ts.array{u}(set,:);
 
+%         P_lost = setdiff(P_lost_old,set);
         P_lost = P_lost_old;
         P_tmp = []; % record new lost states
         while(1)

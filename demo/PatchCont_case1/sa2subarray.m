@@ -1,8 +1,9 @@
 function subarr = sa2subarray(subcont,array)
     subarr = cell(length(array),1);
     for i = 1:length(array)
-        subarr{i} = zeros(length(subcont.set),length(array{1}),'logical');
+%         subarr{i} = zeros(length(subcont.set),length(array{1}),'logical');
         idx = subcont.sa_map(:,i)==1;
+        subarr{i} = sparse([],[],[],length(subcont.set),length(array{1}),nnz(array{i}(subcont.set(idx),:)));
         subarr{i}(idx,:) = array{i}(subcont.set(idx),:);
 %         subarr{i} = sparse(subarr{i});
     end
