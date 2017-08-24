@@ -1,4 +1,5 @@
 function patch_cont_md(cont,ts,u_res)
+% the one with best performance: the modified winning set will be equal to the real one
     ts_arr = TransSyst_array(ts);
     sets_old = cont.sets;
     P = []; % input P of function win_eventually_or_persistence

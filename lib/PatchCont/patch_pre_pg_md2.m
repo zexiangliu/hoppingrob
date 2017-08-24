@@ -1,8 +1,11 @@
-function [Un_new] = patch_pre_pg_md(cont,ts,u_res,P_lost)
+function [Un_new] = patch_pre_pg_md2(cont,ts,u_res,P_lost)
+% the one totally captures the mode of pre_pg, modified cont is the same as the real one.
+% consider the potential states in P_lost as well as the potential new inputs
 % output: Union of states of new cont
 %         Union of states of old cont
-    num_u = length(cont.sets);
+    num_u = ts.n_a;
     
+    reset_pg(cont,num_u);
 %     P_lost_old = P_lost;
 
     P_list = cell(length(cont.sets),1); % used to set the new 'sets' for cont
@@ -15,9 +18,8 @@ function [Un_new] = patch_pre_pg_md(cont,ts,u_res,P_lost)
     Un_new = cont.subcontrollers{1}.sets;
     P_l = P_lost; % record new lost states
 
-    for i = 2:num_u
-        u = cont.subcontrollers{i}.subcontrollers.values;
-        u = u{1};
+    for i = 2:num_u+1
+        u = i-1;
         if(ismember(u,u_res))
             P_l = union(P_l,cont.subcontrollers{i}.sets);
             cont.subcontrollers{i}.restrict_to([]);
@@ -60,5 +62,5 @@ function [Un_new] = patch_pre_pg_md(cont,ts,u_res,P_lost)
     end
     
     cont.set_sets(P_list);
-    
+    cont.clear_empty();
 end
