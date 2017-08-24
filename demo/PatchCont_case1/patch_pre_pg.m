@@ -1,4 +1,4 @@
-function [Un_new,Un_old] = patch_pre_pg(cont,ts,u_res,P_lost)
+function [Un_new,Un_old] = patch_pre_pg(cont,ts_arr,u_res,P_lost)
 % output: Union of states of new cont
 %         Union of states of old cont
     num_u = length(cont.sets);
@@ -24,7 +24,7 @@ function [Un_new,Un_old] = patch_pre_pg(cont,ts,u_res,P_lost)
         end
         
         set = cont.subcontrollers{i}.sets;
-        subarray = ts.array{u}(set,:);
+        subarray = ts_arr.array{u}(set,:);
 
 %         P_lost = setdiff(P_lost_old,set);
         P_lost = P_lost_old;

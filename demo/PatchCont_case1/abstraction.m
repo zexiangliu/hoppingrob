@@ -98,8 +98,12 @@ disp('Done.')
 
 %% Controller
 disp('Compute winning set and controller...')
-ts.create_fast();
-[W_ref, C, cont_ref]=ts.win_eventually_or_persistence([],{B_list'},1);
+ts_ref.create_fast();
+
+profile on;
+[W_ref, C, cont_ref]=ts_ref.win_eventually_or_persistence([],{B_list'},1);
+profile viewer
+
 %%
 % Visualization of winning set
 fig = figure(2);

@@ -37,7 +37,7 @@ load ts_ref.mat
 % 
 % cont.set_sets(set_all);
 profile on;
-patch_cont(cont,ts,u_res);
+patch_cont_md(cont,ts,u_res);
 profile viewer
 % 
 % save cont2.mat
