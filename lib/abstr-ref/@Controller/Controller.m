@@ -123,4 +123,33 @@ classdef Controller<matlab.mixin.Copyable
       end
     end
   end
+  
+  methods(Access = protected)
+      % Override copyElement method:
+  function cpObj = copyElement(obj)
+     cpObj = copyElement@matlab.mixin.Copyable(obj);
+     if(iscell(obj.subcontrollers))
+         for i=1:length(obj.subcontrollers)
+             cpObj.subcontrollers{i} = copyElement(obj.subcontrollers{i});
+         end
+     else   
+         if(isempty(obj.subcontrollers.keys))
+             cpObj.subcontrollers = containers.Map();
+         else
+             cpObj.subcontrollers = containers.Map(obj.subcontrollers.keys,obj.subcontrollers.values);
+         end
+     end
+  end
+  
+%   function cpObj = copy_subc(obj)
+%      if(iscell(obj.subcontrollers))
+%          for i=1:length(obj.subcontrollers)
+%              cpObj.subcontrollers{i} = copy_subc(obj.subcontrollers{i});
+%          end
+%      else     
+%          cpObj = copyElement@matlab.mixin.Copyable(obj);
+%          cpObj.subcontrollers = copy(obj.subcontrollers);
+%      end
+%   end
+  end
 end

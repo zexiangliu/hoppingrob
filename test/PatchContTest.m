@@ -15,7 +15,6 @@ function  patch_cont_test(testCase)
     assert(cmp_winning_set(W1_ref,cont1.sets{end}));
     assert(cmp_conts(cont1,cont1_ref));
     
-    [~,~,cont_ref] = abstr_cont([]);
     cont2 = copy(cont_ref);
     u_res2 = [5,6,7,8]+20;
     patch_cont_md(cont2,ts,u_res2);
