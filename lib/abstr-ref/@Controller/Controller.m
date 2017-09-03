@@ -1,4 +1,4 @@
-classdef Controller<handle
+classdef Controller<matlab.mixin.Copyable
 
   properties (SetAccess=protected)
     sets;           % List of sets where subcontrollers are active

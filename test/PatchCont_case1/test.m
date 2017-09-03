@@ -1,5 +1,5 @@
 load ts_ref.mat
-%%
+
 % ts = TransSyst_array(ts);
 % sets_old = cont.sets;
 % % list of actions which need to be removed

@@ -4,7 +4,7 @@ classdef TransSyst<handle
     n_s;
     n_a;
     pointer;
-    
+    pointer_enabled = false;
     % Transitions
     state1;
     state2; 
@@ -43,6 +43,7 @@ classdef TransSyst<handle
           ts.state1 = zeros(n_state,1,'uint32');
           ts.state2 = zeros(n_state,1,'uint32');
           ts.action = zeros(n_state,1,'uint32');
+          ts.pointer_enabled = true;
       end
     end
 
@@ -81,16 +82,21 @@ classdef TransSyst<handle
         assert(1 <= s2 && s2 <= ts.n_s)
         assert(1 <= a && a <= ts.n_a)
       end
-
-%       ts.state1(end+1) = s1;
-%       ts.state2(end+1) = s2;
-%       ts.action(end+1) = a;
-        len = length(s1);
+      if(ts.pointer_enabled||length(s1)>1)
+          if(~ts.pointer_enabled)
+              ts.pointer_enabled = true;
+          end
+        len = length(s2);
         ts.state1(ts.pointer:ts.pointer+len-1) = s1;
         ts.state2(ts.pointer:ts.pointer+len-1) = s2;
         ts.action(ts.pointer:ts.pointer+len-1) = a;
         ts.pointer = ts.pointer+len;
-        ts.fast_enabled = false;
+      else
+        ts.state1(end+1) = s1;
+        ts.state2(end+1) = s2;
+        ts.action(end+1) = a;
+      end
+      ts.fast_enabled = false;
     end
 
     function ret = has_superior_pg(ts, U, G)
