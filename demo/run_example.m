@@ -17,7 +17,7 @@ end
 PATH_old = pwd;
 cd(PATH);
 
-save PATH PATH_old
+save PATH PATH_old exec_mode
 
 
 if(nargin == 1||isempty(info))
@@ -38,9 +38,11 @@ else
 end
 
 %% teardown
-disp('Please any key to quit...');
-pause(20);
 load PATH
+if(~ismember('h',exec_mode))
+    disp('Please any key to quit...');
+    pause;
+end
 delete('PATH.mat');
 cd(PATH_old);
 close all;clear all;clc;
