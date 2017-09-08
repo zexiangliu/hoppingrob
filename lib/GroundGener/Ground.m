@@ -100,7 +100,7 @@ classdef Ground<handle
         
         function add_hole(gnd,radius,type,pos)
             % type supported: 'circle', 'square'
-            if(nargin==5)
+            if(nargin==4)
                 hole.pos = pos;
             else
                 % input the position of hole from mouse

@@ -1,9 +1,13 @@
-function [lf,uf] = bnd_cos(lb,ub)
+function [lf,uf] = bnd_cos(lb,ub,mag)
 % Give the interval [lb,ub], return the range of cos([lb,ub])
 % unit: deg
-% Input: bnd 
-    cos_lb = cosd(lb);
-    cos_ub = cosd(ub);
+% Input: bnd, mag
+    if(nargin == 2)
+        mag = 1;
+    end
+    
+    cos_lb = mag*cosd(lb);
+    cos_ub = mag*cosd(ub);
     lf = min(cos_lb,cos_ub);
     uf = max(cos_lb,cos_ub);
     
@@ -14,7 +18,7 @@ function [lf,uf] = bnd_cos(lb,ub)
     idx = find(l_int <= u_int);
     
     for i = idx'
-        list_peaks = cosd([l_int(i):u_int(i)]*90);
+        list_peaks = mag*cosd([l_int(i):u_int(i)]*90);
         
         lf(i) = min([list_peaks,lf(i)]);
         uf(i) = max([list_peaks',uf(i)]);

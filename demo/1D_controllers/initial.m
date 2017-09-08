@@ -6,4 +6,4 @@ addpath('../../lib/ArrayGener_2D/');
 addpath('../../lib/SimuAndAnim/');
 addpath('../../lib/console/');
 addpath('../../lib/GroundGener/');
-
+addpath('../../lib/PatchCont/');
