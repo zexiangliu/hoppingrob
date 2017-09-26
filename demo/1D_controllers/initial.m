@@ -7,3 +7,4 @@ addpath('../../lib/SimuAndAnim/');
 addpath('../../lib/console/');
 addpath('../../lib/GroundGener/');
 addpath('../../lib/PatchCont/');
+addpath('../../lib/2dMap21dCont')

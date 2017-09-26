@@ -75,9 +75,7 @@ function [SwPt_list, Cont_list, Ures_list] = ContGener(Bnd_list,Dist_list,M_X,M_
 %             for k = 1:5
             while(1)
                 winning_full = comb_win(SwPt_list{i}{j},M_X,Cont_list);
-                
-                tmp_Vx = Vx - Bnd_list{i}{j} + len_X/2;
-                tmp_Vy = Vy;
+               
                 
                 % -len_X to avoild convoluting at the end of ROI, for
                 % adding controllers there will change nothing.
@@ -88,7 +86,12 @@ function [SwPt_list, Cont_list, Ures_list] = ContGener(Bnd_list,Dist_list,M_X,M_
                 end
                 freq = zeros(num_l,1);
                 
+                tmp_Vx = Vx - Bnd_list{i}{j} + len_X/2;
+%                 tmp_Vx_para = Vx - Bnd_list{i}{j} + len_X/2;
+                tmp_Vy = Vy;
+                
                 for l = 1:num_l
+%                      tmp_Vx = tmp_Vx_para + (l-1)*M_X.gridsize(1);
                      mask = [tmp_Vx(:),tmp_Vy(:)];
                      freq(l) = conv_win(winning_full,mask,M_X.gridsize(1)/2);
                      tmp_Vx = tmp_Vx + M_X.gridsize(1);
