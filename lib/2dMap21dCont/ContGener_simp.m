@@ -53,7 +53,7 @@ function [SwPt_list, Cont_list, Ures_list] = ContGener_simp(Bnd_list,Dist_list,M
                 Ures_list{end+1} = tmp_u_res;
                 tmp_cont = copy(cont_ref);
                 patch_cont_md(tmp_cont,ts,u_res);
-                Cont_list{end+1} = tmp_cont;
+                Cont_list{end+1} = tmp_cont.sets{end};
                 SwPt_list{i}{j}{end+1} = length(Cont_list);
             else
                 SwPt_list{i}{j}{end+1} = pos;

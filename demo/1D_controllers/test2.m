@@ -42,14 +42,14 @@ R = 5;
 Bnd_list = ProjBnd(R,Int_list);
 
 %%
-% tmp_max = zeros(length(Bnd_list),1);
-% for i = 1:length(Bnd_list)
-%     tmp_max(i) = max(cell2mat(Bnd_list{i}));
-% end
-% 
-% max_Bnd = max(tmp_max);
-% 
-% abstraction(max_Bnd,10);
+tmp_max = zeros(length(Bnd_list),1);
+for i = 1:length(Bnd_list)
+    tmp_max(i) = max(cell2mat(Bnd_list{i}));
+end
+
+max_Bnd = max(tmp_max);
+
+abstraction(max_Bnd,10);
 
 
 %%
@@ -60,17 +60,17 @@ load ts_ref
 [SwPt_list, Cont_list, Ures_list] = ContGener_simp(Bnd_list,Dist_list,M_X,M_U,cont,ts);
 % profile viewer
 %%
-% fig = figure;
-% for i = 1:length(SwPt_list)
-%     for j = 1:length(SwPt_list{i})
-%         if(~isempty(Dist_list{i}{j}))
-%             hold off;
-%             visual_comb_win(fig,SwPt_list{i}{j},M_X,Cont_list,Bnd_list{i}{j},Dist_list{i}{j});
-%             pause(0.5);
-%             drawnow;
-%         end 
-%     end
-% end
+fig = figure;
+for i = 1:length(SwPt_list)
+    for j = 1:length(SwPt_list{i})
+        if(~isempty(Dist_list{i}{j}))
+            hold off;
+            visual_comb_win_simp(fig,SwPt_list{i}{j},M_X,Cont_list,Bnd_list{i}{j},Dist_list{i}{j});
+            pause(0.5);
+            drawnow;
+        end 
+    end
+end
 %%
 % zero = 0;
 % save conts.mat SwPt_list Ures_list Bnd_list Dist_list % -v7.3
