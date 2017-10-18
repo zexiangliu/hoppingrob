@@ -45,7 +45,7 @@ X.bnd = [
     -vlim,vlim
     ];
 % U.bnd = [x1min-lmax,x1max+lmax];
-U.bnd = [x1min-lmax,x1max+lmax];
+U.bnd = [x1min,x1max];
 % ================================
 
 % 2 grid generation

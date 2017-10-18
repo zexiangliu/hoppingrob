@@ -45,7 +45,7 @@ Bnd_list = ProjBnd(R,Int_list);
 % Cont_list saves all the controllers' candidate
 load ts_ref
 % profile on
-[SwPt_list, Cont_list, Ures_list] = ContGener(Bnd_list,Dist_list,M_X,M_U,cont_ref,ts);
+[SwPt_list, Cont_list, Ures_list] = ContGener(Bnd_list,Dist_list,M_X,M_U,cont,ts);
 % profile viewer
 %%
 fig = figure;

@@ -6,6 +6,10 @@ ops = sdpsettings('solver', 'mosek', 'cachesolvers', 1, 'verbose', 0);
 opt_settings.mode = 'sdsos';
 opt_settings.max_deg = 4;
 
+system_setting = TransSyst.bdd_set;
+encoding_setting = BDDSystem.split_enc;
+
+
 % max # of synthesis-refinement steps
 maxiter = 1000;
 
@@ -24,7 +28,7 @@ pg_depth = 2;
 
 tau = 0.08;     % time interval
 eta = 0.18;
-mu = 0.4;
+mu = 1;
 lmax = 1;
 dlim = 2.5;
 vlim = 4;
@@ -44,8 +48,8 @@ U.bnd = [x1min-lmax,x1max+lmax];
 M_U = GridGener(U);
 
 % Target set
-goal_set = Rec([x1min, -0.4;
-                x1max,  0.4], {'SET'});
+goal_set = Rec([x1min, -4;
+                x1max,  4], {'SET'});
 
 %%
 tic
@@ -65,16 +69,16 @@ if dmax
   d_rec = Rec([-dmax -dmax; dmax dmax]);
   fx1 = a1 * xvar + k1 + e1 * dvar;
   fx2 = a2 * xvar + k2 + e2 * dvar;
-  part.abstract({fx1, fx2}, [xvar; dvar], d_rec);
+  part.abstract({fx1, fx2}, [xvar; dvar], d_rec,system_setting, encoding_setting);
 else
   for i = 1:M_U.numV-1
       fx_list{i}  = A * xvar + B * M_U.get_coord(i);
   end
-  part.abstract(fx_list, [xvar]);
+  part.abstract(fx_list, [xvar],[], system_setting, encoding_setting);
 end
 
 %% Search for transient regions
-part.search_trans_reg_lin(pg_depth);
+part.search_trans_reg(pg_depth);
 
 %% %%%%%%%%%%%%%%%%%%%%%%
 % SYNTHESIS-REFINEMENT %

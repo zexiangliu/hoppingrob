@@ -1,5 +1,5 @@
 function [SwPt_list, Cont_list, Ures_list] = ContGener(Bnd_list,Dist_list,M_X,M_U,cont_ref,ts)
-    num_deg = length(Dist_list);
+    num_deg = 1%length(Dist_list);
     bnd_X = M_X.bnd(1,:);
     bnd_U = M_U.bnd(1,:);
     
