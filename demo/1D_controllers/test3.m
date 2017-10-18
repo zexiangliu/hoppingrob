@@ -1,4 +1,6 @@
 clear all;close all;
+% The compact version
+
 % bnd = [-10,10;
 %     -10,10];
 % gridsize = [5,5];

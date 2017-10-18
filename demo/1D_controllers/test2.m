@@ -1,4 +1,7 @@
 clear all;close all;
+% Version: Find the largest state space and then generate the ideal
+% controller based on it.
+
 bnd = [-10,10;
     -10,10];
 gridsize = [5,5];

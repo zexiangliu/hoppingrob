@@ -114,7 +114,8 @@ methods
     
         for i = 1:n
             % ith coordinates of all nodes in X
-            coord(i,:) = Mesh.discr_bnd(i,1)+(x_B(:,i)'-1)*Mesh.gridsize(i);
+%             coord(i,:) = Mesh.discr_bnd(i,1)+(x_B(:,i)'-1)*Mesh.gridsize(i);
+            coord(i,:) = Mesh.V{i}(x_B(:,i));
         end
         
         % remove unexpected dimension
