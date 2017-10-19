@@ -71,8 +71,13 @@ if dmax
   fx2 = a2 * xvar + k2 + e2 * dvar;
   part.abstract({fx1, fx2}, [xvar; dvar], d_rec,system_setting, encoding_setting);
 else
-  for i = 1:M_U.numV-1
-      fx_list{i}  = A * xvar + B * M_U.get_coord(i);
+  for i = 1:1%M_U.numV-1
+%       fx_list{i}  = A * xvar + B * M_U.get_coord(i);
+       fx_list{1}  = A * xvar + B * (xvar(1)-1);
+       fx_list{2}  = A * xvar + B * (xvar(1)-0.5);
+       fx_list{3}  = A * xvar + B * (xvar(1));
+       fx_list{4}  = A * xvar + B * (xvar(1)+0.5);
+       fx_list{5}  = A * xvar + B * (xvar(1)+1);
   end
   part.abstract(fx_list, [xvar],[], system_setting, encoding_setting);
 end

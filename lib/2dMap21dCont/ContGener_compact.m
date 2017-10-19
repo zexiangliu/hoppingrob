@@ -2,7 +2,7 @@ function [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_lis
 % the compact version of ContGener
 % 'compact' refers that we try to minimize the number of controllers
     disp('Initialization');
-    num_deg = 1;%length(Dist_list);
+    num_deg = length(Dist_list);
     bnd_X = M_X.bnd(1,:);
     bnd_U = M_U.bnd(1,:);
     
