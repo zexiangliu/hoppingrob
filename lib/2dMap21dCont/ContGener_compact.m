@@ -149,6 +149,8 @@ function [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_lis
                 
                 if(num_l<=0)
                     break;
+                elseif(num_l<=2) % adding controllers here won't change too much
+                    continue;
                 end
                 freq = zeros(num_l,1);
                 
@@ -165,6 +167,7 @@ function [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_lis
                 
                 % Kick off the first two results, since adding controllers
                 % in the very beginning will not change anything.
+          
                 freq(1:2) = 1;
                 
                 freq_expected = min(freq); 

@@ -30,7 +30,7 @@ tau = 0.08;     % time interval
 eta = 0.18;
 mu = 1;
 lmax = 1;
-dlim = 2.5;
+dlim = 10;
 vlim = 4;
 x1min= -dlim;
 x1max= dlim;
@@ -63,7 +63,7 @@ part.check();   % sanity check
 xvar = sdpvar(2,1);
 dvar = sdpvar(2,1);
 
-fx_list = cell(M_U.numV-1);
+fx_list = cell(5);%M_U.numV-1);
 
 if dmax
   d_rec = Rec([-dmax -dmax; dmax dmax]);
@@ -71,7 +71,7 @@ if dmax
   fx2 = a2 * xvar + k2 + e2 * dvar;
   part.abstract({fx1, fx2}, [xvar; dvar], d_rec,system_setting, encoding_setting);
 else
-  for i = 1:1%M_U.numV-1
+  for i = 1:1 %M_U.numV-1
 %       fx_list{i}  = A * xvar + B * M_U.get_coord(i);
        fx_list{1}  = A * xvar + B * (xvar(1)-1);
        fx_list{2}  = A * xvar + B * (xvar(1)-0.5);
