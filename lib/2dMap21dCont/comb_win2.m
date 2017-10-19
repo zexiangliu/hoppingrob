@@ -20,5 +20,5 @@ function winning_full = comb_win2(SwPt,M_X,Grid,u1,Cont_list)
             counter = counter + length(W);
         end
     end
-    winning_full = unique(winning_full','rows');
+    winning_full = unique((winning_full'*1e14)/1e14,'rows');
 end

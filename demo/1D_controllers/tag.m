@@ -5,10 +5,7 @@ function info = tag()
     info.run = 'initial;';
     % Define how to execute the example in a fast way, by using abstr. and
     % cont saved previously.
-    info.fast = 'initial;';
-    if(exist('ts.mat','file')==2)
-        info.fast_able = 1;
-    else 
-        info.fast_able = 0;
-    end
+    info.flux = 'initial;flux_test';
+    info.fast = 'initial;test4;test3';
+    info.fast_able = 1;
 end

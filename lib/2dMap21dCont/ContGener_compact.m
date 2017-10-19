@@ -2,7 +2,7 @@ function [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_lis
 % the compact version of ContGener
 % 'compact' refers that we try to minimize the number of controllers
     disp('Initialization');
-    num_deg = length(Dist_list);
+    num_deg = 1;%length(Dist_list);
     bnd_X = M_X.bnd(1,:);
     bnd_U = M_U.bnd(1,:);
     
@@ -159,7 +159,7 @@ function [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_lis
                 for l = 1:num_l
 %                      tmp_Vx = tmp_Vx_para + (l-1)*M_X.gridsize(1);
                      mask = [tmp_Vx(:),tmp_Vy(:)];
-                     freq(l) = conv_win(winning_full,mask,M_X.gridsize(1)/2);
+                     freq(l) = conv_win(winning_full,mask,M_X.gridsize/2);
                      tmp_Vx = tmp_Vx + M_U.gridsize(1);
                 end
                 
@@ -194,7 +194,7 @@ function [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_lis
                 tmp_Vx = Vx +  Bnd{j}.V{1}(pointer)-M_U.V{1}(1);
                 tmp_Vy = Vy;
                 mask = [tmp_Vx(:),tmp_Vy(:)];
-                freq_true = conv_win(winning_full,mask,M_X.gridsize(1)/2);
+                freq_true = conv_win(winning_full,mask,M_X.gridsize/2);
                 
                 if(freq_true>freq_expected)
                     

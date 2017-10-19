@@ -1,6 +1,4 @@
-function freq = comb_win3(fig,SwPt,M_X,Cont_list,Bnd,Dist,Bnd_Dist,u1)
-    figure(fig);
-    
+function freq = comb_win3(SwPt,M_X,Cont_list,Bnd,Dist,Bnd_Dist,u1)    
     bnd_X = M_X.bnd(1,:);
     len_X = bnd_X(2)-bnd_X(1);
     

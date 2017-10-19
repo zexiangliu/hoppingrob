@@ -1,1 +1,1 @@
-run_example('./nonlinear_model1',[],'h')
+run_example('./1D_controllers',[],'h')

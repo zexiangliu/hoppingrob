@@ -1,10 +1,12 @@
-function abstraction(dlim,vlim)
-
+function abstraction(dlim,vlim,vflag)
 %=========Initial=========
 % Set up everything for simulation: abstraction system, controller
 % Ground Type 1: holes distributed in ground. The robot needs to avoid
 % stepping in these holes.
 %======================
+if(nargin == 2)
+    vflag=1; % enable visualization
+end
 %% Generate abstraction transient system
 disp('Start generating transient system...')
 %====== Define the system ======
@@ -54,13 +56,15 @@ U.bnd = [x1min,x1max];
 M_X = GridGener(X);
 M_U = GridGener(U);
 
-% Visualization
-fig = figure;
-M_X.visual_bnd(fig,[],'black',2);
+if(vflag)
+    % Visualization
+    fig = figure;
+    M_X.visual_bnd(fig,[],'black',2);
 
-hold on;
-M_X.visual(fig,1:M_X.numV-1,'.b',8);
-axis equal;
+    hold on;
+    M_X.visual(fig,1:M_X.numV-1,'.b',8);
+    axis equal;
+end
 
 %% without u_res
 % TransSyst
@@ -72,9 +76,11 @@ bnd_B = [X.bnd(1,:);
          -0.4,  0.4];
 B_list = Create_B(bnd_B,M_X);
 
-% Visualization of the target set
-M_X.visual(fig,B_list,'.r',12);
-M_X.visual_bnd(fig,bnd_B,'red',2);
+if(vflag)
+    % Visualization of the target set
+    M_X.visual(fig,B_list,'.r',12);
+    M_X.visual_bnd(fig,bnd_B,'red',2);
+end
 
 hold on;
 
@@ -85,14 +91,16 @@ ts.create_fast();
 [W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
 
 %%
-% Visualization of winning set
-fig = figure(2);
-M_X.visual(fig,W,'.c',12);
+if(vflag)
+    % Visualization of winning set
+    fig = figure(2);
+    M_X.visual(fig,W,'.c',12);
 
-title('State Space (Black), B\_list (Red), Winning (Cyan)')
-disp('Press any key to continue...');
-pause;
-close all;
+    title('State Space (Black), B\_list (Red), Winning (Cyan)')
+    disp('Press any key to continue...');
+    pause;
+    close all;
+end
 save ts_ref
 
 disp('Done.')

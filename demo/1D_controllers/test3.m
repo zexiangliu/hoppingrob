@@ -49,9 +49,9 @@ Bnd_list = ProjBnd(R,Int_list);
 % Cont_list saves all the controllers' candidate
 load ts_ref
 % profile on
-tic
+profile on
 [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_list,Dist_list,M_X,M_U,cont,ts);
-toc
+profile viewer
 % profile viewer
 %%
 % load gnd

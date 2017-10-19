@@ -1,2 +1,1 @@
-abstraction(2.5,5);
-save ts_ref_bk3.mat 
+abstraction(2.5,10);
