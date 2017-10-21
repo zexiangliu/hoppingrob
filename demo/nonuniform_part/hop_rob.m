@@ -30,7 +30,7 @@ tau = 0.08;     % time interval
 eta = 0.18;
 mu = 1;
 lmax = 1;
-dlim = 10;
+dlim = 2.5;
 vlim = 4;
 x1min= -dlim;
 x1max= dlim;
@@ -48,8 +48,8 @@ U.bnd = [x1min-lmax,x1max+lmax];
 M_U = GridGener(U);
 
 % Target set
-goal_set = Rec([x1min, -4;
-                x1max,  4], {'SET'});
+goal_set = Rec([x1min, -2;
+                x1max,  2], {'SET'});
 
 %%
 tic
