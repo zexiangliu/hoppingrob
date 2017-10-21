@@ -1,4 +1,4 @@
-clear all;close all;
+clc;clear all;close all;
 % The compact version
 
 % bnd = [-10,10;
