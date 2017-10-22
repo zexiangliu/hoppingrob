@@ -1,8 +1,8 @@
-function [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_list,Dist_list,M_X,M_U,cont_ref,ts)
+function [SwPt_list, Cont_list, Ures_list, Bnd_Grid,Win_list] = ContGener_compact(Bnd_list,Dist_list,M_X,M_U,cont_ref,ts)
 % the compact version of ContGener
 % 'compact' refers that we try to minimize the number of controllers
     disp('Initialization');
-    num_deg = 2%length(Dist_list);
+    num_deg = length(Dist_list);
 %     bnd_X = M_X.bnd(1,:);
 %     bnd_U = M_U.bnd(1,:);
     
@@ -22,7 +22,7 @@ function [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_lis
     % used for "refinement"
 %     n1 = length(M_X.V{1});
 %     n2 = length(M_X.V{2});
-    half_bnd = [M_X.bnd(1,1),M_X.bnd(1,1)+(M_X.bnd(1,2)-M_X.bnd(1,1))/2];
+    half_bnd = [M_X.bnd(1,1),M_X.bnd(1,1)+(M_X.bnd(1,2)-M_X.bnd(1,1))/6];
 %     V1 = M_X.V{1}(1:floor(n1/2));
 %     V2 = M_X.V{2}((ceil(n2/2)+1):end);
 
