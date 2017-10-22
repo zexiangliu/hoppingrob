@@ -3,7 +3,7 @@ addpath('../../lib/');
 resetpath
 %%
 addpath(genpath('./'));
-addpath(genpath('../../lib/abstr-ref_bdd/'));
+addpath(genpath('../../lib/abstr-ref_reach/'));
 addpath('../../lib/GridGener/');
 addpath('../../lib/nonlinear_approx/');
 addpath('../../lib/console/');

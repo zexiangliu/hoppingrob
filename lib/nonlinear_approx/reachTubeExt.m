@@ -1,6 +1,6 @@
 function [Rq,Rq_tube]=reachTubeExt(rec,tau,Aq,fq,Dq)
-    q = rec.getMidpoint;
-    eta = (a.xmax-a.xmin)';
+    q = rec.getMidpoint';
+    eta = (rec.xmax-rec.xmin)';
     X_q_hat = zonoBox([],eta/2);
     X0 = zonoBox(q,eta/2);
     e_At = expm(Aq*tau);

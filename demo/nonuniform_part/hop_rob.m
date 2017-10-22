@@ -25,6 +25,7 @@ pg_depth = 2;
 %%%%%%%%%%%%%%%%%%%%%%%
 % Initial abstraction %
 %%%%%%%%%%%%%%%%%%%%%%%
+global sys_setting
 
 tau = 0.08;     % time interval
 eta = 0.18;
@@ -34,6 +35,7 @@ dlim = 2.5;
 vlim = 4;
 x1min= -dlim;
 x1max= dlim;
+
 
 h0 = 1;
 g = 10;
@@ -48,8 +50,8 @@ U.bnd = [x1min-lmax,x1max+lmax];
 M_U = GridGener(U);
 
 % Target set
-goal_set = Rec([x1min, -2;
-                x1max,  2], {'SET'});
+goal_set = Rec([x1min, -0.4;
+                x1max,  0.4], {'SET'});
 
 %%
 tic
@@ -63,23 +65,25 @@ part.check();   % sanity check
 xvar = sdpvar(2,1);
 dvar = sdpvar(2,1);
 
-fx_list = cell(5);%M_U.numV-1);
-
+fx_list = cell(5,1);%M_U.numV-1,1);
+u_list = fx_list;
 if dmax
   d_rec = Rec([-dmax -dmax; dmax dmax]);
   fx1 = a1 * xvar + k1 + e1 * dvar;
   fx2 = a2 * xvar + k2 + e2 * dvar;
   part.abstract({fx1, fx2}, [xvar; dvar], d_rec,system_setting, encoding_setting);
 else
-  for i = 1:1 %M_U.numV-1
+  for i = 1:1%M_U.numV-1
 %       fx_list{i}  = A * xvar + B * M_U.get_coord(i);
+%       u_list{i}=M_U.get_coord(i);
        fx_list{1}  = A * xvar + B * (xvar(1)-1);
        fx_list{2}  = A * xvar + B * (xvar(1)-0.5);
        fx_list{3}  = A * xvar + B * (xvar(1));
        fx_list{4}  = A * xvar + B * (xvar(1)+0.5);
        fx_list{5}  = A * xvar + B * (xvar(1)+1);
+       u_list = {-1,-0.5,0,0.5,1};
   end
-  part.abstract(fx_list, [xvar],[], system_setting, encoding_setting);
+  part.abstract(fx_list,u_list , [xvar],[], tau, system_setting, encoding_setting);
 end
 
 %% Search for transient regions
