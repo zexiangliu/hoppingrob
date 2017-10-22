@@ -23,7 +23,7 @@ function ts = ArrayGener_simplified(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
     % used in third nested for loop
     Bq_pi = zonoBox([],eta/2);
     
-    parfor i = 1:num_X-1
+    for i = 1:num_X-1
         q = M_X.get_coord(i);
         
         temp_list = cell(num_U-1,1);
@@ -41,7 +41,7 @@ function ts = ArrayGener_simplified(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
                 r = r2;
                 B_r = Zonotope(q,r);
                 D = feval(Dq,q,u,r);
-                [~,Rq_tube]=reachTube(M_X,M_U,q,tau,X0,A,f,D);
+                [~,Rq_tube]=reachTube(M_X,q,tau,X0,A,f,D);
                 if(zono_contain(Rq_tube,B_r))
                     break;
                 else
@@ -55,7 +55,7 @@ function ts = ArrayGener_simplified(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
                 r = 1/2*(r1+r2);
                 B_r = Zonotope(q,r);
                 D= feval(Dq,q,u,r);
-                [~,Rq_tube]=reachTube(M_X,M_U,q,tau,X0,A,f,D);
+                [~,Rq_tube]=reachTube(M_X,q,tau,X0,A,f,D);
                 if(zono_contain(Rq_tube,B_r))
                     r2 = r;
                 else
@@ -65,7 +65,7 @@ function ts = ArrayGener_simplified(M_X,M_U,tau,r_max,Aq,fq,Dq,constr_test)
             
             r = r2;
             D= feval(Dq,q,u,r);
-            [Rq,Rq_tube]=reachTube(M_X,M_U,q,tau,X0,A,f,D);
+            [Rq,Rq_tube]=reachTube(M_X,q,tau,X0,A,f,D);
             
             % test the constraints
             % if pass, return 1.
