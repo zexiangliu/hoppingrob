@@ -49,36 +49,35 @@ Bnd_list = ProjBnd(R,Int_list);
 % Cont_list saves all the controllers' candidate
 load ts_ref
 % profile on
-profile on
 [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_list,Dist_list,M_X,M_U,cont,ts);
-profile viewer
 % profile viewer
+
 %%
-% load gnd
-% fig = figure(1);
-% fig2 = figure(2);
+load gnd
+fig = figure(1);
+fig2 = figure(2);
 % freq = [];
-% for i = 1:5%length(SwPt_list)
-%     for j = 1:length(SwPt_list{i})
-%         if(~isempty(Dist_list{i}{j}))
-%             j
-% %             hold off;
+for i = 1:2%length(SwPt_list)
+    for j = 1:length(SwPt_list{i})
+        if(~isempty(Dist_list{i}{j}))
+            j
+            hold off;
 %             freq = [freq;comb_win3(fig,SwPt_list{i}{j},M_X,Cont_list,Bnd_list{i}{j},Dist_list{i}{j},Bnd_Grid{i}{j},M_U.V{1}(1))]
-% 
-% %             visual_comb_win2(fig,SwPt_list{i}{j},M_X,Cont_list,Bnd_list{i}{j},Dist_list{i}{j},Bnd_Grid{i}{j},M_U.V{1}(1));
-% %             hold off;
-% %             list_deg(i)
-% %             Int_list{i}(j:j+1)
-% %             d = mean(Int_list{i}(j:j+1));
-% %             gnd.visual_holes(fig2);
-% %             x = linspace(-Bnd_list{i}{j},Bnd_list{i}{j},100);
-% %             y = tand(list_deg(i))*(x-d*sind(list_deg(i)))+d*cosd(list_deg(i));
-% %             plot(x,y,'r-','linewidth',1);
-% %             pause();
-% %             drawnow;
-%         end 
-%     end
-% end
+
+            visual_comb_win2(fig,SwPt_list{i}{j},M_X,Cont_list,Bnd_list{i}{j},Dist_list{i}{j},Bnd_Grid{i}{j},M_U.V{1}(1));
+            hold off;
+            list_deg(i)
+            Int_list{i}(j:j+1)
+            d = mean(Int_list{i}(j:j+1));
+            gnd.visual_holes(fig2);
+            x = linspace(-Bnd_list{i}{j},Bnd_list{i}{j},100);
+            y = tand(list_deg(i))*(x-d*sind(list_deg(i)))+d*cosd(list_deg(i));
+            plot(x,y,'r-','linewidth',1);
+            pause();
+            drawnow;
+        end 
+    end
+end
 %%
 % i=1;j=24;
 % fig = figure;

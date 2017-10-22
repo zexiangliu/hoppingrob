@@ -16,13 +16,13 @@ function [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_lis
     templ_u = ones(num_U,1);
     
     SwPt_list = cell(size(Dist_list));
-    Ures_list = {};
-    Cont_list = {};
+    Ures_list = {num2str([])};
+    Cont_list = {cont_ref.sets{end}};
     
     % used for "refinement"
 %     n1 = length(M_X.V{1});
 %     n2 = length(M_X.V{2});
-
+    half_bnd = [M_X.bnd(1,1),M_X.bnd(1,1)+(M_X.bnd(1,2)-M_X.bnd(1,1))/2];
 %     V1 = M_X.V{1}(1:floor(n1/2));
 %     V2 = M_X.V{2}((ceil(n2/2)+1):end);
 
@@ -93,10 +93,8 @@ function [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_lis
             SwPt_list{i}{j}{end+1} = [pointer,pos];
             
             origin = Bnd{j}.V{1}(pointer)-M_U.V{1}(1);
-            idx_winning = search_win(M_X,Cont_list{pos},Win_list{i}{j},origin);
-            % label winning states
-            Win_list{i}{j}.M(idx_winning(:,1),idx_winning(:,2))=0;
-            
+            search_win(Win_list{i}{j},M_X,Cont_list{pos},origin);
+        
             % the last controller
             pointer = length(Dist{j})-num_U + 1;
             u_res = find(Dist{j}(pointer:end))';
@@ -114,9 +112,7 @@ function [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_lis
             SwPt_list{i}{j}{end+1} = [pointer,pos];
             
             origin = Bnd{j}.V{1}(pointer)-M_U.V{1}(1);
-            idx_winning = search_win(M_X,Cont_list{pos},Win_list{i}{j},origin);
-            % label winning states
-            Win_list{i}{j}.M(idx_winning(:,1),idx_winning(:,2))=0;
+            search_win(Win_list{i}{j},M_X,Cont_list{pos},origin);
         end
         i
     end
@@ -134,20 +130,27 @@ function [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_lis
                 end
                 bin = Dist{k};
                 tmp_conv = conv_bin(bin(2:end-1),u_res);
-                conv_idx = find(tmp_conv==Conv{k});
-                for l = conv_idx'
-                    old_M = sum(Win_list{j}{k}.M(:));
-                    origin = Bnd{j}.V{1}(l+1)-M_U.V{1}(1);
-                    idx_winning = search_win(M_X,Cont_list{i},Win_list{j}{k},origin);
-                    % label winning states
-                    Win_list{j}{k}.M(idx_winning(:,1),idx_winning(:,2))=0;
-                    
-                    new_M = sum(Win_list{j}{k}.M(:));
-                    if(old_M>new_M)
+                if(all(u_res==0))
+                    conv_idx = find(tmp_conv==Conv{k});
+                   for l = conv_idx'
+                        search_win(Win_list{j}{k},M_X,Cont_list{i},origin); 
                         SwPt_list{j}{k}{end+1} = [l+1,i];
                         disp("Bingo!");
                     end
+                else
+                    conv_idx = find(tmp_conv==Conv{k}&Conv{k}~=0);
+                    for l = conv_idx'
+                        old_M = sum(Win_list{j}{k}.M(:));
+                        origin = Bnd{j}.V{1}(l+1)-M_U.V{1}(1);
+                        search_win(Win_list{j}{k},M_X,Cont_list{i},origin); 
+                        new_M = sum(Win_list{j}{k}.M(:));
+                        if(old_M>new_M)
+                            SwPt_list{j}{k}{end+1} = [l+1,i];
+                            disp("Bingo!");
+                        end
+                    end
                 end
+                
             end
         end
     end
@@ -164,7 +167,7 @@ function [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_lis
             while(1)               
                 % -len_X to avoild convoluting at the end of ROI, for
                 % adding controllers there will change nothing.
-                num_l = Bnd{j}.numV-num_U;%floor((Bnd_list{i}{j}*2-len_X)/M_X.gridsize(1));
+                num_l = Bnd{j}.numV-num_U-1;%floor((Bnd_list{i}{j}*2-len_X)/M_X.gridsize(1));
                 
                 if(num_l<=0)
                     break;
@@ -174,20 +177,20 @@ function [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_lis
                 
                 freq = zeros(num_l,1);
                 
-                origin = Bnd{j}.V{1}(1)-M_U.V{1}(1);
+%                 origin = Bnd{j}.V{1}(1)-M_U.V{1}(1);
                 
                 for l = 1:num_l                
-                     mask = M_X.bnd(1,:)+origin;
+                     origin =  Bnd{j}.V{1}(l)-M_U.V{1}(1);
+                     mask = half_bnd+origin;
                      freq(l) = conv_win(Win_list{i}{j},mask);
-                     origin = origin + M_U.gridsize(1);
                 end
                 
                 % Kick off the first two results, since adding controllers
                 % in the very beginning will not change anything.
           
-                freq(1:2) = 1;
+                freq(1:2) = 0;
                 
-                freq_expected = min(freq); 
+                freq_expected = max(freq); 
                 
                 % If there are multiple minimum, choose the rightest one.
                 pos_list = find(freq == freq_expected);
@@ -203,19 +206,21 @@ function [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_lis
                     tmp_cont = copy(cont_ref);
                     patch_cont_md(tmp_cont,ts,u_res);
                     Cont_list{end+1} = tmp_cont.sets{end};
-                    SwPt_list{i}{j}{end+1} = [pointer,length(Cont_list)];
-                else
-                    SwPt_list{i}{j}{end+1} = [pointer,pos];
+                    pos = length(Cont_list);
                 end
                 
+                SwPt_list{i}{j}{end+1} = [pointer,pos];
+                
+                % update Win_list
+                origin = Bnd{j}.V{1}(pointer)-M_U.V{1}(1);
+                search_win(Win_list{i}{j},M_X,Cont_list{pos},origin); 
                 
                 % check the performance
-                origin = Bnd{j}.V{1}(pointer)-M_U.V{1}(1);
-                mask = M_X.bnd(1,:)+origin;
+                mask = half_bnd+origin;
                 freq_true = conv_win(Win_list{i}{j},mask);
 
                 
-                if(freq_true>freq_expected)
+                if(freq_true<freq_expected)
                     
                     conv_u = zeros(num_U,1);
                     conv_u(u_res)=1;
@@ -223,23 +228,21 @@ function [SwPt_list, Cont_list, Ures_list, Bnd_Grid] = ContGener_compact(Bnd_lis
                     if(~bool)
                         idx_cont = length(Cont_list);
                         for j2 = 1:num_deg
-                            Dist = Dist_bin{j2};
-                            Bnd  = Bnd_Grid{j2};
-                            Conv = Conv_list{j2};
-                            for k2 = 1:length(Dist)
-                                if(isempty(Dist{k2}))
+                            Dist2 = Dist_bin{j2};
+                            Bnd2  = Bnd_Grid{j2};
+                            Conv2 = Conv_list{j2};
+                            for k2 = 1:length(Dist2)
+                                if(isempty(Dist2{k2}))
                                     continue;
                                 end
-                                bin = Dist{k2};
+                                bin = Dist2{k2};
                                 tmp_conv = conv_bin(bin(2:end-1),conv_u);
-                                conv_idx = find(tmp_conv==Conv{k2});
+                                conv_idx = find(tmp_conv==Conv2{k2}&Conv2{k2}~=0);
                                 for l = conv_idx'
                                     old_M = sum(Win_list{j2}{k2}.M(:));
-                                    origin = Bnd.V{1}(l+1)-M_U.V{1}(1);
-                                    idx_winning = search_win(M_X,Cont_list{end},Win_list{j2}{k2},origin);
-                                    % label winning states
-                                    Win_list{j2}{k2}.M(idx_winning(:,1),idx_winning(:,2))=0;
-
+                                    origin = Bnd2{k2}.V{1}(l+1)-M_U.V{1}(1);
+                                    search_win(Win_list{j2}{k2},M_X,Cont_list{end},origin);
+                                    
                                     new_M = sum(Win_list{j2}{k2}.M(:));
                                     if(old_M>new_M)
                                         SwPt_list{j2}{k2}{end+1} = [l+1,idx_cont];
@@ -281,48 +284,19 @@ function r = conv_bin(signal,window)
     end
 end
 
-function win = win_cand(bnd,M_X)
-    tmp_bnd = M_X.bnd;
-    tmp_bnd(1,:) = [-bnd,bnd]; 
-    u = M_X.gridsize;
-    range = abs(tmp_bnd(:,2)-tmp_bnd(:,1));  % range of each dimension
-    num_node = ceil(range./u-1); % num of discretized points in each dimension
-    num_node(num_node<0)=0;
-    bnd_layer = (range-num_node.*u)/2;
-    
-    % coordinates in each direction
-    win.V{1} = linspace(tmp_bnd(1,1)+bnd_layer(1),tmp_bnd(1,2)-bnd_layer(1),num_node(1)+1);
-    win.V{2} = linspace(tmp_bnd(2,1)+bnd_layer(2),tmp_bnd(2,2)-bnd_layer(2),num_node(2)+1);
-    win.M = ones(length(win.V{1}),length(win.V{2}),'logical');
-end
+% function win = win_cand(bnd,M_X)
+%     tmp_bnd = M_X.bnd;
+%     tmp_bnd(1,:) = [-bnd,bnd]; 
+%     u = M_X.gridsize;
+%     range = abs(tmp_bnd(:,2)-tmp_bnd(:,1));  % range of each dimension
+%     num_node = ceil(range./u-1); % num of discretized points in each dimension
+%     num_node(num_node<0)=0;
+%     bnd_layer = (range-num_node.*u)/2;
+%     
+%     % coordinates in each direction
+%     win.V{1} = linspace(tmp_bnd(1,1)+bnd_layer(1),tmp_bnd(1,2)-bnd_layer(1),num_node(1)+1);
+%     win.V{2} = linspace(tmp_bnd(2,1)+bnd_layer(2),tmp_bnd(2,2)-bnd_layer(2),num_node(2)+1);
+%     win.M = ones(length(win.V{1}),length(win.V{2}),'logical');
+% end
 
 
-function idx_winning = search_win(M_X,win_set,win_cand,origin)
-    
-    bnd = M_X.bnd+[origin;0];
-    idx1 = find(win_cand.V{1}>=bnd(1,1)&win_cand.V{1}<=bnd(1,2));
-    idx2 = find(win_cand.V{2}>=bnd(2,1)&win_cand.V{2}<=bnd(2,2));
-    
-    [IDX,IDY] = meshgrid(idx1,idx2);
-    
-    win_coord = M_X.get_coord(win_set) + [origin;0];
-
-    idx_winning = zeros(size(win_coord,2),2,'logical');
-    counter = 1;
-    for i = 1:numel(IDX)
-        if(win_cand.M(IDX(i),IDY(i))==0)
-            continue;
-        end
-        dis = sum(abs(win_coord - [win_cand.V{1}(IDX(i));win_cand.V{2}(IDY(i))])<=M_X.gridsize/2);
-        if(any(dis==2))
-            idx_winning(counter,:) = [IDX(i) IDY(i)];
-            counter = counter+1;
-        end
-    end
-    idx_winning(counter:end,:)=[];
-end
-
-function freq = conv_win(win_cand,mask)
-    idx1 = win_cand.V{1}>=mask(1)&win_cand.V{1}<=mask(2);
-    freq = sum(sum(win_cand.M(idx1,:)))/numel(win_cand.M);
-end
