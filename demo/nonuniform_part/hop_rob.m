@@ -11,7 +11,7 @@ encoding_setting = BDDSystem.split_enc;
 
 
 % max # of synthesis-refinement steps
-maxiter = 1000;
+maxiter = 5000;
 
 % split final invariant set further to avoid zeno
 split_inv = true;
@@ -31,7 +31,7 @@ tau = 0.08;     % time interval
 eta = 0.18;
 mu = 1;
 lmax = 1;
-dlim = 2.5;
+dlim = 4;%2.5;
 vlim = 4;
 x1min= -dlim;
 x1max= dlim;
@@ -65,7 +65,8 @@ part.check();   % sanity check
 xvar = sdpvar(2,1);
 dvar = sdpvar(2,1);
 
-fx_list = cell(5,1);%M_U.numV-1,1);
+% fx_list = cell(M_U.numV-1,1);
+fx_list = cell(5,1);
 u_list = fx_list;
 if dmax
   d_rec = Rec([-dmax -dmax; dmax dmax]);
@@ -76,12 +77,12 @@ else
   for i = 1:1%M_U.numV-1
 %       fx_list{i}  = A * xvar + B * M_U.get_coord(i);
 %       u_list{i}=M_U.get_coord(i);
-       fx_list{1}  = A * xvar + B * (xvar(1)-1);
+       fx_list{1}  = A * xvar + B * (xvar(1)-0.2);
        fx_list{2}  = A * xvar + B * (xvar(1)-0.5);
        fx_list{3}  = A * xvar + B * (xvar(1));
        fx_list{4}  = A * xvar + B * (xvar(1)+0.5);
-       fx_list{5}  = A * xvar + B * (xvar(1)+1);
-       u_list = {-1,-0.5,0,0.5,1};
+       fx_list{5}  = A * xvar + B * (xvar(1)+0.2);
+       u_list = {-0.2,-0.5,0,0.5,0.2};
   end
   part.abstract(fx_list,u_list , [xvar],[], tau, system_setting, encoding_setting);
 end
@@ -137,3 +138,5 @@ end
 [~, ~, cont] = part.ts.win_primal([], part.get_cells_with_ap({'SET'}), [], 'exists', 'forall');
 
 toc
+
+save res.mat cont part

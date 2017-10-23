@@ -7,7 +7,8 @@ function [res] = is_trans(rec1, rec2, u, tau)
     q = rec1.getMidpoint;
     A = Aq(q',u);
     f = fq(q',u);
-    r = r_estimate(q',u,tau);
+    eta = (rec1.xmax-rec1.xmin)';
+    r = r_estimate(q',u,tau,eta);
     D = Dq(q',u,r);
     [Rq,~]=reachTubeExt(rec1,tau,A,f,D);
         
