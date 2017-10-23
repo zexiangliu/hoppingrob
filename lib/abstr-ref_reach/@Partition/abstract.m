@@ -62,7 +62,8 @@ function abstract(part, dyn_list,u_list,vars, drec,tau, sys_set, enc_set)
   for m = 1:M
     for i=1:length(part)
       % Neighbor transitions
-      adj = part.get_neighbors(i);
+      adj = 1:size(part.cell_list,2);
+      adj(i) = [];
       for j=adj
         if is_trans(part.cell_list(i), part.cell_list(j), part.u_list{m}, part.tau)
           part.ts.add_transition(i, j, m);

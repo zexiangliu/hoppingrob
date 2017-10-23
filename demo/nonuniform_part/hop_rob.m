@@ -11,7 +11,7 @@ encoding_setting = BDDSystem.split_enc;
 
 
 % max # of synthesis-refinement steps
-maxiter = 5000;
+maxiter = 2500;
 
 % split final invariant set further to avoid zeno
 split_inv = true;
