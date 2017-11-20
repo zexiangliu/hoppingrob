@@ -67,3 +67,11 @@ or
 ```
 manual$ exec num -f
 ```
+# Authors
+Zexiang Liu, University of Michigan, zexiang@umich.edu
+
+Ozay Necmiye, University of Michigan
+
+# Third-party Library
+[ABSTR-REFINEMENT TOOLBOX](https://github.com/pettni/abstr-refinement)
+
