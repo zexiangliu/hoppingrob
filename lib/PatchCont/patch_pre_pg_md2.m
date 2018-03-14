@@ -1,4 +1,4 @@
-function [Un_new] = patch_pre_pg_md2(cont,ts,u_res,P_lost)
+function [Un_new] = patch_pre_pg_md2(cont,ts,u_res,B, P_lost)
 % the one totally captures the mode of pre_pg, modified cont is the same as the real one.
 % consider the potential states in P_lost as well as the potential new inputs
 % output: Union of states of new cont
@@ -26,7 +26,7 @@ function [Un_new] = patch_pre_pg_md2(cont,ts,u_res,P_lost)
             continue;
         end
         
-        P_pot = intersect(P_l,ts.pg_G{u}); % potential new states
+        P_pot = intersect(B,intersect(P_l,ts.pg_G{u})); % potential new states
         set = union(cont.subcontrollers{i}.sets,P_pot);
         P_l = setdiff(P_l,set); % take off some states from P_l (*)
         subarray = ts.array{u}(set,:);

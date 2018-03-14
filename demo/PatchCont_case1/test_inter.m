@@ -62,7 +62,7 @@ M_X = GridGener(X);
 M_U = GridGener(U);
 
 %% without u_res
-u_res = [1:10];
+u_res = [];
 % TransSyst
 ts = ArrayGener_parallel(M_X,M_U,tau,r,lmax,u_res);
 disp('Done.')
@@ -75,13 +75,16 @@ B_list = Create_B(bnd_B,M_X);
 disp('Done.')
 %% Create Z
 
-Z = 100:1000;
+Z = 1:1000;
 
+C_list = {[1:1000],[1000,2000]};
 %% Controller
 disp('Compute winning set and controller...')
 ts.create_fast();
 % [W, C, cont]=ts.win_primal([],B_list',[],'exists','forall');
-[W, C, cont]=ts.win_until(B_list',Z,true);
+[W, ~, cont] = ts.win_intermediate(uint32(1:ts.n_s), B_list, Z, ... 
+                                    C_list, 1);
+% [W, C, cont]=ts.win_until(B_list',Z,true);
 % %% Patching
 % Z_lost = 1:5;
 % u_res = [1:10];

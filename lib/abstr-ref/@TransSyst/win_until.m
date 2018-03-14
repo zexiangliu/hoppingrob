@@ -20,10 +20,11 @@ function [V, Cv, cont] = win_until(ts, B, P, quant1)
 
       % PG pre
       [preVinv, CpreVinv, preKinv] = ts.pre_pg(Vt, B, quant1);
-      if ~isempty(setdiff(preVinv, Vt))
+%       if ~isempty(setdiff(preVinv, Vt)) % commented for patching
+%       algorithms
         Vlist{end+1} = preVinv;
         Klist{end+1} = preKinv;
-      end
+%       end
       Vt = union(Vt, preVinv);
     elseif nargout > 1
       % Normal pre

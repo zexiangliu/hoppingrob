@@ -69,7 +69,7 @@ disp('Done.')
 %% Create B_list
 disp('Create target set B_list...')
 bnd_B = [X.bnd(1,:);
-         -4,  4];
+         -2,  2];
 B_list = Create_B(bnd_B,M_X);
 
 disp('Done.')
@@ -77,18 +77,30 @@ disp('Done.')
 
 Z = 1:1000;
 
+C_list = {1:3000,2000:4000};
+
+A_list = [];
 %% Controller
 disp('Compute winning set and controller...')
 ts.create_fast();
 % [W, C, cont]=ts.win_primal([],B_list',[],'exists','forall');
-C_list = {uint32(1:ts.n_s)};
-[W, ~, cont] = ts.win_intermediate(uint32(1:ts.n_s), B_list, Z, ... 
-                                    {uint32(1:ts.n_s)}, 1);
-% [W, C, cont]=ts.win_until(B_list',Z,true);
-% %% Patching
-% Z_lost = 1:5;
-% u_res = [1:10];
-% cont2=cont.copy;
-% P_l = patch_until(cont2,ts, u_res, Z_lost, Z, B_list')
-% 
-% % save ts_general
+[W, ~, cont, V_Compl, K_Compl] = ts.win_primal_patch(A_list, B_list, ... 
+                                    C_list, 'exists', 'forall')
+[Vinv, ~, cont_inv] = ts.win_intermediate(uint32(1:ts.n_s), A_list, [], {uint32(1:ts.n_s)}, 1);
+
+save ts_exper
+
+%% with u_res
+u_res = [1:10];
+% TransSyst
+ts = ArrayGener_parallel(M_X,M_U,tau,r,lmax,u_res);
+disp('Done.')
+%% Controller
+disp('Compute winning set and controller...')
+ts.create_fast();
+% [W, C, cont]=ts.win_primal([],B_list',[],'exists','forall');
+[W, ~, cont, V_Compl, K_Compl] = ts.win_primal_patch(A_list, B_list, ... 
+                                    C_list, 'exists', 'forall')
+
+
+save ts_cons

@@ -122,6 +122,11 @@ classdef Controller<matlab.mixin.Copyable
         error('complex controller cant be restricted')
       end
     end
+    
+    function set_cont(cont,subc)
+      cont.subcontrollers = subc;
+    end
+    
   end
   
   methods(Access = protected)
