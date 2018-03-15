@@ -1,4 +1,12 @@
-function V_new = patch_primal(cont,ts,u_res,A,B,C_list,V,V_Compl,K_Compl,Vinv_lost,Vinv,ts_ref)
+function V_new = patch_primal(cont,ts,u_res,A,B,C_list,V_Compl,K_Compl,Vinv_lost,Vinv)
+%     input: cont---controller to be modified
+%            ts --- abstraction FTS
+%            u_res---removed inputs
+%            A,B,C_list --- intput parameters of win_primal
+%            V_Compl, K_Compl --- outputs of win_primal
+%            Vinv_lost --- the states removed from Vinv after u_res is removed
+%            Vinv --- the invariant set calculated by Win([]A)
+%    output: V_new --- modified winning sets
 
 if(isa(ts,'TransSyst'))
     ts = TransSyst_array(ts);
@@ -7,12 +15,12 @@ end
 set_all = cont.sets;
 V_lost = [];
 
-cont_up = cont.subcontrollers{end}.copy; 
-V_up = cont.sets{end};
-K1_up = K_Compl{end-3}.copy;
-K2_up = K_Compl{end-2}.copy;
-Z1_up = V_Compl{end-3};
-Z2_up = V_Compl{end-2};
+% cont_up = cont.subcontrollers{end}.copy; 
+% V_up = cont.sets{end};
+% K1_up = K_Compl{end-3}.copy;
+% K2_up = K_Compl{end-2}.copy;
+% Z1_up = V_Compl{end-3};
+% Z2_up = V_Compl{end-2};
 
 for i = 1:length(cont.sets)
     if(~isempty(V_Compl{2*i}))
@@ -28,7 +36,7 @@ for i = 1:length(cont.sets)
     Z_lost = setdiff(Z_old,Z_new);
     
     cont_tmp = cont.subcontrollers{i};
-    V_new = patch_intermediate(cont_tmp,ts,u_res,Z_lost,Z_old,B,C_list,Vinv_lost,Vinv,ts_ref);
+    V_new = patch_intermediate(cont_tmp,ts,u_res,Z_lost,Z_old,B,C_list,Vinv_lost,Vinv);
     
     V_lost = setdiff(set_all{i},V_new);
     

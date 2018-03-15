@@ -75,18 +75,23 @@ B_list = Create_B(bnd_B,M_X);
 disp('Done.')
 %% Create Z
 
-Z = 1:1000;
+C_list = {1:2000,500:3000,1000:3200};
 
-C_list = {1:3000,2000:4000};
-
-A_list = [];
+A_list = [1:3000];
 %% Controller
 disp('Compute winning set and controller...')
 ts.create_fast();
 % [W, C, cont]=ts.win_primal([],B_list',[],'exists','forall');
+tic;
 [W, ~, cont, V_Compl, K_Compl] = ts.win_primal_patch(A_list, B_list, ... 
                                     C_list, 'exists', 'forall')
+t_synthesis = toc;                            
 [Vinv, ~, cont_inv] = ts.win_intermediate(uint32(1:ts.n_s), A_list, [], {uint32(1:ts.n_s)}, 1);
+
+
+if(isempty(W))
+    error('No winning set is found!');
+end
 
 save ts_exper
 

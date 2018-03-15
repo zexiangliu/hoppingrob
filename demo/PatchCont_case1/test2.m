@@ -24,6 +24,6 @@ cont2=cont.copy;
 Vinv_lost = [];
 Vinv = 1:ts.n_s;
 A_list = 1:ts.n_s;
-V = patch_primal(cont2,ts,u_res,A_list,B_list',C_list,[],V_Compl,K_Compl,Vinv_lost,Vinv,ts_ref)
+V = patch_primal(cont2,ts,u_res,A_list,B_list',C_list,V_Compl,K_Compl,Vinv_lost,Vinv)
 
 % save ts_general

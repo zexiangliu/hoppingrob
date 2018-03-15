@@ -1,4 +1,4 @@
-function V = patch_intermediate(cont,ts,u_res,P_lost,P,B,C_list,Vinv_lost,Vinv,ts_ref)
+function V = patch_intermediate(cont,ts,u_res,P_lost,P,B,C_list,Vinv_lost,Vinv)
 
     if(~strcmp(cont.from,'win_intermediate'))
         error('InputError: cont isn''t from win_intermediate.')
@@ -63,40 +63,6 @@ function [V, cont] = win_intermediate_patch(ts,B, BC_list, P,u_res, ...
             end
             Vt = setdiff(Vt,Vti_l);
             Q_pre{i} = Q_new{i};
-        end
-
-        if length(V) == length(Vt)
-            break
-        end
-        V = Vt;
-        iter = iter + 1;
-    end
-
-    Vlist = {V};
-    for i = 1:length(BC_list)
-      Vlist{end+1} = BC_list{i};
-    end
-    cont = Controller(Vlist, Klist, 'recurrence', 'win_intermediate');
-end
-
-function [V, Cv, cont] = win_intermediate(ts,B, BC_list, P,V,Klist)
-    A = 1:ts.n_s;
-    quant1 = 1;
-    Q_new = cell(1,length(BC_list));
-    iter = 1;
-    Vt = V;
-    while true
-        preV = ts.pre(V, [], quant1, false);
-
-        if nargout > 1
-          Cv = [];
-        end
-
-        for i=1:length(BC_list)
-            Q_new{i} = union(P, intersect(BC_list{i}, preV));
-            [Vti,~,Ki] = ts.win_until_and_always(A, B, Q_new{i}, quant1);
-            Klist{i} = Ki;
-            Vt = intersect(Vt, Vti);
         end
 
         if length(V) == length(Vt)
