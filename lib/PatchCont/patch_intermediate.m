@@ -71,7 +71,6 @@ function [V, cont] = win_intermediate_patch(ts,B, BC_list, P,u_res, ...
         V = Vt;
         iter = iter + 1;
     end
-
     Vlist = {V};
     for i = 1:length(BC_list)
       Vlist{end+1} = BC_list{i};

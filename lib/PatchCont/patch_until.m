@@ -19,7 +19,9 @@ function [Pt,Vt_new] = patch_until(cont,ts, u_res, P_lost, P, B)
     % converge in num_loop iterations.
     K_up = {cont.subcontrollers{end-1}.copy,cont.subcontrollers{end}.copy};
     V_up = cell(num_loop,1);
-    V_rec = cell(num_loop,1);
+    V_up{1} = Vt_old;
+    % record convergence condition
+    V_rec = zeros(num_loop,1);
     for i = 2:num_loop
         cont_tmp = cont.subcontrollers{i};
         if(strcmp(cont_tmp.from,'pre'))            
@@ -36,9 +38,12 @@ function [Pt,Vt_new] = patch_until(cont,ts, u_res, P_lost, P, B)
         end  
         Pt = setdiff(Vt_old,Vt_new);
         V_up{i}=Vt_old;
-        V_rec{i} = Vt_new;
+        V_rec(i) = length(Vt_new);
     end
-    if(V_rec{end-2}==V_rec{end})
+    if(length(V_up{end-2})~=length(V_up{end}))
+        error('the input parameters must be wrong!');
+    end
+    if(V_rec(end-2)==V_rec(end))
         cont.set_sets(set_all);
     else
         % if not converge yet, keep growing the winning set
@@ -52,8 +57,6 @@ function [Pt,Vt_new] = patch_until(cont,ts, u_res, P_lost, P, B)
 end
 
 function [V, cont] = win_until_patch(ts, u_res, B, P, Vlist, Klist, V, V_up, K_up)
-
-    quant1 = true;
 
     while true
         % Normal pre
@@ -70,15 +73,17 @@ function [V, cont] = win_until_patch(ts, u_res, B, P, Vlist, Klist, V, V_up, K_u
         Vt = union(Vt, preVinv);
         Vt = reshape(Vt, 1, length(Vt));
 
-        if length(V) == length(Vt)
-            break
-        end
-
         Vlist{end+1} = preV;
         Klist{end+1} = preK;
         Vlist{end+1} = preVinv;
         Klist{end+1} = preKinv;
+        
+        if length(V) == length(Vt)
+            break
+        end
+        
         V = Vt;
+        
     end
   
     cont = Controller(Vlist, Klist, 'reach', 'win_until');
