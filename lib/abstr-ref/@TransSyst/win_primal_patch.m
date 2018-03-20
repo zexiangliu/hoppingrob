@@ -65,18 +65,18 @@ function [V, Cv, cont, V_Compl, cont_Compl] = win_primal_patch(ts, A, B, C_list,
     [Z_tmp1, K_tmp] = ts.pre(V, [], quant1_bool, false);
     K_Compl{end+1} = K_tmp;
     V_Compl{end+1} = Z_tmp1;
-    [Z_tmp2,~, K_tmp]=ts.pre_pg(V, A, quant1_bool);
+    [Z_tmp2,~, K_tmp]=ts.pre_pg_patch(V, A, quant1_bool);
     K_Compl{end+1} = K_tmp;
     V_Compl{end+1} = Z_tmp2;
     Z = union(Z_tmp1, Z_tmp2);
     
     
     if nargout > 2
-      [Vt, Ct, Kt] = ts.win_intermediate(A, B, Z, C_list, quant1_bool);
+      [Vt, Ct, Kt] = ts.win_intermediate_patch(A, B, Z, C_list, quant1_bool);
     elseif nargout > 1
-      [Vt, Ct] = ts.win_intermediate(A, B, Z, C_list, quant1_bool);
+      [Vt, Ct] = ts.win_intermediate_patch(A, B, Z, C_list, quant1_bool);
     else
-      Vt = ts.win_intermediate(A, B, Z, C_list, quant1_bool);
+      Vt = ts.win_intermediate_patch(A, B, Z, C_list, quant1_bool);
     end
 
     if nargout > 1 && iter == 1
@@ -100,11 +100,12 @@ function [V, Cv, cont, V_Compl, cont_Compl] = win_primal_patch(ts, A, B, C_list,
   if nargout > 1
     Cv = union(setdiff(ts.pre(V, [], quant1_bool, true), V), C_rec);
   end
-
+   
   % Controller
   if nargout > 2
     cont = Controller(Vlist, Klist, 'reach', 'win_primal');
   end
   
   cont_Compl = K_Compl;
+  cont.set_patch_info({V_Compl,K_Compl});
 end

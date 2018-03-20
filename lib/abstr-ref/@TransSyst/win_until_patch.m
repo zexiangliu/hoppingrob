@@ -1,4 +1,4 @@
-function [V, Cv, cont] = win_until(ts, B, P, quant1)
+function [V, Cv, cont] = win_until_patch(ts, B, P, quant1)
   % Compute the winning set of
   %  B U P
   % under (quant1, forall)-controllability
@@ -19,11 +19,12 @@ function [V, Cv, cont] = win_until(ts, B, P, quant1)
       Vt = union(P, intersect(B, preV));
 
       % PG pre
-      [preVinv, CpreVinv, preKinv] = ts.pre_pg(Vt, B, quant1);
-      if ~isempty(setdiff(preVinv, Vt)) 
+      [preVinv, CpreVinv, preKinv] = ts.pre_pg_patch(Vt, B, quant1);
+%       if ~isempty(setdiff(preVinv, Vt)) % commented for patching
+%       algorithms
         Vlist{end+1} = preVinv;
         Klist{end+1} = preKinv;
-      end
+%       end
       Vt = union(Vt, preVinv);
     elseif nargout > 1
       % Normal pre
@@ -31,12 +32,12 @@ function [V, Cv, cont] = win_until(ts, B, P, quant1)
       Vt = union(P, intersect(B, preV));
 
       % PG pre
-      [preVinv, CpreVinv] = ts.pre_pg(Vt, B, quant1);
+      [preVinv, CpreVinv] = ts.pre_pg_patch(Vt, B, quant1);
       Vt = union(Vt, preVinv);
     else
       preV = ts.pre(V, [], quant1, false);
       Vt = union(P, intersect(B, preV));
-      preVinv = ts.pre_pg(V, B, quant1);
+      preVinv = ts.pre_pg_patch(V, B, quant1);
       Vt = union(Vt, preVinv);
     end
 

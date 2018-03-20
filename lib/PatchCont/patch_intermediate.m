@@ -4,7 +4,7 @@ function V = patch_intermediate(cont,ts,u_res,P_lost,P,B,C_list,Vinv_lost,Vinv)
         error('InputError: cont isn''t from win_intermediate.')
     end
    if(isa(ts,'TransSyst'))
-        ts = TransSyst_array(ts);
+        ts = TransSyst_array_multi(ts);
     end
     
     V = cont.sets{1};
@@ -29,6 +29,13 @@ function V = patch_intermediate(cont,ts,u_res,P_lost,P,B,C_list,Vinv_lost,Vinv)
         Q{i} = Qi_new;
         V = setdiff(V,Vi_l);
     end
+    
+    if(isempty(V))
+        cont.set_sets({});
+        cont.set_cont({});
+        return;
+    end
+    
 %     set_all = cont.sets;
 %     set_all{1} = V;
 %     
@@ -65,6 +72,12 @@ function [V, cont] = win_intermediate_patch(ts,B, BC_list, P,u_res, ...
             Q_pre{i} = Q_new{i};
         end
 
+        if(isempty(Vt))
+            cont = Controller({uint32([])},{}, 'recurrence', 'win_intermediate');
+            V = [];
+            return;
+        end
+        
         if length(V) == length(Vt)
             break
         end

@@ -1,4 +1,4 @@
-function V_new = patch_primal(cont,ts,u_res,A,B,C_list,V_Compl,K_Compl,Vinv_lost,Vinv)
+function V_new = patch_primal(cont,ts,u_res,A,B,C_list,Vinv_lost,Vinv)
 %     input: cont---controller to be modified
 %            ts --- abstraction FTS
 %            u_res---removed inputs
@@ -18,7 +18,10 @@ if isempty(C_list)
     C_list = {uint32(1:ts.n_s)};
 end
 
-if(nargin <=8||isempty(Vinv_lost)&&isempty(Vinv))
+V_Compl = cont.patch_info{1};
+K_Compl = cont.patch_info{2};
+    
+if(nargin <=6||isempty(Vinv_lost)&&isempty(Vinv))
     if length(A) == ts.n_s
         Vinv = 1:ts.n_s;
         Vinv_lost = [];
@@ -27,13 +30,18 @@ if(nargin <=8||isempty(Vinv_lost)&&isempty(Vinv))
             [], {uint32(1:ts.n_s)}, 1);
         Vinv_new = patch_intermediate(cont_inv,ts,u_res,[], [],A_list,...
             {uint32(1:ts_ref.n_s)},[],[]);
+        if(isempty(Vinv_new))
+            disp('[]A cannot hold.')
+            V_new = [];
+            return;
+        end
         Vinv_lost = setdiff(Vinv,Vinv_new);
     end
 end
 
 
 if(isa(ts,'TransSyst'))
-    ts = TransSyst_array(ts);
+    ts = TransSyst_array_multi(ts);
 end
 
 set_all = cont.sets;
@@ -49,7 +57,7 @@ Z2_up = V_Compl{end-2};
 for i = 1:length(cont.sets)
     if(~isempty(V_Compl{2*i}))
         Z1_l = patch_pre(K_Compl{2*i-1},ts,u_res,V_lost);
-        Z2_new = patch_pre_pg_md2(K_Compl{2*i},ts,u_res,A,V_lost);
+        Z2_new = patch_pre_pg_multi(K_Compl{2*i},ts,u_res,A,V_lost);
     else
         Z1_l = [];
         Z2_new = [];
@@ -62,17 +70,26 @@ for i = 1:length(cont.sets)
     cont_tmp = cont.subcontrollers{i};
     V_new = patch_intermediate(cont_tmp,ts,u_res,Z_lost,Z_old,B,C_list,...
         Vinv_lost,Vinv);
-    
     V_lost = setdiff(set_all{i},V_new);
     
     set_all{i} = V_new;
+    
+end
+
+if(isempty(V_new))
+    set_all={};
+    K_list = {};
+    cont.set_sets(set_all);
+    cont.set_cont(K_list);
+    disp('Winning set is empty.');
+    return;
 end
 
 K_list = cont.subcontrollers;
 
 while true
     Z1_l = patch_pre(K1_up.copy,ts,u_res,V_lost);
-    Z2_new = patch_pre_pg_md2(K2_up.copy,ts,u_res,A,V_lost);
+    Z2_new = patch_pre_pg_multi(K2_up.copy,ts,u_res,A,V_lost);
     Z_new = union(setdiff(Z1_up,Z1_l),Z2_new);
     Z_lost = setdiff(Z_old,Z_new);
     

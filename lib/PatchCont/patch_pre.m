@@ -1,5 +1,10 @@
 function P_l = patch_pre(cont,ts,u_res,P_lost)
-    subc = subcont(ts,cont,u_res);
+    try
+        subc = subcont(ts,cont,u_res);
+    catch
+        keyboard()
+        subc = subcont(ts,cont,u_res);
+    end
     % find states not feasiable due to restricted inputs and add into the
     % set P_lost
 

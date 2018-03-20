@@ -67,7 +67,11 @@ classdef TransSyst<handle
           s1 = ts.state1(i);
           s2 = ts.state2(i);
           a = ts.action(i);
-          ts.fast_post{(a-1)*ts.n_s + s1}(end+1) = s2;
+          try
+              ts.fast_post{(a-1)*ts.n_s + s1}(end+1) = s2;
+          catch
+              keyboard();
+          end
           ts.fast_pre_all{s2}(end+1) = s1;
       end
 

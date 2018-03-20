@@ -5,6 +5,7 @@ classdef Controller<matlab.mixin.Copyable
     subcontrollers; % List of Controller or containers.Map
     control_type;   % One of 'reach', 'recurrence', and 'simple'
     mem_var;        % Memory variable needed for higher-level controller
+    patch_info;     % any information used for patching algorithms
   end
 
   properties (SetAccess={?TransSyst})
@@ -121,10 +122,6 @@ classdef Controller<matlab.mixin.Copyable
       else
         error('complex controller cant be restricted')
       end
-    end
-    
-    function set_cont(cont,subc)
-      cont.subcontrollers = subc;
     end
     
   end
