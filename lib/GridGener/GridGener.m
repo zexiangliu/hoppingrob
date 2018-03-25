@@ -183,6 +183,39 @@ methods
         v = [U(:),V(:)];
         patch('Faces',f,'Vertices',v,...
         'EdgeColor',color,'FaceColor','none','LineWidth',linewidth)
-    end
+     end
+    
+     function fig = visual_grid(Mesh,fig,X,color,alpha,idx)
+         % under development
+       % input: fig: figure handle
+        %        X: set of points for visualization
+        %        color: FaceColor (option of patch)
+        %        alpha: FaceAlpha (option of patch)
+        %        idx: choose the dimension idx in Mesh
+        if(nargin == 4)
+            alpha = 1;
+        end
+        if(nargin == 5)
+            idx = [];
+        end
+        coords = get_coord(Mesh, X, idx);
+        if(isempty(fig))
+            figure;
+        else
+            figure(fig);
+        end
+        hold on;
+        dx = Mesh.gridsize(1)/2;
+        dy = Mesh.gridsize(2)/2;
+        for i = 1:length(coords)
+            cx = coords(1,i);
+            cy = coords(2,i);
+            X = [cx-dx,cx-dx,cx+dx,cx+dx];
+            Y = [cy-dy,cy+dy,cy+dy,cy-dy];
+            patch('XData',X,'YData',Y,'EdgeColor','none','FaceColor',color,...
+                'FaceAlpha',alpha)
+        end
+        hold off;
+     end
 end
 end
