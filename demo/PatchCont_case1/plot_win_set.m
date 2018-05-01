@@ -25,10 +25,10 @@
 % axis([M_X.bnd(1,:),M_X.bnd(2,:)])
 
 
-clc;clear all;close all;
+clc;clear all;
 load visual
 
-num_cont = length(cont);
+num_cont = length(cont_patch);
 
 fig = figure(1);
 X = M_X.V{1};
@@ -38,7 +38,7 @@ len_Y = length(Y);
 Z = zeros(len_X,len_Y);
 
 for i = 1:num_cont
-    W = cont{i}.sets{end};
+    W = cont_patch{i}.sets{end};
     for j = 1:length(W)
         [subx,suby] = ind2sub([len_X,len_Y],W(j));
         Z(subx,suby)=Z(subx,suby)+1;
@@ -51,7 +51,9 @@ clabel(C,h,'FontSize',12)
 set(gca,'fontsize',10)
 % colorbar
 
-axis equal
+axis auto
 axis([M_X.bnd(1,:),M_X.bnd(2,:)])
-
+xlabel('x')
+ylabel('v')
+set(gca,'fontsize',10)
 

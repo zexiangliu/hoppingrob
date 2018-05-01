@@ -1,16 +1,4 @@
-clc;clear all;
-load ts_exper.mat
-ts_exper = load('ts_exper');
-ts_cons = load('ts_cons_rand');
-U_res = ts_cons.U_res;
-ts_ref = ts_cons.ts_ref;
-t_syn = ts_cons.t_syn;
-cont_ref = ts_cons.cont_ref;
-close all;
-%%
-t_patch =  cell(1,length(U_res));
-cont_patch = t_patch;
-for i = 1:length(U_res)
+for i = 41:length(U_res)
     %% Patching
     
     u_res = U_res{i};
@@ -23,22 +11,22 @@ for i = 1:length(U_res)
     % 
 %     Vinv_lost = setdiff(Vinv,Vinv_new);
     %%
-    ts_exper = load('ts_exper','cont');
-    cont_patch{i} = ts_exper.cont;
 
-    Vinv_lost = [];
-    Vinv = 1:ts.n_s;
+%     Vinv_lost = [];
+%     Vinv = 1:ts.n_s;
     % A_list = 1:ts.n_s;
     % tic
     % profile on
     tic;
-    V = patch_primal(cont_patch{i},ts,u_res,A_list,B_list',C_list,Vinv_lost,Vinv)
+%     V = patch_primal(cont_patch{i},ts,u_res,A_list,B_list',C_list,Vinv_lost,Vinv)
+    [V,~,cont_patch{i}] = ts_ref{i}.win_primal_patch([], B_list, ... 
+                                     C_list, 'exists', 'forall');
     t_patch{i} = toc
     % profile viewer
     % t_patch = toc
     % save ts_general
     %%
-    assert(compare_conts(cont_ref{i},cont_patch{i}))
+    assert(length(cont_ref{i}.sets{end})==length(V))
 end
 
 %%

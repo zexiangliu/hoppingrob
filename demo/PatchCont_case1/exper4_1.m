@@ -62,7 +62,7 @@ M_X = GridGener(X);
 M_U = GridGener(U);
 
 %% without u_res
-u_res = [];
+u_res = [1:25];
 % TransSyst
 ts = ArrayGener_parallel(M_X,M_U,tau,r,lmax,u_res);
 disp('Done.')
@@ -88,7 +88,7 @@ disp('Compute winning set and controller...')
 ts.create_fast();
 % [W, C, cont]=ts.win_primal([],B_list',[],'exists','forall');
 tic;
-[W, ~, cont] = ts.win_primal_patch(A_list, B_list, ... 
+[W, ~, cont] = ts.win_primal(A_list, B_list, ... 
                                     C_list, 'exists', 'forall')
 t_synthesis = toc;                            
 % [Vinv, ~, cont_inv] = ts.win_intermediate_patch(uint32(1:ts.n_s), A_list, [], {uint32(1:ts.n_s)}, 1);
@@ -97,49 +97,31 @@ t_synthesis = toc;
 if(isempty(W))
     error('No winning set is found!');
 end
-%%
-% load ts_exper
-U_res = {};
 
-for i = [1,5,10,15,20,25]
-    for j = 1:10
-        U_res{end+1} = sort(randperm(35,i));
-    end
-end
-
-save ts_exper_rand
-
-%% with u_res
-ts_ref = cell(length(U_res),1);
-W_ref = ts_ref;
-cont_ref=ts_ref;
-t_syn=ts_ref;
-
-for i = 1:length(U_res)
-    u_res = U_res{i};
-    % TransSyst
-    ts_ref{i} = ArrayGener_parallel(M_X,M_U,tau,r,lmax,u_res);
-    disp('Done.')
-    %% Controller
-    disp('Compute winning set and controller...')
-
-    % ts_ref.add_progress_group([1,20],uint32(1:3500));
-%     ts_ref.add_progress_group([15,20],uint32(1:3000));
-%     ts_ref.add_progress_group([18,20],uint32(1:3500));
-
-    ts_ref{i}.create_fast();
-    tic;
-    % [W, C, cont]=ts.win_primal([],B_list'W,[],'exists','forall');
-    [W_tmp, ~, cont_tmp] = ts_ref{i}.win_primal_patch(A_list, B_list, ... 
-                                     C_list, 'exists', 'forall');
-    
-    W_ref{i} = W_tmp;
-    cont_ref{i} = cont_tmp;
-    t_syn{i} = toc
-    
-end
-
-ts_name = 'ts_cons_rand2';
-save(ts_name);
-
-
+% % save ts_exper
+% 
+% %% with u_res
+% U_res = {[1],[1:5],[1:10],[1:15],[1:20],[1:25]}
+% 
+% for i = 1:length(U_res)
+%     u_res = U_res{i};
+%     % TransSyst
+%     ts = ArrayGener_parallel(M_X,M_U,tau,r,lmax,u_res);
+%     disp('Done.')
+%     %% Controller
+%     disp('Compute winning set and controller...')
+% 
+%     % ts_ref.add_progress_group([1,20],uint32(1:3500));
+% %     ts_ref.add_progress_group([15,20],uint32(1:3000));
+% %     ts_ref.add_progress_group([18,20],uint32(1:3500));
+% 
+%     ts.create_fast();
+%     tic;
+%     % [W, C, cont]=ts.win_primal([],B_list'W,[],'exists','forall');
+%     [W, ~, cont] = ts.win_primal_patch(A_list, B_list, ... 
+%                                         C_list, 'exists', 'forall')
+%     t_syn = toc
+%     
+%     ts_name = ['ts_cons',num2str(i)];
+% %     save(ts_name);
+% end

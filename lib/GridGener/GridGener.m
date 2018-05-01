@@ -215,7 +215,7 @@ methods
             patch('XData',X,'YData',Y,'EdgeColor','none','FaceColor',color,...
                 'FaceAlpha',alpha)
         end
-        hold off;
+%         hold off;
      end
 end
 end

@@ -55,7 +55,7 @@ classdef SimHopRob < handle
             %        pPadel Position of padel
             
             figure(fig);
-            
+            hold off;
             % Plot Center of Mass
             surf(rob.CoM.x+pCoM(1),rob.CoM.y+pCoM(2),rob.CoM.z+pCoM(3));
             hold on;
@@ -79,7 +79,7 @@ classdef SimHopRob < handle
             leg_y = 1/25*cos(rad)+ linspace(l_y(1),l_y(2),500);
             leg_z = linspace(l_z(1),l_z(2),500);
             plot3(leg_x,leg_y,leg_z,'linewidth',1)
-            
+            hold off;
         end
     end
 end

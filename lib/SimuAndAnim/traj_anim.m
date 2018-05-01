@@ -1,4 +1,4 @@
-function fig = traj_anim(fig,M_X,X_list,idx,tstep)
+function fig = traj_anim(fig,M_X,X_list,idx,tstep,color)
 % drawing trajectory of states on the figure handle 'fig'
 % input: figure handle: fig
 %        grid class   : M_X
@@ -19,8 +19,16 @@ for i=1:length(x1)-1
         KeyCallback('reset');
         break;
     end
-    arrow('Start',[x1(i),x2(i)],'Stop',[x1(i+1),x2(i+1)],'Length',10,'TipAngle',5)
-    pause(tstep);
+    if(nargin==6)
+        arrow('Start',[x1(i),x2(i)],'Stop',[x1(i+1),x2(i+1)],'Length',...
+            10,'TipAngle',5,'EdgeColor',color,'FaceColor',color);
+    else
+        arrow('Start',[x1(i),x2(i)],'Stop',[x1(i+1),x2(i+1)],...
+            'Length',10,'TipAngle',5)
+    end
+    if(tstep>0) 
+        pause(tstep);
+    end
 end
 
 

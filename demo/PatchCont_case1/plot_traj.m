@@ -22,7 +22,7 @@
 % M_X.visual(fig,W,['.','c'],4);
 
 % axis equal
-axis([M_X.bnd(1,:),M_X.bnd(2,:)])
+% axis([M_X.bnd(1,:),M_X.bnd(2,:)])
 
 
 clc;clear all;close all;
@@ -44,9 +44,14 @@ num_cont =length(cont_patch);
 
 color=['b','b','r'];
 
-t_span = 40;
+t_span = 60;
 plot([0,t_span-1],[-1.6,-1.6],'-.r');
-for k = [1,3]
+fig = figure(2)
+M_X.visual_bnd(fig,bnd_B,[255,169,81]/255,2);
+
+cont_compare{1} = cont;
+cont_compare{2} = cont_patch{3};
+for k = [1,2]
     %% Initialization
     % constants
     eta = M_X.gridsize;
@@ -70,7 +75,7 @@ for k = [1,3]
     Yx_list=[]; % record ode solution for animation
     %% hopping
     disp('Simulating...');
-    cont = cont_patch{k};
+    cont = cont_compare{k};
     cont = cont.copy;
     cont.cont_trim();
     for i = 1:t_span
@@ -120,23 +125,27 @@ for k = [1,3]
     figure(1);
     hold on;
     plot(0:t_span-1,u_list,'linewidth',2);
-    pause(0.05);
+    pause(0.5);
     fig = figure(2);
     traj_anim(fig,M_X,X_list,[1,2],0.01,color(k));
-    pause(0.2);    
+    pause(0.05);    
 end
-figure(1)
-axis auto;
+fig1=figure(1)
+% axis equal;
 axis([0,t_span-1,-3.5,3.5])
 xlabel('time');
 ylabel('input');
+box on;
+% img_tight(fig1);
 
-figure(2)
-axis auto;
+fig2=figure(2)
+axis equal;
 axis([M_X.bnd(1,:),M_X.bnd(2,:)]);
 xlabel('x')
 ylabel('v')
 grid on;
+box on;
+img_tight(fig2);
 %% Trajectory in state space
 % disp('Trajectory:')
 % fig = figure(1);

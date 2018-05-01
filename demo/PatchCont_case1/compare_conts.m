@@ -1,7 +1,10 @@
 function bool = compare_conts(cont1,cont2)
+% input 1 is the reference controller, input 2 is the patching controller
+% the order cannot exchange, since patching controller may have redundant
+% sub-sets and sub-controllers.
     bool = false;
     if(isa(cont1.sets,'cell'))
-        if(length(cont1.sets)~=length(cont2.sets))
+        if(length(cont1.sets)>length(cont2.sets))
             return;
         end
         for i = 1:length(cont1.sets)
@@ -20,7 +23,7 @@ function bool = compare_conts(cont1,cont2)
     end
     
     if(isa(cont1.subcontrollers,'cell'))
-        if(length(cont1.subcontrollers)~=length(cont2.subcontrollers))
+        if(length(cont1.subcontrollers)>length(cont2.subcontrollers))
             return;
         end
         for i = 1:length(cont1.subcontrollers)

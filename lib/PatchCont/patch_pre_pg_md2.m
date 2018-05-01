@@ -27,7 +27,7 @@ function [Un_new] = patch_pre_pg_md2(cont,ts,u_res,B, P_lost)
         end
         
         P_pot = intersect(B,intersect(P_l,ts.pg_G{u})); % potential new states
-        set = union(cont.subcontrollers{i}.sets,P_pot);
+        set = union(cont.subcontrollers{i}.sets,P_pot); % Y0
         P_l = setdiff(P_l,set); % take off some states from P_l (*)
         subarray = ts.array{u}(set,:);
                 

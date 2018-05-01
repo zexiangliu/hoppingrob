@@ -1,8 +1,18 @@
+load ts_exper.mat
 
-Z_ref = union(V_Compl_ref{5},V_Compl_ref{6});
+cont.cont_trim();
+for j = 1%:(length(cont.sets)-1)
+    V1=cont.sets{j};
+    ts.fast_enabled();
+    Q = 1:4000;
+    Z1 = union(cont.patch_info{1}{2*j+1},cont.patch_info{1}{2*j+2});
 
-V_ref = cont_ref.sets{2};
-Z1 = ts_ref.pre(V_ref,[],true,false);
-Z2 = ts_ref.pre_pg(V_ref,A,true);
+    %%
 
-Z = union(Z1,Z2)
+    DZ = setdiff(Z1,V1);
+
+    %%
+    for i = 1:length(DZ)
+        cont(uint32(DZ(i)))
+    end
+end
