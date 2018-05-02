@@ -90,4 +90,4 @@ end
 
 %%
 avg_syn = mean(reshape(cell2mat(t_syn),[10,6]),1)
-avg_patch = mean(reshape(cell2mat(t_patch),[10,6]),1)
+avg_patch = mean(reshape(cell2mat(t_patch),[10,2]),1)
