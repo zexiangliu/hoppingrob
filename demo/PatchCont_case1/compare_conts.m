@@ -23,7 +23,7 @@ function bool = compare_conts(cont1,cont2)
     end
     
     if(isa(cont1.subcontrollers,'cell'))
-        if(length(cont1.subcontrollers)>length(cont2.subcontrollers))
+        if(length(cont1.subcontrollers)~=length(cont2.subcontrollers))
             return;
         end
         for i = 1:length(cont1.subcontrollers)
@@ -31,6 +31,17 @@ function bool = compare_conts(cont1,cont2)
             cont_tmp2 = cont2.subcontrollers{i};
             if(~compare_conts(cont_tmp1,cont_tmp2))
                 return;
+            end
+        end
+    else
+        key_list = reshape(cont1.sets,1,length(cont1.sets));
+        if(~isempty(key_list)&&~cont1.subcontrollers.isempty)
+            for key = reshape(cont1.sets,1,length(cont1.sets))
+                action1 = cont1.subcontrollers(key);
+                action2 = cont2.subcontrollers(key);
+                if(any(sort(action1)~=sort(action2)))
+                    return;
+                end
             end
         end
     end
