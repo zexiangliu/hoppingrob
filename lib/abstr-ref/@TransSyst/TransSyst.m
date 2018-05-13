@@ -9,7 +9,9 @@ classdef TransSyst<handle
     state1;
     state2; 
     action;
-
+    % under test
+    trans_array;
+    
     % Progress groups
     pg_U = {};
     pg_G = {};
@@ -45,6 +47,8 @@ classdef TransSyst<handle
           ts.action = zeros(n_state,1,'uint32');
           ts.pointer_enabled = true;
       end
+      % under test for faster pre
+      ts.trans_array = [];
     end
 
     function numact = add_action(ts)
@@ -140,6 +144,11 @@ classdef TransSyst<handle
     function ret = num_trans(ts)
       % Number of transitions
       ret = length(ts.state1);
+    end
+    
+    % under test
+    function trans_array_enable(ts)
+        ts.trans_array = ts2array(ts);
     end
   end
 end
