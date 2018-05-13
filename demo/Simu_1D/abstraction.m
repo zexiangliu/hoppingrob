@@ -15,11 +15,11 @@ save system A B; % the system dx = Ax + Bu is saved in file system.mat
 
 %======= Test Parameter ========
 tau = 0.08;     % time interval
-eta = 0.18;
+eta = 0.1;
 mu = 0.2;
 lmax = 1;
 dlim = 2.5;
-vlim = 4;
+vlim = 10;
 
 r1 = expm(A*tau)*[eta/2;eta/2]; % the upper bnd of ||x_0(tau)-x_1(tau)||
 r = r1;         % radius of norm ball when mapping xt to discr. state space
@@ -85,6 +85,7 @@ ts.create_fast();
 %%
 % Visualization of winning set
 M_X.visual(fig,W,'.c',12);
+draw_thy_winset(fig,M_X,lmax,h0,g,tau)
 
 hold on;
 
