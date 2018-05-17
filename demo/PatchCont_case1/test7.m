@@ -1,39 +1,39 @@
-clc;clear all;
-load ts_exper_rand3.mat
-ts_exper = load('ts_exper_rand3');
-ts_cons = load('ts_cons_rand3');
-U_res = ts_cons.U_res;
-ts_ref = ts_cons.ts_ref;
-t_syn = ts_cons.t_syn;
-cont_ref = ts_cons.cont_ref;
-close all;
+% clc;clear all;
+% load ts_exper_rand3.mat
+% ts_exper = load('ts_exper_rand3');
+% ts_cons = load('ts_cons_rand3');
+% U_res = ts_cons.U_res;
+% ts_ref = ts_cons.ts_ref;
+% t_syn = ts_cons.t_syn;
+% cont_ref = ts_cons.cont_ref;
+% close all;
 %%
-t_patch =  cell(1,length(U_res));
-cont_patch = t_patch; 
-t_naive = t_patch;
-cont_naive = cont_patch;
-
-B_list_new=[];
-C_list_new=[];
-num_X = length(W);
-num_U = M_U.numV-1;
-W2new = zeros(ts.n_s,1);
-
-for i = 1:num_X
-    W2new(W(i)) = i;
-end
-
-for i =1:length(W)
-    if(ismember(W(i),B_list))
-        B_list_new =[B_list_new;i];
-    end
-%     if(ismember(W(i),C_list))
-%         C_list_new =[C_list_new;i];
+% t_patch =  cell(1,length(U_res));
+% cont_patch = t_patch; 
+% t_naive = t_patch;
+% cont_naive = cont_patch;
+% 
+% B_list_new=[];
+% C_list_new=[];
+% num_X = length(W);
+% num_U = M_U.numV-1;
+% W2new = zeros(ts.n_s,1);
+% 
+% for i = 1:num_X
+%     W2new(W(i)) = i;
+% end
+% 
+% for i =1:length(W)
+%     if(ismember(W(i),B_list))
+%         B_list_new =[B_list_new;i];
 %     end
-end
+% %     if(ismember(W(i),C_list))
+% %         C_list_new =[C_list_new;i];
+% %     end
+% end
 
 
-for i = 1:length(U_res)
+for i = 1%:length(U_res)
     %% Patching
     
     u_res = U_res{i};
@@ -53,11 +53,11 @@ for i = 1:length(U_res)
     Vinv = 1:ts.n_s;
     % A_list = 1:ts.n_s;
     % tic
-    profile on
-%     tic;
+%     profile on
+    tic;
     V = patch_primal(cont_patch{i},ts,u_res,A_list,B_list',C_list,Vinv_lost,Vinv);
-%     t_patch{i} = toc
-    profile viewer
+    t_patch{i} = toc
+%     profile viewer
     % t_patch = toc
     % save ts_general
     
@@ -117,18 +117,18 @@ end
 
 %%
 
-t_p = cell2mat(t_patch);
-t_s = cell2mat(t_syn)';
-t_n = cell2mat(t_naive);
-%%
-ratio1 = t_p./t_s
-ratio2 = t_n./t_s
-ratio3 = t_p./t_n
-avg1 = mean(reshape(ratio1,[10,6]),1)
-avg2 = mean(reshape(ratio2,[10,6]),1)
-avg3 = mean(reshape(ratio3,[10,6]),1)
-% avg_syn = mean(reshape(t_syn,[10,6]),1)
-% avg_patch = mean(reshape(t_patch,[10,6]),1)
+% t_p = cell2mat(t_patch);
+% t_s = cell2mat(t_syn)';
+% t_n = cell2mat(t_naive);
+% %%
+% ratio1 = t_p./t_s
+% ratio2 = t_n./t_s
+% ratio3 = t_p./t_n
+% avg1 = mean(reshape(ratio1,[10,6]),1)
+% avg2 = mean(reshape(ratio2,[10,6]),1)
+% avg3 = mean(reshape(ratio3,[10,6]),1)
+% % avg_syn = mean(reshape(t_syn,[10,6]),1)
+% % avg_patch = mean(reshape(t_patch,[10,6]),1)
 
 
 
