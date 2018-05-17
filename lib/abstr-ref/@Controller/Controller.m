@@ -123,7 +123,6 @@ classdef Controller<matlab.mixin.Copyable
         error('complex controller cant be restricted')
       end
     end
-    
   end
   
   methods(Access = protected)
@@ -154,4 +153,5 @@ classdef Controller<matlab.mixin.Copyable
 %      end
 %   end
   end
+  
 end

@@ -61,9 +61,9 @@ classdef TransSyst<handle
     function create_fast(ts)
       % Compute and store quick-access backward and forward
       % transition maps
-      if ts.fast_enabled
-          return
-      end
+%       if ts.fast_enabled
+%           return
+%       end
       ts.fast_post = cell(1, ts.n_s * ts.n_a);
       ts.fast_pre_all = cell(1, ts.n_s);
 

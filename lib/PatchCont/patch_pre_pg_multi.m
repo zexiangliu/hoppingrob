@@ -5,9 +5,9 @@ function [Un_new] = patch_pre_pg_multi(cont,ts,u_res,B, P_lost)
 %         Union of states of old cont
 % 
 % add support to multi-action PG
-    if(isa(ts,'TransSyst'))
-        ts = TransSyst_array_multi(ts);
-    end
+%     if(isa(ts,'TransSyst')&&isempty(ts.trans_array))
+%         ts = TransSyst_array_multi(ts);
+%     end
     
     num_u = length(ts.pg_U);
     
@@ -41,10 +41,10 @@ function [Un_new] = patch_pre_pg_multi(cont,ts,u_res,B, P_lost)
         P_pot = intersect(B,intersect(dZ,ts.pg_G{i-1})); % potential new states
         set = union(cont.subcontrollers{i}.sets,P_pot); % Y_0
         P_l = setdiff(P_l,set); % take off some states from P_l (*), dY_0
-        subarray = {ts.array{u(1)}(set,:)};
+        subarray = {ts.trans_array{u(1)}(set,:)};
         if(length(u)>1)
             for j = 2:length(u)
-                subarray{j} = ts.array{u(j)}(set,:);
+                subarray{j} = ts.trans_array{u(j)}(set,:);
             end
         end
         

@@ -14,4 +14,5 @@ function P_l = patch_pre(cont,ts,u_res,P_lost)
     P_l = union(P_l,restrict_P(subc,P_lost));
 
     cont.modify_map(subc,P_l)
+
 end

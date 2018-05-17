@@ -14,6 +14,7 @@ classdef TransSyst<handle
     state1;
     state2; 
     action;
+    trans_array;
 
     % Progress groups
     pg_U = {};
@@ -53,6 +54,7 @@ classdef TransSyst<handle
         ts.state1 = uint32([]);
         ts.state2 = uint32([]);
         ts.action = uint32([]);
+        ts.trans_array = [];
       elseif strcmp(setting, TransSyst.bdd_set)
         ts.bdd_sys = BDDSystem(n_s, n_a, encoding_setting);
       else
@@ -88,21 +90,22 @@ classdef TransSyst<handle
       if ts.fast_enabled
           return
       end
-      ts.fast_post = cell(1, ts.n_s * ts.n_a);
-      ts.fast_pre_all = cell(1, ts.n_s);
-
-      for i=1:ts.num_trans()
-          s1 = ts.state1(i);
-          s2 = ts.state2(i);
-          a = ts.action(i);
-          if s2 > ts.n_s
-            disp('here');
-          end
-          ts.fast_post{(a-1)*ts.n_s + s1}(end+1) = s2;
-          ts.fast_pre_all{s2}(end+1) = s1;
-      end
-
-      ts.fast_enabled = true;
+      ts.trans_array_enable();
+%       ts.fast_post = cell(1, ts.n_s * ts.n_a);
+%       ts.fast_pre_all = cell(1, ts.n_s);
+% 
+%       for i=1:ts.num_trans()
+%           s1 = ts.state1(i);
+%           s2 = ts.state2(i);
+%           a = ts.action(i);
+%           if s2 > ts.n_s
+%             disp('here');
+%           end
+%           ts.fast_post{(a-1)*ts.n_s + s1}(end+1) = s2;
+%           ts.fast_pre_all{s2}(end+1) = s1;
+%       end
+% 
+%       ts.fast_enabled = true;
     end
 
     function add_transition(ts, s1, s2, a)
@@ -177,6 +180,10 @@ classdef TransSyst<handle
       end
     end
     
+    % under test
+    function trans_array_enable(ts)
+        ts.trans_array = ts2array(ts);
+    end
     %% BDD API
     function initializeBDD(ts)
       % Initialize the BDD in c

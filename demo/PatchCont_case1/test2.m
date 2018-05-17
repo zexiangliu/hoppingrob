@@ -1,7 +1,7 @@
-clc;clear all;
-load ts_exper.mat
-ts_exper = load('ts_exper');
-ts_cons = load('ts_cons_rand');
+% clc;clear all;
+load ts_exper_rand3.mat
+ts_exper = load('ts_exper_rand3');
+ts_cons = load('ts_cons_rand3');
 U_res = ts_cons.U_res;
 ts_ref = ts_cons.ts_ref;
 t_syn = ts_cons.t_syn;

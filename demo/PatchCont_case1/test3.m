@@ -1,8 +1,8 @@
-clc;clear all;
-load ts_exper.mat
-ts_exper = load('ts_exper');
+% clc;clear all;
+load ts_exper_rand3.mat
+ts_exper = load('ts_exper_rand3');
 W = ts_exper.W;
-ts_cons = load('ts_cons_rand');
+ts_cons = load('ts_cons_rand3');
 U_res = ts_cons.U_res;
 ts_ref = ts_cons.ts_ref;
 t_syn = ts_cons.t_syn;
@@ -13,7 +13,7 @@ close all;
 num_X = length(W);
 num_U = M_U.numV-1;
 
-for i = 41:length(ts_ref)
+for i = 1:length(ts_ref)
     ts_tmp = TransSyst(num_X+1,num_U); 
     state1 = ts_ref{i}.state1;
     state2 = ts_ref{i}.state2;
@@ -41,6 +41,7 @@ for i = 41:length(ts_ref)
     ts_tmp.add_transition(state1_new,state2_new,action);
     ts_ref{i} = ts_tmp;
     ts_ref{i}.create_fast();
+    ts_ref{i}.trans_array_enable();
 end
 
 B_list_new=[];
@@ -57,7 +58,7 @@ B_list = B_list_new; C_list = C_list_new;
 %%
 t_patch =  cell(1,length(U_res));
 cont_patch = t_patch;
-for i = 41:length(U_res)
+for i = 1:length(U_res)
     %% Patching
     
     u_res = U_res{i};
@@ -80,7 +81,7 @@ for i = 41:length(U_res)
 %     V = patch_primal(cont_patch{i},ts,u_res,A_list,B_list',C_list,Vinv_lost,Vinv)
     [V,~,cont_patch{i}] = ts_ref{i}.win_primal_patch([], B_list, ... 
                                      C_list, 'exists', 'forall');
-    t_patch{i} = toc
+    t_naive{i} = toc
     % profile viewer
     % t_patch = toc
     % save ts_general
@@ -90,4 +91,4 @@ end
 
 %%
 avg_syn = mean(reshape(cell2mat(t_syn),[10,6]),1)
-avg_patch = mean(reshape(cell2mat(t_patch),[10,2]),1)
+avg_patch = mean(reshape(cell2mat(t_patch),[10,6]),1)

@@ -3,13 +3,13 @@ function V = patch_intermediate(cont,ts,u_res,P_lost,P,B,C_list,Vinv_lost,Vinv)
     if(~strcmp(cont.from,'win_intermediate'))
         error('InputError: cont isn''t from win_intermediate.')
     end
-   if(isa(ts,'TransSyst'))
-        ts = TransSyst_array_multi(ts);
-    end
+%    if(isa(ts,'TransSyst'))
+%         ts = TransSyst_array_multi(ts);
+%     end
     
     V = cont.sets{1};
-    preV = ts.pre(V, 1:ts.n_a);
-    preV_new = ts.pre(V, setdiff(1:ts.n_a,u_res));
+    preV = ts.pre(V, 1:ts.n_a, 1, 0);
+    preV_new = ts.pre(V, setdiff(1:ts.n_a,u_res),1,0);
     
     Q = cell(1,length(C_list));
     P_new = setdiff(P,P_lost);
@@ -40,8 +40,8 @@ function V = patch_intermediate(cont,ts,u_res,P_lost,P,B,C_list,Vinv_lost,Vinv)
 %     set_all{1} = V;
 %     
 %     cont.set_sets(set_all);
-    BC_list = cont.sets(2:end);
-    Klist = cont.subcontrollers;
+%     BC_list = cont.sets(2:end);
+%     Klist = cont.subcontrollers;
     [V, cont_new] = win_intermediate_patch(ts,B, cont.sets(2:end), setdiff(P,P_lost),u_res, ...
                     Vinv_lost, Vinv,V,cont.subcontrollers,Q);
 %     [V, ~, cont_new] = win_intermediate(ts_ref,B, BC_list, P_new,V,Klist);
@@ -52,13 +52,13 @@ end
 function [V, cont] = win_intermediate_patch(ts,B, BC_list, P,u_res, ...
     Vinv_lost, Vinv,V,Klist,Q_pre)
 
-    quant1 = 1;
+%     quant1 = 1;
     Q_new = cell(1,length(BC_list));
     iter = 1;
     u_list = setdiff(1:ts.n_a,u_res);
     Vt = V;
     while true
-        preV = ts.pre(V, u_list);
+        preV = ts.pre(V, u_list,1,0);
 
         for i=1:length(BC_list)
             Q_new{i} = union(P, intersect(BC_list{i}, preV));

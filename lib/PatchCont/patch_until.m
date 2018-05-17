@@ -5,9 +5,9 @@ function [Pt,Vt_new] = patch_until(cont,ts, u_res, P_lost, P, B)
         error('InputError: cont isn''t from win_until')
     end
     
-    if(isa(ts,'TransSyst'))
-        ts = TransSyst_array_multi(ts);
-    end
+%     if(isa(ts,'TransSyst'))
+%         ts = TransSyst_array_multi(ts);
+%     end
     num_loop = length(cont.sets);
     set_all = cell(1,num_loop);
     set_all{1} = cont.sets{1};

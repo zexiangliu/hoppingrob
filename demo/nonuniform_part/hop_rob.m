@@ -6,7 +6,7 @@ ops = sdpsettings('solver', 'mosek', 'cachesolvers', 1, 'verbose', 0);
 opt_settings.mode = 'sdsos';
 opt_settings.max_deg = 4;
 
-system_setting = TransSyst.bdd_set;
+system_setting = TransSyst.sparse_set;
 encoding_setting = BDDSystem.split_enc;
 
 
@@ -54,7 +54,7 @@ goal_set = Rec([x1min, -0.4;
                 x1max,  0.4], {'SET'});
 
 %%
-tic
+% tic
 
 % Build initial partition
 part = Partition(Rec([-dlim,-vlim;dlim,vlim]));
@@ -96,7 +96,9 @@ part.search_trans_reg(pg_depth);
 
 Win = [];
 iter = 0;
-while true
+tic
+% while true
+for i = 1:100
 
   time = toc;
   disp(['iteration ', num2str(iter), ', time ', num2str(time), ', states ', num2str(length(part)), ', winning set volume ', num2str(sum(volume(part.cell_list(Win)))/volume(part.domain))])
@@ -133,10 +135,10 @@ if split_inv
     inv_set = union(inv_set, ind2);
   end
 end
-%%
-% Get control strategy
-[~, ~, cont] = part.ts.win_primal([], part.get_cells_with_ap({'SET'}), [], 'exists', 'forall');
-
-toc
-
-save res.mat cont part
+% %%
+% % Get control strategy
+% [~, ~, cont] = part.ts.win_primal([], part.get_cells_with_ap({'SET'}), [], 'exists', 'forall');
+% 
+% toc
+% 
+% save res.mat cont part

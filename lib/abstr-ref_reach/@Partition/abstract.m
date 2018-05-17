@@ -65,12 +65,14 @@ function abstract(part, dyn_list,u_list,vars, drec,tau, sys_set, enc_set)
       adj = 1:size(part.cell_list,2);
       adj(i) = [];
       for j=adj
+%         if is_trans(part.cell_list(i), part.cell_list(j), part.dyn_list{m}, drec) 
         if is_trans(part.cell_list(i), part.cell_list(j), part.u_list{m}, part.tau)
           part.ts.add_transition(i, j, m);
         end
       end
 
       % Out-of-domain
+%       if is_trans_out(part.cell_list(i), part.domain, part.dyn_list{m}, drec)
       if is_trans_out(part.cell_list(i), part.domain, part.u_list{m}, part.tau)
         part.ts.add_transition(i, length(part)+1, m);
       end

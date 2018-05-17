@@ -3,7 +3,7 @@ classdef TransSyst_array_multi < handle
     properties(SetAccess=protected)
         n_s;
         n_a;
-        array;
+        trans_array;
         pg_U;
         pg_G;
     end
@@ -12,7 +12,7 @@ classdef TransSyst_array_multi < handle
         function ts_arr = TransSyst_array_multi(ts)
             ts_arr.n_s = ts.n_s;
             ts_arr.n_a = ts.n_a;
-            ts_arr.array = ts2array(ts);
+            ts_arr.trans_array = ts2array(ts);
             ts_arr.pg_G = cell(ts.n_a,1);
 %             for i = 1:length(ts.pg_U)
 %                 u = ts.pg_U{i};
@@ -28,11 +28,11 @@ classdef TransSyst_array_multi < handle
                 preV = [];
                 return;
             end
-            preV = zeros(ts_arr.n_a,1);
+            preV = zeros(ts_arr.n_s,1);
             for i = 1:length(u_list)
                 u = u_list(i);
-                sum1 = sum(ts_arr.array{u}(:,V),2);
-                sum2 = sum(ts_arr.array{u},2);
+                sum1 = sum(ts_arr.trans_array{u}(:,V),2);
+                sum2 = sum(ts_arr.trans_array{u},2);
                 preV(sum1 == sum2 & sum1~=0)=1;
             end
             preV = find(preV==1);
