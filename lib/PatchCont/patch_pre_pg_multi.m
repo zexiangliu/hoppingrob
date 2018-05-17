@@ -39,6 +39,7 @@ function [Un_new] = patch_pre_pg_multi(cont,ts,u_res,B, P_lost)
         end
         
         P_pot = intersect(B,intersect(dZ,ts.pg_G{i-1})); % potential new states
+        i
         set = union(cont.subcontrollers{i}.sets,P_pot); % Y_0
         P_l = setdiff(P_l,set); % take off some states from P_l (*), dY_0
         subarray = {ts.trans_array{u(1)}(set,:)};

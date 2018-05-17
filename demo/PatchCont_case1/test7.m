@@ -7,7 +7,7 @@
 % t_syn = ts_cons.t_syn;
 % cont_ref = ts_cons.cont_ref;
 % close all;
-%%
+% %%
 % t_patch =  cell(1,length(U_res));
 % cont_patch = t_patch; 
 % t_naive = t_patch;
@@ -31,9 +31,9 @@
 % %         C_list_new =[C_list_new;i];
 % %     end
 % end
+% 
 
-
-for i = 1%:length(U_res)
+for i = 1:length(U_res)
     %% Patching
     
     u_res = U_res{i};
@@ -62,7 +62,7 @@ for i = 1%:length(U_res)
     % save ts_general
     
     assert(compare_conts(cont_ref{i},cont_patch{i}))
-    
+    i
     %%
     ts_tmp = TransSyst(num_X+1,num_U-length(u_res)); 
 %     state1 = ts_ref{i}.state1;
@@ -117,18 +117,18 @@ end
 
 %%
 
-% t_p = cell2mat(t_patch);
-% t_s = cell2mat(t_syn)';
-% t_n = cell2mat(t_naive);
-% %%
-% ratio1 = t_p./t_s
-% ratio2 = t_n./t_s
-% ratio3 = t_p./t_n
-% avg1 = mean(reshape(ratio1,[10,6]),1)
-% avg2 = mean(reshape(ratio2,[10,6]),1)
-% avg3 = mean(reshape(ratio3,[10,6]),1)
-% % avg_syn = mean(reshape(t_syn,[10,6]),1)
-% % avg_patch = mean(reshape(t_patch,[10,6]),1)
+t_p = cell2mat(t_patch);
+t_s = cell2mat(t_syn)';
+t_n = cell2mat(t_naive);
+%%
+ratio1 = t_p./t_s
+ratio2 = t_n./t_s
+ratio3 = t_p./t_n
+avg1 = mean(reshape(ratio1,[10,6]),1)
+avg2 = mean(reshape(ratio2,[10,6]),1)
+avg3 = mean(reshape(ratio3,[10,6]),1)
+% avg_syn = mean(reshape(t_syn,[10,6]),1)
+% avg_patch = mean(reshape(t_patch,[10,6]),1)
 
 
 

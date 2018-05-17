@@ -32,7 +32,7 @@ function [Pt,Vt_new] = patch_until(cont,ts, u_res, P_lost, P, B)
         elseif(strcmp(cont_tmp.from,'pre_pg'))
             % return the new winning set
             Vt_old = union(Vt_old, cont.sets{i});
-            PG_new = patch_pre_pg_multi(cont_tmp,ts,u_res,B,Pt);
+            PG_new = patch_pre_pg_lg(cont_tmp,ts,u_res,B,Pt);
             set_all{i} = PG_new; 
             Vt_new = union(Vt_new, set_all{i});
         end  
@@ -69,7 +69,7 @@ function [V, cont] = win_until_patch(ts, u_res, B, P, Vlist, Klist, V, V_up, K_u
         % PG pre
         preKinv = K_up{2}.copy;
         Pt = setdiff(V_up{2},Vt);
-        preVinv = patch_pre_pg_multi(preKinv,ts,u_res,B, Pt);
+        preVinv = patch_pre_pg_lg(preKinv,ts,u_res,B, Pt);
         Vt = union(Vt, preVinv);
         Vt = reshape(Vt, 1, length(Vt));
 

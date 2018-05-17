@@ -61,7 +61,7 @@ for i = 1:length(cont.sets)
     if(~isempty(V_Compl{2*i}))
 %         Z1_l = patch_pre(K_Compl{2*i-1},ts,u_res,V_lost);
         Z1_new = ts.pre(V_new,Ud,1,0);
-        Z2_new = patch_pre_pg_multi(K_Compl{2*i},ts,u_res,A,V_lost);
+        Z2_new = patch_pre_pg_lg(K_Compl{2*i},ts,u_res,A,V_lost);
     else
 %         Z1_l = [];
         Z1_new = V_Compl{2*i-1};
@@ -102,7 +102,7 @@ if(~is_converge)
     while true
 %         Z1_l = patch_pre(K1_up.copy,ts,u_res,V_lost);
         Z1_new = ts.pre(V_new,Ud,1,0);
-        Z2_new = patch_pre_pg_multi(K2_up.copy,ts,u_res,A,V_lost);
+        Z2_new = patch_pre_pg_lg(K2_up.copy,ts,u_res,A,V_lost);
 %         Z_new = union(setdiff(Z1_up,Z1_l),Z2_new);
         Z_new = union(Z1_new,Z2_new);
         Z_lost = setdiff(Z_old,Z_new);

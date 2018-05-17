@@ -1,4 +1,4 @@
-function [Un_new] = patch_pre_pg_multi(cont,ts,u_res,B, P_lost)
+function [Un_new] = patch_pre_pg_lg(cont,ts,u_res,B, P_lost)
 % the one totally captures the mode of pre_pg, modified cont is the same as the real one.
 % consider the potential states in P_lost as well as the potential new inputs
 % output: Union of states of new cont
@@ -16,15 +16,12 @@ function [Un_new] = patch_pre_pg_multi(cont,ts,u_res,B, P_lost)
     
     logic_temp = false(ts.n_s,1); % logic template to set up sets
     sp_temp = uint32(1:ts.n_s);
-    tmp_P_lost = logic_temp;
-    tmp_P_lost(P_lost) = true;
-    P_lost = tmp_P_lost;
     
     P_list_old = cont.sets;
     P_list = cell(length(cont.sets),1); % used to set the new 'sets' for cont
     % delete lost states from cont.subcontroller{1}
     P_list{1} = logic_temp;
-    P_list{1}(cont.subcontrollers{1}.sets) = true;
+    P_list{1}(P_list_old{1}) = true;
     P_list{1}(P_lost) = false;
     P_list{1} = sp_temp(P_list{1});
 %     P_list{1} = setdiff(cont.subcontrollers{1}.sets,P_lost);
@@ -35,9 +32,10 @@ function [Un_new] = patch_pre_pg_multi(cont,ts,u_res,B, P_lost)
     Un_old = logic_temp;    
     Un_old(P_list_old{1})=true;
     Un_new = logic_temp;
-    Un_new(cont.subcontrollers{1}.sets) = true;
+    Un_new(P_list{1}) = true;
 %     P_l = P_lost; % record new lost states in the winning set of pgpre, dZ for inv
-    dZ = P_lost;
+    dZ = logic_temp;
+    dZ(P_lost) = true;
     P_l = true(ts.n_s,1);
     P_l(Un_new) = false;
     
@@ -51,7 +49,7 @@ function [Un_new] = patch_pre_pg_multi(cont,ts,u_res,B, P_lost)
             Un_old(P_list_old{i}) = true;
             dZ = Un_old; % the dZ in the algorithm
             dZ(Un_new) = false;
-            P_l(cont.subcontrollers{i}.sets)=true;
+            P_l(P_list_old{i})=true;
             cont.subcontrollers{i}.restrict_to([]);
             continue;
         end
@@ -62,14 +60,17 @@ function [Un_new] = patch_pre_pg_multi(cont,ts,u_res,B, P_lost)
         
 %         P_pot = intersect(B,intersect(dZ,ts.pg_G{i-1})); % potential new states
         set = P_pot;
-        set(cont.subcontrollers{i}.sets) = true;
+        set(P_list_old{i}) = true;
 %         set = union(cont.subcontrollers{i}.sets,P_pot); % Y_0
-        P_l(~set)=false;
+
+        tmp_set = sp_temp(set); % find the indeces of 1's in set
+        P_l(tmp_set)=false;
 %         P_l = setdiff(P_l,set); % take off some states from P_l (*), dY_0
-        subarray = {ts.trans_array{u(1)}(set,:)};
+
+        subarray = {ts.trans_array{u(1)}(tmp_set,:)};
         if(length(u)>1)
             for j = 2:length(u)
-                subarray{j} = ts.trans_array{u(j)}(set,:);
+                subarray{j} = ts.trans_array{u(j)}(tmp_set,:);
             end
         end
         
@@ -87,7 +88,6 @@ function [Un_new] = patch_pre_pg_multi(cont,ts,u_res,B, P_lost)
         % idx is dY_1
 %         P_lost = setdiff(P_lost_old,set);
         
-        tmp_set = sp_temp(set); % find the indeces of 1's in set
         if length(u)==1
             P_tmp = logic_temp;
             P_tmp(tmp_set(idx)) = true; % record new lost states
@@ -130,14 +130,15 @@ function [Un_new] = patch_pre_pg_multi(cont,ts,u_res,B, P_lost)
         end
                 
         if(length(u)==1)
-            P_sets = tmp_set(sum(subarray{1},2)~=0);
-            modify_map_pg(cont.subcontrollers{i},P_sets,u);
+            set(tmp_set(sum(subarray{1},2)==0)) = false;
+            P_sets = sp_temp(set);
+            modify_map_pg_lg(cont.subcontrollers{i},set,P_sets,u,sp_temp);
         else
             P_sets = modify_map_pg_multi(cont.subcontrollers{i},tmp_set,subarray,u);
         end
         
         Un_old(P_list_old{i})=true;
-        Un_new(cont.subcontrollers{i}.sets)=true;%%%
+        Un_new(P_sets)=true;%%%
         dZ = Un_old;
         dZ(Un_new) = false; % the dZ in the algorithm
         

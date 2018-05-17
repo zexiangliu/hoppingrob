@@ -118,7 +118,11 @@ classdef Controller<matlab.mixin.Copyable
     function restrict_to(cont, r_set)
       % Restrict controller domain
       if strcmp(cont.control_type, 'simple')
-        cont.sets = intersect(cont.sets, r_set);
+        if(isempty(r_set))
+            cont.sets = r_set;
+        else
+            cont.sets = intersect(cont.sets, r_set);
+        end
       else
         error('complex controller cant be restricted')
       end
