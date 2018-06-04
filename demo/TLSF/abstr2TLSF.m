@@ -18,11 +18,12 @@ fileID = fopen([filename,'.tlsf'],'w');
 fprintf(fileID, 'INFO{\n');
 fprintf(fileID, ['\tTITLE: "Controller synthesis for continuous' ...
                'dynamical systems"\n']);
-fprintf(fileID,['\tDESCRIPTION: "Converted from the format used in' ...
-    'control synthesis toolbox abstr-ref. Abstraction of continuous' ...
-    'system is encoded in this TLSF file.'...
-    'The spec is in the form of []A && <>[] B && []<> (R1 && R2 && ...'...
-    '&& Rn)"\n']);
+fprintf(fileID,['\tDESCRIPTION:"none"\n']);
+% fprintf(fileID,['\tDESCRIPTION: "Converted from the format used in' ...
+%     'control synthesis toolbox abstr-ref. Abstraction of continuous' ...
+%     'system is encoded in this TLSF file.'...
+%     'The spec is in the form of []A && <>[] B && []<> (R1 && R2 && ...'...
+%     '&& Rn)"\n']);
 fprintf(fileID, '\tSEMANTICS:   Mealy,Strict\n');
 fprintf(fileID, '\tTARGET:   Mealy\n');
 fprintf(fileID,'}\n');
@@ -46,7 +47,7 @@ fprintf(fileID,'MAIN{\n');
 %   INPUTS
 fprintf(fileID,['\tINPUTS {\n'...
     '\tSTATE[n];\n'...
-    '\t}']);
+    '\t}\n']);
 %   OUTPUTS
 fprintf(fileID,['\tOUTPUTS {\n'...
     '\tACTION[m];\n'...
@@ -54,14 +55,22 @@ fprintf(fileID,['\tOUTPUTS {\n'...
 %   INITIALLY
 fprintf(fileID,'\tINITIALLY{\n');
 %     Inforce winning set (or losing set) to be the initial condition
-if(~isempty(IC) && length(IC)~=ts.n_s-1)
+if(~isempty(IC) && length(IC)~=ts.n_s-1 && isempty(A))
     fprintf(fileID,['\t',OR_STATE(IC),';\n']);
+elseif(~isempty(IC) && length(IC)~=ts.n_s-1)
+    fprintf(fileID,['\t',OR_STATE(intersect(IC,A)),';\n']);
+elseif(~isempty(A))
+    fprintf(fileID,['\t',OR_STATE(A),';\n']);
 end
+fprintf(fileID,'\t!STATE[%d];\n',ts.n_s-1);
 fprintf(fileID,'\tmutual(STATE) && (||[0 <= i <n] STATE[i]);\n');
 fprintf(fileID,'\t}\n');
 %   PRESET
 fprintf(fileID,'\tPRESET {\n');
 fprintf(fileID,'\tmutual(ACTION) && (||[0 <= i < m] ACTION[i]);\n');
+% for i = 1:ts.n_s
+%    fprintf(fileID,'\tSTATE[%d] -> (||[0 <= i <m] ACTION[i]);\n',i-1);
+% end
 fprintf(fileID,'\t}\n');
 %   REQUIRE
 fprintf(fileID,'\tREQUIRE {\n');
@@ -77,6 +86,9 @@ fprintf(fileID,'\t}\n');
 % ASSERT
 fprintf(fileID,'\tASSERT {\n');
 fprintf(fileID,'\tmutual(ACTION) && (||[0 <= i < m] ACTION[i]);\n');
+% for i = 1:ts.n_s
+%    fprintf(fileID,'\tSTATE[%d] -> (||[0 <= i <m] ACTION[i]);\n',i-1);
+% end
 if(~isempty(A) && length(A) ~= ts.n_s)
     fprintf(fileID,['\t',OR_STATE(A),';\n']);
 end

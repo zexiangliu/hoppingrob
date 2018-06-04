@@ -1,6 +1,6 @@
 INFO{
 	TITLE: "Controller synthesis for continuousdynamical systems"
-	DESCRIPTION: "Converted from the format used incontrol synthesis toolbox abstr-ref. Abstraction of continuoussystem is encoded in this TLSF file.The spec is in the form of []A && <>[] B && []<> (R1 && R2 && ...&& Rn)"
+	DESCRIPTION:"none"
 	SEMANTICS:   Mealy,Strict
 	TARGET:   Mealy
 }
@@ -19,10 +19,13 @@ GLOBAL  {
 MAIN{
 	INPUTS {
 	STATE[n];
-	}	OUTPUTS {
+	}
+	OUTPUTS {
 	ACTION[m];
 	}
 	INITIALLY{
+	STATE[0] || STATE[1] || STATE[3];
+	!STATE[4];
 	mutual(STATE) && (||[0 <= i <n] STATE[i]);
 	}
 	PRESET {
@@ -78,9 +81,10 @@ MAIN{
 	}
 	ASSERT {
 	mutual(ACTION) && (||[0 <= i < m] ACTION[i]);
+	STATE[0] || STATE[1] || STATE[3];
 	}
 	GUARANTEE {
 	G F ( STATE[0] );
-	G F ( STATE[2] || STATE[3] );
+	G F ( STATE[3] );
 	}
 }
