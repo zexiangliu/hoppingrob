@@ -91,4 +91,18 @@ end
 
 %%
 avg_syn = mean(reshape(cell2mat(t_syn),[10,6]),1)
-avg_patch = mean(reshape(cell2mat(t_patch),[10,6]),1)
+% avg_patch = mean(reshape(cell2mat(t_patch'),[10,6]),1)
+avg_naive = mean(reshape(cell2mat(t_naive'),[10,6]),1)
+
+t_p = cell2mat(t_patch);
+t_s = cell2mat(t_syn)';
+t_n = cell2mat(t_naive);
+%%
+ratio1 = t_p./t_s
+ratio2 = t_n./t_s
+ratio3 = t_p./t_n
+avg1 = mean(reshape(ratio1,[10,6]),1)
+avg2 = mean(reshape(ratio2,[10,6]),1)
+avg3 = mean(reshape(ratio3,[10,6]),1)
+% avg_syn = mean(reshape(t_syn,[10,6]),1)
+% avg_patch = mean(reshape(t_patch,[10,6]),1)

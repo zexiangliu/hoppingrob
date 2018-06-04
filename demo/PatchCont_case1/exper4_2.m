@@ -10,6 +10,7 @@ T_mod = T_syn;
 ts_ref = T_syn;
 cont_ref = T_syn;
 cont_patch = T_syn;
+ts.trans_array_enable();
 for i = 1:length(U_res)
     ts_cons = load(['ts_cons',num2str(i)]);
     ts_ref{i} = ts_cons.ts;
