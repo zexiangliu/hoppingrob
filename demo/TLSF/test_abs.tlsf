@@ -6,7 +6,7 @@ INFO{
 }
 GLOBAL  {
 	PARAMETERS {
-		n = 5; //num of states
+		n = 4; //num of states
 		m = 9; //num of actions
 	}
 	DEFINITIONS {
@@ -24,7 +24,6 @@ MAIN{
 	ACTION[m];
 	}
 	INITIALLY{
-	!(STATE[2] || STATE[4]);
 	mutual(STATE);
 	}
 	PRESET {
@@ -32,57 +31,27 @@ MAIN{
 	REQUIRE {
 	mutual(STATE);
 	(STATE[0] && ACTION[0]) -> ( X STATE[0] );
-	(STATE[1] && ACTION[0]) -> ( X STATE[4] );
-	(STATE[2] && ACTION[0]) -> ( X STATE[4] );
-	(STATE[3] && ACTION[0]) -> ( X STATE[4] );
-	(STATE[4] && ACTION[0]) -> ( X STATE[4] );
 	(STATE[0] && ACTION[1]) -> ( X STATE[1] );
-	(STATE[1] && ACTION[1]) -> ( X STATE[4] );
-	(STATE[2] && ACTION[1]) -> ( X STATE[4] );
-	(STATE[3] && ACTION[1]) -> ( X STATE[4] );
-	(STATE[4] && ACTION[1]) -> ( X STATE[4] );
-	(STATE[0] && ACTION[2]) -> ( X STATE[4] );
 	(STATE[1] && ACTION[2]) -> ( X STATE[0] );
-	(STATE[2] && ACTION[2]) -> ( X STATE[4] );
-	(STATE[3] && ACTION[2]) -> ( X STATE[4] );
-	(STATE[4] && ACTION[2]) -> ( X STATE[4] );
-	(STATE[0] && ACTION[3]) -> ( X STATE[4] );
 	(STATE[1] && ACTION[3]) -> ( X STATE[3] );
-	(STATE[2] && ACTION[3]) -> ( X STATE[4] );
-	(STATE[3] && ACTION[3]) -> ( X STATE[4] );
-	(STATE[4] && ACTION[3]) -> ( X STATE[4] );
-	(STATE[0] && ACTION[4]) -> ( X STATE[4] );
-	(STATE[1] && ACTION[4]) -> ( X STATE[4] );
-	(STATE[2] && ACTION[4]) -> ( X STATE[4] );
-	(STATE[3] && ACTION[4]) -> ( X STATE[1] );
-	(STATE[4] && ACTION[4]) -> ( X STATE[4] );
-	(STATE[0] && ACTION[5]) -> ( X STATE[4] );
+	(STATE[3] && ACTION[4]) -> ( X STATE[1] ||  X STATE[2] );
 	(STATE[1] && ACTION[5]) -> ( X STATE[2] );
-	(STATE[2] && ACTION[5]) -> ( X STATE[4] );
-	(STATE[3] && ACTION[5]) -> ( X STATE[4] );
-	(STATE[4] && ACTION[5]) -> ( X STATE[4] );
-	(STATE[0] && ACTION[6]) -> ( X STATE[4] );
-	(STATE[1] && ACTION[6]) -> ( X STATE[4] );
-	(STATE[2] && ACTION[6]) -> ( X STATE[1] );
-	(STATE[3] && ACTION[6]) -> ( X STATE[4] );
-	(STATE[4] && ACTION[6]) -> ( X STATE[4] );
-	(STATE[0] && ACTION[7]) -> ( X STATE[4] );
-	(STATE[1] && ACTION[7]) -> ( X STATE[4] );
+	(STATE[2] && ACTION[6]) -> ( X STATE[1] ||  X STATE[3] );
 	(STATE[2] && ACTION[7]) -> ( X STATE[2] );
-	(STATE[3] && ACTION[7]) -> ( X STATE[4] );
-	(STATE[4] && ACTION[7]) -> ( X STATE[4] );
-	(STATE[0] && ACTION[8]) -> ( X STATE[4] );
-	(STATE[1] && ACTION[8]) -> ( X STATE[4] );
-	(STATE[2] && ACTION[8]) -> ( X STATE[4] );
 	(STATE[3] && ACTION[8]) -> ( X STATE[3] );
-	(STATE[4] && ACTION[8]) -> ( X STATE[4] );
+	}
+	ASSUME {
+	G F ( !(STATE[2] || STATE[3]) || !(ACTION[4] || ACTION[6]));
 	}
 	ASSERT {
 	mutual(ACTION);
-	!(STATE[2] || STATE[4]);
+	STATE[0] -> (ACTION[0] || ACTION[1]);
+	STATE[1] -> (ACTION[2] || ACTION[3] || ACTION[5]);
+	STATE[2] -> (ACTION[6] || ACTION[7]);
+	STATE[3] -> (ACTION[4] || ACTION[8]);
 	}
 	GUARANTEE {
 	G F ( STATE[0] );
-	G F !( STATE[0] || STATE[4] );
+	G F ( STATE[2] || STATE[3] );
 	}
 }

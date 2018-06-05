@@ -1,5 +1,4 @@
-function abstr2TLSF_negation(filename, ts, A, B, C_list, IC)
-% In this version we use negation to reduce the length of the spec
+function abstr2TLSF(filename, ts, A, B, C_list, IC)
 % convert specification and abstraction systems bulit using abstr_ref
 % toolbox to the TLSF format used by syfco (https://github.com/reactive-systems/syfco)
 % Inputs: filename --- name of output file, i.e filename.tlsf
@@ -17,12 +16,18 @@ fileID = fopen([filename,'.tlsf'],'w');
 n_s = double(ts.n_s);
 n_a = double(ts.n_a);
 
+% Extract action information
+stat2act = false(ts.n_s,ts.n_a);
+for i = 1:ts.n_a
+    stat2act(:,i) = sum(ts.trans_array{i},2)~=0;
+end
+
 % INFO
 fprintf(fileID, 'INFO{\n');
 fprintf(fileID, ['\tTITLE: "Controller synthesis for continuous' ...
                'dynamical systems"\n']);
 fprintf(fileID,['\tDESCRIPTION:"none"\n']);
-% fprintf(fileID,['\tDESCRIPTION: "Converted from the format used in' ...
+% fprintf(fileID,['\tDESCRIPTION: "Converted from the format emused in' ...
 %     'control synthesis toolbox abstr-ref. Abstraction of continuous' ...
 %     'system is encoded in this TLSF file.'...
 %     'The spec is in the form of []A && <>[] B && []<> (R1 && R2 && ...'...
@@ -94,17 +99,46 @@ fprintf(fileID,'\tmutual(STATE);\n');
 for i = 1:n_a
     for j = 1:n_s
         s2_list = find(ts.trans_array{i}(j,:));
-        fprintf(fileID,['\t(STATE[%d] && ACTION[%d]) -> (', ...
-            OR_X_STATE(s2_list), ' );\n'], j-1, i-1);
+        if(~isempty(s2_list))
+            fprintf(fileID,['\t(STATE[%d] && ACTION[%d]) -> (', ...
+                OR_X_STATE(s2_list), ' );\n'], j-1, i-1);
+        end
     end
 end
 fprintf(fileID,'\t}\n');
-% ASSERT
+
+%   ASSUME
+fprintf(fileID,'\tASSUME {\n');
+if(~isempty(ts.pg_U))
+    for i = 1:length(ts.pg_U)
+        u = ts.pg_U{i};
+        G = ts.pg_G{i};
+        fprintf(fileID,['\tG F ( !(',OR_STATE(G),') || !(',OR_ACTION(u),...
+            '));\n']);
+    end
+end
+fprintf(fileID,'\t}\n');
+
+%   ASSERT
 fprintf(fileID,'\tASSERT {\n');
 fprintf(fileID,'\tmutual(ACTION);\n');
-% for i = 1:n_s
-%    fprintf(fileID,'\tSTATE[%d] -> (||[0 <= i <m] ACTION[i]);\n',i-1);
-% end
+
+state_idx = find(sum(stat2act,2)~=n_a)';
+for i = state_idx
+    act_list = find(stat2act(i,:)==1);
+    if(isempty(act_list))
+        continue;
+    end
+    if(length(act_list)<=n_a/2)
+        fprintf(fileID,['\tSTATE[%d] -> (', OR_ACTION(act_list),...
+                        ');\n'],i-1);
+    else
+        act_list = setdiff(1:n_a,act_list);
+        fprintf(fileID,['\tSTATE[%d] -> !(', OR_ACTION(act_list),...
+                        ');\n'],i-1);
+    end
+end
+
 if(~isempty(A) && length(A) ~= n_s)
     if(length(A) <= n_s/2)
         fprintf(fileID,['\t',OR_STATE(A),';\n']);
@@ -113,7 +147,8 @@ if(~isempty(A) && length(A) ~= n_s)
     end
 end
 fprintf(fileID,'\t}\n');
-% GUARANTEE
+
+%   GUARANTEE
 fprintf(fileID,'\tGUARANTEE {\n');
 if(~isempty(B) && length(B) ~= n_s)
     if(length(B)<=n_s/2)
@@ -148,5 +183,12 @@ function char = OR_X_STATE(states)
     char = sprintf(' X STATE[%d]',states(1)-1);
     for i = 2:length(states)
         char =  [char,' || ',sprintf(' X STATE[%d]',states(i)-1)];
+    end
+end
+
+function char = OR_ACTION(actions)
+    char = sprintf('ACTION[%d]',actions(1)-1);
+    for i = 2:length(actions)
+        char =  [char,' || ',sprintf('ACTION[%d]',actions(i)-1)];
     end
 end
