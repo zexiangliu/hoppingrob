@@ -13,7 +13,7 @@ GLOBAL  {
 	mutual(b) =
 	||[i IN {0, 1 .. (SIZEOF b) -1}]
 	&&[j IN {0,1 .. (SIZEOF b) -1} (\) {i}]
-	!(b[i] && b[j]);
+	(b[i] && !b[j]);
 	}
 }
 MAIN{
@@ -24,15 +24,13 @@ MAIN{
 	ACTION[m];
 	}
 	INITIALLY{
-	STATE[0] || STATE[1] || STATE[3];
-	!STATE[4];
-	mutual(STATE) && (||[0 <= i <n] STATE[i]);
+	!(STATE[2] || STATE[4]);
+	mutual(STATE);
 	}
 	PRESET {
-	mutual(ACTION) && (||[0 <= i < m] ACTION[i]);
 	}
 	REQUIRE {
-	mutual(STATE) && (||[0 <= i < n] STATE[i]);
+	mutual(STATE);
 	(STATE[0] && ACTION[0]) -> ( X STATE[0] );
 	(STATE[1] && ACTION[0]) -> ( X STATE[4] );
 	(STATE[2] && ACTION[0]) -> ( X STATE[4] );
@@ -80,11 +78,11 @@ MAIN{
 	(STATE[4] && ACTION[8]) -> ( X STATE[4] );
 	}
 	ASSERT {
-	mutual(ACTION) && (||[0 <= i < m] ACTION[i]);
-	STATE[0] || STATE[1] || STATE[3];
+	mutual(ACTION);
+	!(STATE[2] || STATE[4]);
 	}
 	GUARANTEE {
 	G F ( STATE[0] );
-	G F ( STATE[3] );
+	G F !( STATE[0] || STATE[4] );
 	}
 }

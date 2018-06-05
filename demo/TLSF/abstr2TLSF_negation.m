@@ -1,4 +1,5 @@
-function abstr2TLSF(filename, ts, A, B, C_list, IC)
+function abstr2TLSF_negation(filename, ts, A, B, C_list, IC)
+% In this version we use negation to reduce the length of the spec
 % convert specification and abstraction systems bulit using abstr_ref
 % toolbox to the TLSF format used by syfco (https://github.com/reactive-systems/syfco)
 % Inputs: filename --- name of output file, i.e filename.tlsf

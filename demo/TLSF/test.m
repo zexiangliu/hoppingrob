@@ -5,8 +5,11 @@
 % A_list = 1:ts.n_s;
 % C_list = {B_list(1:225),B_list(226:450)};
 % 
-% [W] = win_primal(ts, A_list, B_list, C_list, 'exists', 'forall');
+% [W] = win_primal(ts, [], [], C_list, 'exists', 'forall');
+% filename = 'test_abs';
+% abstr2TLSF(filename,ts,[],[],C_list,W);
 
+%%
 filename = 'test_abs';
 ts = TransSyst(5,9);
 s1 = [1,1,2,2,4,2,3,3,4];
@@ -17,6 +20,6 @@ ts.trans_array_enable();
 ts.trans_array_dummy_enable();
 A_list = [1,2,4];
 B_list = [];
-C_list = {[1],[4]};
+C_list = {[1],[2,3,4]};
 W = [];
 abstr2TLSF(filename,ts,A_list,B_list,C_list,W);
