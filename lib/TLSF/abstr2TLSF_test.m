@@ -1,4 +1,4 @@
-function abstr2TLSF(filename, ts, A, B, C_list, IC)
+function abstr2TLSF_test(filename, ts, A, B, C_list, IC)
 % convert specification and abstraction systems bulit using abstr_ref
 % toolbox to the TLSF format used by syfco (https://github.com/reactive-systems/syfco)
 % Inputs: filename --- name of output file, i.e filename.tlsf
@@ -15,6 +15,9 @@ end
 fileID = fopen([filename,'.tlsf'],'w');
 n_s = double(ts.n_s);
 n_a = double(ts.n_a);
+
+log_n_s = ceil(log2(n_s));
+log_n_a = ceil(log2(n_a));
 
 % Extract action information
 stat2act = false(ts.n_s,ts.n_a);
@@ -37,15 +40,17 @@ fprintf(fileID,'}\n');
 
 % GLOBAL
 fprintf(fileID,'GLOBAL  {\n');
-fprintf(fileID,'\tPARAMETERS {\n');
-fprintf(fileID,'\t\tn = %u; //num of states\n', n_s);
-fprintf(fileID,'\t\tm = %u; //num of actions\n', n_a);
+fprintf(fileID,'\tDEFINITIONS {\n');
+fprintf(fileID,'\tenum STATE =\n');
+for i = 1:n_s
+    fprintf(fileID,'\t\ts%d: %s\n',i,dec2bin(i-1,log_n_s));
+end
 fprintf(fileID,'\t}\n');
 fprintf(fileID,'\tDEFINITIONS {\n');
-fprintf(fileID,['\tmutual(b) =\n'...
-                '\t||[i IN {0, 1 .. (SIZEOF b) -1}]\n'...
-                '\t&&[j IN {0,1 .. (SIZEOF b) -1} (\\) {i}]\n'...
-                '\t(b[i] && !b[j]);\n']);
+fprintf(fileID,'\tenum ACTION =\n');
+for i = 1:n_a
+    fprintf(fileID,'\t\ta%d: %s\n',i,dec2bin(i-1,log_n_a));
+end
 fprintf(fileID,'\t}\n');
 fprintf(fileID,'}\n');
 
@@ -53,11 +58,11 @@ fprintf(fileID,'}\n');
 fprintf(fileID,'MAIN{\n');
 %   INPUTS
 fprintf(fileID,['\tINPUTS {\n'...
-    '\tSTATE[n];\n'...
+    '\tSTATE S;\n'...
     '\t}\n']);
 %   OUTPUTS
 fprintf(fileID,['\tOUTPUTS {\n'...
-    '\tACTION[m];\n'...
+    '\tACTION A;\n'...
     '\t}\n']);
 %   INITIALLY
 fprintf(fileID,'\tINITIALLY{\n');
@@ -82,25 +87,21 @@ elseif(~isempty(A) && length(A) ~= n_s)
         fprintf(fileID,['\t!(',OR_STATE(setdiff(1:n_s,A)),');\n']);
     end
 end
-% fprintf(fileID,'\t!STATE[%d];\n',n_s-1);
-fprintf(fileID,'\tmutual(STATE);\n');
 fprintf(fileID,'\t}\n');
 %   PRESET
 fprintf(fileID,'\tPRESET {\n');
-% fprintf(fileID,'\tmutual(ACTION);\n');
 % for i = 1:n_s
-%    fprintf(fileID,'\tSTATE[%d] -> (||[0 <= i <m] ACTION[i]);\n',i-1);
+%    fprintf(fileID,'\tSTATE[%d] -> (||[0 <= i <m] ACTION[i]);\n',i);
 % end
 fprintf(fileID,'\t}\n');
 %   REQUIRE
 fprintf(fileID,'\tREQUIRE {\n');
-fprintf(fileID,'\tmutual(STATE);\n');
 for i = 1:n_a
     for j = 1:n_s
         s2_list = find(ts.trans_array{i}(j,:));
         if(~isempty(s2_list))
-            fprintf(fileID,['\t(STATE[%d] && ACTION[%d]) -> (', ...
-                OR_X_STATE(s2_list), ' );\n'], j-1, i-1);
+            fprintf(fileID,['\t(S == s%d && A == a%d) -> X (', ...
+                OR_STATE(s2_list), ' );\n'], j, i);
         end
     end
 end
@@ -120,7 +121,6 @@ fprintf(fileID,'\t}\n');
 
 %   ASSERT
 fprintf(fileID,'\tASSERT {\n');
-fprintf(fileID,'\tmutual(ACTION);\n');
 
 state_idx = find(sum(stat2act,2)~=n_a)';
 for i = state_idx
@@ -129,12 +129,12 @@ for i = state_idx
         continue;
     end
     if(length(act_list)<=n_a/2)
-        fprintf(fileID,['\tSTATE[%d] -> (', OR_ACTION(act_list),...
-                        ');\n'],i-1);
+        fprintf(fileID,['\tS == s%d -> (', OR_ACTION(act_list),...
+                        ');\n'],i);
     else
         act_list = setdiff(1:n_a,act_list);
-        fprintf(fileID,['\tSTATE[%d] -> !(', OR_ACTION(act_list),...
-                        ');\n'],i-1);
+        fprintf(fileID,['\tS == s%d -> !(', OR_ACTION(act_list),...
+                        ');\n'],i);
     end
 end
 
@@ -172,22 +172,22 @@ fclose(fileID);
 end
 
 function char = OR_STATE(states)
-    char = sprintf('STATE[%d]',states(1)-1);
+    char = sprintf('S == s%d',states(1));
     for i = 2:length(states)
-        char =  [char,' || ',sprintf('STATE[%d]',states(i)-1)];
+        char =  [char,' || ',sprintf('S == s%d',states(i))];
     end
 end
-
-function char = OR_X_STATE(states)
-    char = sprintf(' X STATE[%d]',states(1)-1);
-    for i = 2:length(states)
-        char =  [char,' || ',sprintf(' X STATE[%d]',states(i)-1)];
-    end
-end
+% 
+% function char = OR_X_STATE(states)
+%     char = sprintf(' X STATE[%d]',states(1)-1);
+%     for i = 2:length(states)
+%         char =  [char,' || ',sprintf(' X STATE[%d]',states(i)-1)];
+%     end
+% end
 
 function char = OR_ACTION(actions)
-    char = sprintf('ACTION[%d]',actions(1)-1);
+    char = sprintf('A == a%d',actions(1));
     for i = 2:length(actions)
-        char =  [char,' || ',sprintf('ACTION[%d]',actions(i)-1)];
+        char =  [char,' || ',sprintf('A == a%d',actions(i))];
     end
 end
