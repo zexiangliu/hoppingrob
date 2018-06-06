@@ -43,13 +43,13 @@ fprintf(fileID,'GLOBAL  {\n');
 fprintf(fileID,'\tDEFINITIONS {\n');
 fprintf(fileID,'\tenum STATE =\n');
 for i = 1:n_s
-    fprintf(fileID,'\t\ts%d: %s\n',i,dec2bin(i-1,log_n_s));
+    fprintf(fileID,'\t\ts%s: %s\n',dec2hex(i),dec2bin(i-1,log_n_s));
 end
 fprintf(fileID,'\t}\n');
 fprintf(fileID,'\tDEFINITIONS {\n');
 fprintf(fileID,'\tenum ACTION =\n');
 for i = 1:n_a
-    fprintf(fileID,'\t\ta%d: %s\n',i,dec2bin(i-1,log_n_a));
+    fprintf(fileID,'\t\ta%s: %s\n',dec2hex(i),dec2bin(i-1,log_n_a));
 end
 fprintf(fileID,'\t}\n');
 fprintf(fileID,'}\n');
@@ -100,8 +100,8 @@ for i = 1:n_a
     for j = 1:n_s
         s2_list = find(ts.trans_array{i}(j,:));
         if(~isempty(s2_list))
-            fprintf(fileID,['\t(S == s%d && A == a%d) -> X (', ...
-                OR_STATE(s2_list), ' );\n'], j, i);
+            fprintf(fileID,['\t(S == s%s && A == a%s) -> X (', ...
+                OR_STATE(s2_list), ' );\n'], dec2hex(j), dec2hex(i));
         end
     end
 end
@@ -129,12 +129,12 @@ for i = state_idx
         continue;
     end
     if(length(act_list)<=n_a/2)
-        fprintf(fileID,['\tS == s%d -> (', OR_ACTION(act_list),...
-                        ');\n'],i);
+        fprintf(fileID,['\tS == s%s -> (', OR_ACTION(act_list),...
+                        ');\n'],dec2hex(i));
     else
         act_list = setdiff(1:n_a,act_list);
-        fprintf(fileID,['\tS == s%d -> !(', OR_ACTION(act_list),...
-                        ');\n'],i);
+        fprintf(fileID,['\tS == s%s -> !(', OR_ACTION(act_list),...
+                        ');\n'],dec2hex(i));
     end
 end
 
@@ -172,9 +172,9 @@ fclose(fileID);
 end
 
 function char = OR_STATE(states)
-    char = sprintf('S == s%d',states(1));
+    char = sprintf('S == s%s',dec2hex(states(1)));
     for i = 2:length(states)
-        char =  [char,' || ',sprintf('S == s%d',states(i))];
+        char =  [char,' || ',sprintf('S == s%s',dec2hex(states(i)))];
     end
 end
 % 
@@ -186,8 +186,8 @@ end
 % end
 
 function char = OR_ACTION(actions)
-    char = sprintf('A == a%d',actions(1));
+    char = sprintf('A == a%s',dec2hex(actions(1)));
     for i = 2:length(actions)
-        char =  [char,' || ',sprintf('A == a%d',actions(i))];
+        char =  [char,' || ',sprintf('A == a%s',dec2hex(actions(i)))];
     end
 end
