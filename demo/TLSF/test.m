@@ -1,16 +1,16 @@
 clc;close all;
-load ts.mat;
+load ts_1.mat;
 ts.trans_array_enable();
 % % ts.trans_array_dummy_enable();
 A_list = 1:ts.n_s;
-% C_list = {B_list(1:225),B_list(226:450)};
-C_list = {};
+C_list = {B_list(1:70),B_list(50:100)};
+% C_list = {};
 
 [W] = win_primal(ts, A_list, B_list, C_list, 'exists', 'forall');
-filename = 'test_abs';
-abstr2TLSF(filename,ts,A_list,B_list,C_list,W);
+filename = 'lipm_wt_B';
+abstr2TLSF_brief(filename,ts,A_list,B_list,C_list,W,62);
 
-% %%
+%%
 % L = setdiff(1:ts.n_s,W);
 % abstr2TLSF(filename,ts,[],[],C_list,[W,L(1)]);
 
@@ -31,7 +31,7 @@ abstr2TLSF(filename,ts,A_list,B_list,C_list,W);
 % abstr2TLSF(filename,ts,A_list,B_list,C_list,W);
 
 %%
-% 
+% % 
 % clc;clear all;
 % filename = 'test_abs';
 % ts = TransSyst(4,9);
@@ -48,4 +48,4 @@ abstr2TLSF(filename,ts,A_list,B_list,C_list,W);
 % B_list = [];
 % C_list = {[1],[3,4]};
 % W = win_primal(ts, A_list, B_list, C_list, 'exists', 'forall');
-% abstr2TLSF(filename,ts,A_list,B_list,C_list,W);
+% abstr2TLSF_brief(filename,ts,A_list,B_list,C_list,W,62);
