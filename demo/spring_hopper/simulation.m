@@ -8,7 +8,7 @@ TSpan = 50;
 t_real = 0;
 x_real = 0;
 
-K0 = M_X.get_coord(W(15));
+K0 = M_X.get_coord(W(100));
 dx0 = sign(K0)*sqrt(2*abs(K0)/m);
 y0 = (E-1/2*m*dx0^2)/m/g;
 
@@ -25,11 +25,11 @@ while(t_real<TSpan)
     
     u_list = cont(K0_idx);
     u = M_U(u_list(1))*pi/180;
-    [t,X,Y,dx1] = simuOneJump_lt(param, init, u);
+    [t,X,Y,dx1,U1] = simuOneJump_xy(param, init, u);
     t_list = [t_list;t_real+t];
     X_list = [X_list;x_real+X];
     Y_list = [Y_list;Y];
-    U_list = [U_list; u*ones(length(t),1)];
+    U_list = [U_list; U1];
     
     dx0 = dx1
     y0 = Y(end);

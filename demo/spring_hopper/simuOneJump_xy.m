@@ -1,4 +1,4 @@
-function [t_list,X,Y,dx1] = simuOneJump_xy(param, init, u)
+function [t_list,X,Y,dx1,U1] = simuOneJump_xy(param, init, u)
 % Simulate the trajectory between two apex points.
 % inputs: dyn --- a function handle for dynamics of the robot
 %         param --- parameters characteristic of the robot
@@ -28,6 +28,7 @@ t_list = linspace(0,t0,100)';
 
 X = dx0 * t_list;
 Y = y0 - 1/2*g*t_list.^2;
+U1 = ones(length(X),1)*u;
 
 % Stance phase
 s0 = [-l0*cos(u), land_height, dx0, -g*t0];
@@ -79,6 +80,8 @@ end
 t_list = [t_list;t_list_stance(idx_sat)+t_list(end);t_rk+t_list(end)];
 X = [X;S_list(idx_sat,1)+X(end)-s0(1);s_rk(1)+X(end)-s0(1)];
 Y = [Y;S_list(idx_sat,2);s_rk(2)];
+U1 = [U1;atan2(S_list(idx_sat,2),-S_list(idx_sat,1))];
+U1 = [U1;U1(end)];
 
 % change to air again
 
@@ -92,5 +95,6 @@ end
 t_tmp = linspace(0,t1,100)';
 X = [X;dx1*t_tmp+X(end)];
 Y = [Y;dy1*t_tmp-1/2*g*t_tmp.^2+Y(end)];
+U1 = [U1;ones(length(t_tmp),1)*U1(end)];
 t_list = [t_list;t_tmp+t_list(end)];
 end
