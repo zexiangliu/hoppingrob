@@ -63,6 +63,10 @@ for i = 1:n
 end
 
 %% map sub to index
+if(length(SUB)==1)
+    idx = SUB{1};
+    return;
+end
 
 X = ndgrid2(SUB);
 idx = sub2ind2(discr_bnd(:,3),X);

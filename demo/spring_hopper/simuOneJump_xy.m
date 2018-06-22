@@ -4,6 +4,7 @@ function [t_list,X,Y,dx1] = simuOneJump_xy(param, init, u)
 %         param --- parameters characteristic of the robot
 %         init --- [y0,dx0] at the apex
 %         u --- intput for the current peroid, rad/s
+% The ouputs will be column vectors
 
 l0 = param.rest_len;
 g = param.gravity;
