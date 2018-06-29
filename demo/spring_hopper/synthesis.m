@@ -1,7 +1,7 @@
 clear all;close all;clc;
 load ts.mat
 ts.trans_array_enable();
-B_list = mapping_ext(-2.0,M_X,0.2);
+B_list = mapping_ext(0.0,M_X,0.2);
 C_list = {};
 % C1 = mapping_ext(-0.5,M_X,0.5);
 % C2 = mapping_ext(0.5,M_X,0.5);
