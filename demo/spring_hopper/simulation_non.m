@@ -1,14 +1,20 @@
 clc;clear all;%close all;
+% simulation for controller synthesized from non-uniform partitioning
+% abstraction.
 
 load ts.mat
 load cont.mat
+
+K0 = M_X.get_coord(W(20));
+
+load ts_non_uni.mat
+load cont_non.mat
 
 TSpan = 50;
 
 t_real = 0;
 x_real = 0;
 
-K0 = M_X.get_coord(W(20));
 dx0 = sign(K0)*sqrt(2*abs(K0)/m);
 y0 = (E-1/2*m*dx0^2)/m/g;
 
@@ -20,10 +26,10 @@ U_list = [];
 
 while(t_real<TSpan)
     
-    init = [y0,dx0]
-    K0_idx = mapping_ext(sign(dx0)*1/2*m*dx0^2,M_X,0);
+    init = [y0,dx0];
+    K0_idx = part.find_cell(sign(dx0)*1/2*m*dx0^2);
     
-    u_list = cont(K0_idx);
+    u_list = cont_non(K0_idx);
     u = M_U(u_list(1))*pi/180;
     [t,X,Y,dx1,U1] = simuOneJump_xy(param, init, u);
     t_list = [t_list;t_real+t];
@@ -37,9 +43,7 @@ while(t_real<TSpan)
     x_real = x_real + X(end);
 end
 %%
-hold on;
-
-plot(X_list,Y_list)
+plot(X_list,Y_list,'r')
 xlabel('x');
 ylabel('y');
 set(gca,'fontsize',20);

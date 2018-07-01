@@ -33,7 +33,7 @@ U1 = ones(length(X),1)*u;
 % Stance phase
 s0 = [-l0*cos(u), land_height, dx0, -g*t0];
 opt = odeset('RelTol',1e-13,'AbsTol',1e-14);
-[t_list_stance,S_list] = ode45(@(t,s)dyn(t,s,param),[0:0.001:10],s0,opt);
+[t_list_stance,S_list] = ode45(@(t,s)dyn(t,s,param),[0:0.001:3],s0,opt);
 idx_sat = find(sqrt(S_list(:,1).^2+S_list(:,2).^2)<l0);
 if(idx_sat(1) ~= 1)
     idx_sat = [1;idx_sat];

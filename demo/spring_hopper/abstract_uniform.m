@@ -61,7 +61,6 @@ for i = 18%1:length(M_U)
             K1 = (K1_max+K1_min)/2;
             r = (K1_max-K1_min)/2;
             s2_idx = mapping_ext(K1,M_X,r);
-            keyboard();
         catch
             s2_idx = num_X+1;
             disp('ooops!')
