@@ -1,4 +1,10 @@
 clear all;clc;close all;
+
+demo_path = pwd;
+cd ../../lib/
+resetpath
+cd(demo_path);
+
 addpath(genpath('./'));
 addpath(genpath('../../lib/abstr-ref/'));
 addpath('../../lib/GridGener/');

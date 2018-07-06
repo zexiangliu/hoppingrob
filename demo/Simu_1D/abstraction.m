@@ -78,7 +78,7 @@ hold on;
 disp('Done.')
 %% Controller
 disp('Compute winning set and controller...')
-ts.create_fast();
+ts.trans_array_enable();
 % tic
 [W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
 % toc
