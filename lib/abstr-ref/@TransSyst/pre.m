@@ -75,7 +75,7 @@ function [V, cont] = pre(ts, X, U, quant1, quant2)
            for i = 1:length(U)
                u = U(i);
                sum1 = sum(ts.trans_array{u}(:,X),2);
-               sum2 = sum(ts.trans_array{u},2);
+               sum2 = ts.trans_sum{u};
                idx_V = sum1 == sum2 & sum1~=0;
                V_list(idx_V,u)=true;
            end
@@ -111,7 +111,7 @@ function [V, cont] = pre(ts, X, U, quant1, quant2)
            for i = 1:length(U)
                u = U(i);
                sum1 = sum(ts.trans_array{u}(:,X),2);
-               sum2 = sum(ts.trans_array{u},2);
+               sum2 = ts.trans_sum{u};
                idx_V = idx_V & sum1==sum2 & sum1~=0;
            end
            V = uint32(find(idx_V~=0));

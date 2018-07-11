@@ -78,7 +78,7 @@ disp('Done.')
 % C_list = {1:2000,500:3000,1000:3200};
 C_list = {};
 
-A_list = [];
+A_list = [1:3000];
 %% Controller
 disp('Compute winning set and controller...')
 % ts.add_progress_group([1,20],uint32(1:3500));
@@ -91,16 +91,19 @@ tic;
 [W, ~, cont] = ts.win_primal_patch(A_list, B_list, ... 
                                     C_list, 'exists', 'forall')
 t_synthesis = toc;                            
-% [Vinv, ~, cont_inv] = ts.win_intermediate_patch(uint32(1:ts.n_s), A_list, [], {uint32(1:ts.n_s)}, 1);
+[Vinv, ~, cont_inv] = ts.win_intermediate_patch(uint32(1:ts.n_s), A_list, [], {uint32(1:ts.n_s)}, 1);
 
 
 if(isempty(W))
     error('No winning set is found!');
 end
 
-% save ts_exper
+save ts_exper_sp
 
-%% with u_res
+%%
+clc;clear all;
+load ts_exper_sp
+% with u_res
 U_res = {[1],[1:5],[1:10],[1:15],[1:20],[1:25]};
 
 for i = 1:length(U_res)
@@ -122,6 +125,6 @@ for i = 1:length(U_res)
                                         C_list, 'exists', 'forall')
     t_syn = toc
     
-    ts_name = ['ts_cons',num2str(i)];
+    ts_name = ['ts_cons_sp',num2str(i)];
     save(ts_name);
 end

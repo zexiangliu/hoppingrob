@@ -11,6 +11,7 @@ classdef TransSyst<handle
     action;
     % under test
     trans_array;
+    trans_sum;
     
     % Progress groups
     pg_U = {};
@@ -49,6 +50,7 @@ classdef TransSyst<handle
       end
       % under test for faster pre
       ts.trans_array = [];
+      ts.trans_sum = [];
     end
 
     function numact = add_action(ts)
@@ -149,6 +151,10 @@ classdef TransSyst<handle
     % under test
     function trans_array_enable(ts)
         ts.trans_array = ts2array(ts);
+        ts.trans_sum = cell(ts.n_a,1);
+        for i = 1:ts.n_a
+            ts.trans_sum{i} = sum(ts.trans_array{i},2);
+        end
     end
   end
 end

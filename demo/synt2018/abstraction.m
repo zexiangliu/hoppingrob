@@ -18,7 +18,7 @@ tau = 0.08;     % time interval
 eta = 0.1;
 mu = 0.2;
 lmax = 1;
-dlim = 10.5;
+dlim = 2.5;
 vlim = 10;
 
 r1 = expm(A*tau)*[eta/2;eta/2]; % the upper bnd of ||x_0(tau)-x_1(tau)||
@@ -59,7 +59,8 @@ hold on;
 M_X.visual(fig,1:M_X.numV-1,'.b',8);
 axis equal;
 %% TransSyst
-ts = ArrayGener_parallel(M_X,M_U,tau,r,lmax);
+u_res = [25,26,30,31];
+ts = ArrayGener_parallel(M_X,M_U,tau,r,lmax,u_res);
 
 disp('Done.')
 %% Create B_list
@@ -94,6 +95,6 @@ title('State Space (Black), B\_list (Red), Winning (Cyan)')
 disp('Press any key...');
 pause;
 close all;
-save ts
+save ts_3
 
 disp('Done.')

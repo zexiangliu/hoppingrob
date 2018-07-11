@@ -163,9 +163,10 @@ classdef Ground<handle
 %                    end
 %                 end
 %             end 
-            C = (V-min(V(:)))/range(V(:))*1;
+             C = (V-min(V(:)))/range(V(:))*1;
 %             surf(X,Y,V,C,'EdgeColor','none');
-            mesh(X,Y,V,C);
+%             mesh(X,Y,V,C);
+              mesh(X,Y,V,'EdgeColor','k','LineWidth',2);
 %             axis equal;
         end
         

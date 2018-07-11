@@ -85,11 +85,11 @@ disp('Compute winning set and controller...')
 % ts.add_progress_group([15,20],uint32(1:3000));
 % ts.add_progress_group([18,20],uint32(1:3500));
 
-ts.create_fast();
+% ts.create_fast();
 ts.trans_array_enable();
 % [W, C, cont]=ts.win_primal([],B_list',[],'exists','forall');
 tic;
-[W, ~, cont1] = ts.win_primal_patch(A_list, B_list, ... 
+[W, ~, cont] = ts.win_primal_patch(A_list, B_list, ... 
                                     C_list, 'exists', 'forall');
 t_synthesis = toc                            
 % [Vinv, ~, cont_inv] = ts.win_intermediate_patch(uint32(1:ts.n_s), A_list, [], {uint32(1:ts.n_s)}, 1);
@@ -127,7 +127,7 @@ for i = 1:length(U_res)
 %     ts_ref.add_progress_group([15,20],uint32(1:3000));
 %     ts_ref.add_progress_group([18,20],uint32(1:3500));
 
-    ts_ref{i}.create_fast();
+%     ts_ref{i}.create_fast();
     ts_ref{i}.trans_array_enable();
     tic;
     % [W, C, cont]=ts.win_primal([],B_list'W,[],'exists','forall');

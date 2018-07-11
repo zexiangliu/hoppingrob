@@ -79,9 +79,9 @@ disp('Done.')
 %% Controller
 disp('Compute winning set and controller...')
 ts.trans_array_enable();
-% tic
-[W, C, cont]=ts.win_eventually_or_persistence([],{B_list'},1);
-% toc
+tic
+[W1, C, cont1]=ts.win_eventually_or_persistence([],{B_list'},1);
+toc
 %%
 % Visualization of winning set
 M_X.visual(fig,W,'.c',12);

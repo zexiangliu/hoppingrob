@@ -7,7 +7,7 @@ function [V, Cv, cont] = win_primal(ts, A, B, C_list, quant1, quant2, V)
   % Returns a sorted set
   %
   % Expanding algo
-  
+  global Vinv Cvinv
   if nargin<7
     V = [];
   end
@@ -55,14 +55,24 @@ function [V, Cv, cont] = win_primal(ts, A, B, C_list, quant1, quant2, V)
 
   V = uint32(V);
   A = sort(A);
-
-  ts.create_fast();
-
+  
+  flag_inv = false;
+  if(length(A)~=ts.n_s)
+      [Vinv, Cvinv, ~] = ts.win_intermediate(uint32(1:ts.n_s), A, [], {uint32(1:ts.n_s)}, quant1_bool);
+      flag_inv = true;
+  end
+  
   iter = 1;
   while true
-    Z = ts.pre(V, [], quant1_bool, false);
-    Z = union(Z, ts.pre_pg(V, A, quant1_bool));
-
+    if nargout > 2
+        [V1,~,K1] = ts.pre_pg(V, A, quant1_bool);
+        [V2,K2] = ts.pre(V, [], quant1_bool, false);
+    elseif nargout > 1
+        V1 = ts.pre_pg(V, A, quant1_bool);
+        V2 = ts.pre(V, [], quant1_bool, false);
+    end
+    Z = union(V1, V2);
+    
     if nargout > 2
       [Vt, Ct, Kt] = ts.win_intermediate(A, B, Z, C_list, quant1_bool);
     elseif nargout > 1
@@ -80,6 +90,17 @@ function [V, Cv, cont] = win_primal(ts, A, B, C_list, quant1, quant2, V)
     end
 
     if nargout > 2
+        
+      if flag_inv
+%         K2.restrict_to(Vinv);
+        Vlist{end+1} = V1;
+        Vlist{end+1} = union(V1,intersect(V2,Vinv));
+      else
+        Vlist{end+1} = V1;
+        Vlist{end+1} = union(V1,V2);
+      end
+      Klist{end+1} = K1;
+      Klist{end+1} = K2;
       Klist{end+1} = Kt;
       Vlist{end+1} = Vt;
     end

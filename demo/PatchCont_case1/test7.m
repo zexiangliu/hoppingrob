@@ -1,39 +1,39 @@
-clc;clear all;
-load ts_exper_rand3.mat
-ts_exper = load('ts_exper_rand3');
-ts_cons = load('ts_cons_rand3');
-U_res = ts_cons.U_res;
-ts_ref = ts_cons.ts_ref;
-t_syn = ts_cons.t_syn;
-cont_ref = ts_cons.cont_ref;
-close all;
-%%
-t_patch =  cell(1,length(U_res));
-cont_patch = t_patch; 
-t_naive = t_patch;
-cont_naive = cont_patch;
-
-B_list_new=[];
-C_list_new=[];
-num_X = length(W);
-num_U = M_U.numV-1;
-W2new = zeros(ts.n_s,1);
-
-for i = 1:num_X
-    W2new(W(i)) = i;
-end
-
-for i =1:length(W)
-    if(ismember(W(i),B_list))
-        B_list_new =[B_list_new;i];
-    end
-%     if(ismember(W(i),C_list))
-%         C_list_new =[C_list_new;i];
+% clc;clear all;
+% load ts_exper_rand3.mat
+% ts_exper = load('ts_exper_rand3');
+% ts_cons = load('ts_cons_rand3');
+% U_res = ts_cons.U_res;
+% ts_ref = ts_cons.ts_ref;
+% t_syn = ts_cons.t_syn;
+% cont_ref = ts_cons.cont_ref;
+% close all;
+% %%
+% t_patch =  cell(1,length(U_res));
+% cont_patch = t_patch; 
+% t_naive = t_patch;
+% cont_naive = cont_patch;
+% 
+% B_list_new=[];
+% C_list_new=[];
+% num_X = length(W);
+% num_U = M_U.numV-1;
+% W2new = zeros(ts.n_s,1);
+% 
+% for i = 1:num_X
+%     W2new(W(i)) = i;
+% end
+% 
+% for i =1:length(W)
+%     if(ismember(W(i),B_list))
+%         B_list_new =[B_list_new;i];
 %     end
-end
+% %     if(ismember(W(i),C_list))
+% %         C_list_new =[C_list_new;i];
+% %     end
+% end
 
 
-for i = 1:length(U_res)
+for i = 38:length(U_res)
     %% Patching
     
     u_res = U_res{i};
@@ -46,7 +46,7 @@ for i = 1:length(U_res)
     % 
 %     Vinv_lost = setdiff(Vinv,Vinv_new);
     %%
-    ts_exper = load('ts_exper','cont');
+    ts_exper = load('ts_exper_rand3','cont');
     cont_patch{i} = ts_exper.cont;
 
     Vinv_lost = [];

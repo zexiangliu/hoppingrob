@@ -1,6 +1,6 @@
 % Simulation of the hopping robot
 close all; clear all; clc;
-load ts
+load ts_1
 
 %% Visualization and get initial condition from mouse
 
@@ -23,9 +23,11 @@ M_X.visual(fig,W,'.c',12);
 %% Initialization
 % constants
 eta = M_X.gridsize;
-% initial state 
-disp('Please select the initial point on the plot:')
-[x,y]=ginput(1);
+% % initial state 
+% disp('Please select the initial point on the plot:')
+% [x,y]=ginput(1);
+x = -1.75;
+y = 5.05;
 % x=-1.4;
 % y=-4.5;
 x0 = [x;y];
@@ -50,7 +52,7 @@ Yt_list=[]; % record ode solution for animation
 Yx_list=[]; % record ode solution for animation
 %% hopping
 disp('Simulating...');
-t_span = 60;
+t_span = 20;
 for i = 1:t_span
     % visual (on the grid)
     % get the options of input 
@@ -98,3 +100,5 @@ disp('Trajectory:')
 fig = figure(1);
 
 traj_anim(fig,M_X,X_list);
+
+save simu1.mat

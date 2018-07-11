@@ -82,10 +82,10 @@ C_list = {1:2000,500:3000,1000:3200};
 A_list = [1:3000];
 %% Controller
 disp('Compute winning set and controller...')
-ts.create_fast();
+ts.trans_array_enable();
 % [W, C, cont]=ts.win_primal([],B_list',[],'exists','forall');
 tic;
-[W, ~, cont, V_Compl, K_Compl] = ts.win_primal_patch(A_list, B_list, ... 
+[W, ~, cont] = ts.win_primal(A_list, B_list, ... 
                                     C_list, 'exists', 'forall')
 t_synthesis = toc;                            
 [Vinv, ~, cont_inv] = ts.win_intermediate(uint32(1:ts.n_s), A_list, [], {uint32(1:ts.n_s)}, 1);
@@ -95,7 +95,7 @@ if(isempty(W))
     error('No winning set is found!');
 end
 
-% save ts_exper
+save ts_exper
 
 %% with u_res
 u_res = [1:20];
@@ -104,10 +104,11 @@ ts = ArrayGener_parallel(M_X,M_U,tau,r,lmax,u_res);
 disp('Done.')
 %% Controller
 disp('Compute winning set and controller...')
-ts.create_fast();
+ts.trans_array_enable();
 % [W, C, cont]=ts.win_primal([],B_list'W,[],'exists','forall');
-[W, ~, cont, V_Compl, K_Compl] = ts.win_primal_patch(A_list, B_list, ... 
+tic
+[W, ~, cont] = ts.win_primal(A_list, B_list, ... 
                                     C_list, 'exists', 'forall')
+toc
 
-
-% save ts_cons
+save ts_cons

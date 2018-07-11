@@ -41,7 +41,7 @@ function M = rob_anim(fig,t_list,x_list,u_list,bnd_B,rob,gnd,prespect,flag_CoM)
             KeyCallback('reset');
             break;
         end
-        pause(t_list(i)-t);
+%         pause(t_list(i)-t);
         t= t_list(i);
         hold off;
         hopping_height = 0;%1/4*abs(sin((3*pi/2/0.08)*t));
@@ -62,6 +62,8 @@ function M = rob_anim(fig,t_list,x_list,u_list,bnd_B,rob,gnd,prespect,flag_CoM)
         % camera configuration
     %     axis([x1min-lmax, x1max+lmax, -0.5, 0.5, -0.5, 1.5]); 
         axis equal;
+        grid on;
+        axis off;
         if(flag_p)
             view(az, el);
         end

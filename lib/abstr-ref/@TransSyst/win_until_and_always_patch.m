@@ -5,10 +5,11 @@ function [V, Cv, cont] = win_until_and_always_patch(ts, A, B, P, quant1)
   %
   % Note: A must be sorted
   % Returns a sorted set
+  global Vinv Cvinv
   if ~isempty(setdiff(1:ts.n_s, A))
     % Need to worry about []A
     if nargout > 2
-      [Vinv, Cvinv, cont_inv] = ts.win_intermediate(uint32(1:ts.n_s), A, [], {uint32(1:ts.n_s)}, quant1);
+%       [Vinv, Cvinv, cont_inv] = ts.win_intermediate(uint32(1:ts.n_s), A, [], {uint32(1:ts.n_s)}, quant1);
       [V, Cvu, cont] = ts.win_until_patch(intersect(B, Vinv), intersect(P, Vinv), quant1);
       cont.from = 'win_until_and_always';
       Cv = union(Cvinv, Cvu);
